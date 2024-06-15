@@ -17,10 +17,6 @@ function Connect() {
   let proof_payload = 'undefined'
 
   useEffect(() => {
-    window.localStorage.setItem('user', JSON.stringify({token:'hdbjfdbjsbjbdjs', name:'wale'}))
-    navigate('/');
-
-
     fetch(BASEBACKENDURL + 'get_unsigned_payload')
     .then(response => {
       if (!response.ok) {
@@ -72,7 +68,8 @@ function Connect() {
         console.log(data)
         JWT_token = data.token
         username = data.username
-
+        window.localStorage.setItem('user', JSON.stringify({token:JWT_token, name:username}))
+        navigate('/');
       })
       .catch(error => {
         console.error('Error fetching data:', error);
