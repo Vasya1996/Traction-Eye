@@ -5,11 +5,11 @@ import Wallet from '../image/wallet.svg';
 import { useTonConnectModal } from '@tonconnect/ui-react';
 import { useTonConnectUI } from '@tonconnect/ui-react';
 import { AreaChart, Area, ResponsiveContainer } from 'recharts';
-import { useRouter,Router } from '../components/Router';
+import { useRouter } from '../components/Router';
 
 
 function Connect() {
-  const { state, open, close } = useTonConnectModal();
+  const { open } = useTonConnectModal();
   const {navigate} = useRouter()
   const [tonConnectUI] = useTonConnectUI();
 
@@ -67,7 +67,7 @@ function Connect() {
         // here is token
         console.log(data)
         JWT_token = data.token
-        username = data.username
+        let username = data.username
         window.localStorage.setItem('user', JSON.stringify({token:JWT_token, name:username}))
         navigate('/');
       })
