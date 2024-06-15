@@ -14,6 +14,7 @@ import anon from '../image/anon.png';
 import duck from '../image/duck.png';
 import tgram from '../image/tgam.png';
 import { useRouter,Router } from '../components/Router';
+import { shortenWallet } from '../components/utilities';
 
 
 
@@ -92,15 +93,11 @@ export default function Home() {
   }, []);
 
 
-
-
-
-
   const handleDisconnect = async () => {
     try {
       await tonConnectUI.disconnect();
       console.log('Wallet disconnected successfully');
-      navigate('/connect');  // Перенаправление на /connect
+      navigate('/connect');  // Redirect to /connect
     } catch (error) {
       console.error('Failed to disconnect wallet:', error);
     }
@@ -116,8 +113,7 @@ export default function Home() {
             </div>
             <div className='flex flex-col'>
               <span className='font-semibold text-gray-300 text-xl'>WhalePanda</span>
-              <span className='text-gray-400 text-md font-semibold'>{userFriendlyAddress}</span>
-              <span className='text-gray-400 text-md font-semibold'>{rawAddress}</span>
+              <span className='text-gray-400 text-md font-semibold'>{shortenWallet(userFriendlyAddress)}</span>
 
 
             </div>
@@ -139,7 +135,7 @@ export default function Home() {
           </ResponsiveContainer>
         </div>
       </div>
-      <div className='flex flex-col min-h-3/5 bg-white rounded-t-3xl px-5 pt-8'>
+      <div className='flex flex-col min-h-3/5 bg-white rounded-t-3xl px-5 pt-8 h-full'>
         <div className='flex flex-row justify-between'>
           <div className='flex flex-row items-center gap-2'>
             <img src={elipse} alt='elipse' className='h-5 w-5' />
