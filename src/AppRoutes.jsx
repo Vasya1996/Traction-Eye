@@ -1,23 +1,14 @@
-import React from 'react'
-import { Router, useRouter } from './components/Router';
-import routes from './routes';
+import routes from "./routes";
+import { Route, Routes } from "react-router-dom";
 
 const AppRoutes = () => {
-    const { currentPath } = useRouter();
-  
-    return (
-      <div>
-        {routes.map(({ path, component: Component }) => (
-          <Route key={path} path={path} component={Component} currentPath={currentPath} />
-        ))}
-      </div>
-    );
+  return (
+    <Routes>
+      {routes.map(({ path, component, exact }) => (
+        <Route key={path} exact={exact} path={path} element={component} />
+      ))}
+    </Routes>
+  );
 };
-  
-  const Route = ({ path, component: Component, currentPath }) => {
-    const isMatch = currentPath === path? true :false;
-  
-    return isMatch ? <Component /> : null;
-  };
-  
-  export default AppRoutes;
+
+export default AppRoutes;

@@ -1,12 +1,12 @@
-import React, { useState, useEffect, createContext, useContext } from 'react';
+import React, { useState, useEffect, createContext, useContext } from "react";
 
 // Create a context to share the router state and functions
 const RouterContext = createContext();
 
 // Router component
 const Router = ({ children }) => {
-  const [history, setHistory] = useState(['/']);
-  const [currentPath, setCurrentPath] = useState('/');
+  const [history, setHistory] = useState(["/"]);
+  const [currentPath, setCurrentPath] = useState("/");
   const [routeData, setRouteData] = useState({});
 
   useEffect(() => {
@@ -14,9 +14,9 @@ const Router = ({ children }) => {
       navigateBack();
     };
 
-    window.addEventListener('popstate', handlePopState);
+    window.addEventListener("popstate", handlePopState);
     return () => {
-      window.removeEventListener('popstate', handlePopState);
+      window.removeEventListener("popstate", handlePopState);
     };
   }, []);
 
@@ -44,11 +44,7 @@ const Router = ({ children }) => {
 
   const value = { currentPath, routeData, navigate, navigateBack, replaceRoute };
 
-  return (
-    <RouterContext.Provider value={value}>
-      {children}
-    </RouterContext.Provider>
-  );
+  return <RouterContext.Provider value={value}>{children}</RouterContext.Provider>;
 };
 
 // useRouter hook to access the router functions
