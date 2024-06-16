@@ -1,16 +1,17 @@
-import React from 'react'
-import ReactDOM from 'react-dom/client'
-import App from './App.jsx'
-import './index.css'
-import eruda from 'eruda'
+import React from "react";
+import ReactDOM from "react-dom/client";
+import "./index.css";
+import App from "./App";
+import eruda from "eruda";
 
+const env = process.env.NODE_ENV;
 
+if (env !== "production") {
+  eruda.init();
+}
 
-eruda.init()
-
-
-ReactDOM.createRoot(document.getElementById('root')).render(
+ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
     <App />
-  </React.StrictMode>,
-)
+  </React.StrictMode>
+);

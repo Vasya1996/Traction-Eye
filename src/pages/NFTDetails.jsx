@@ -1,7 +1,5 @@
-import React from 'react'
+import React from "react";
 
 export default function NFTDetails() {
-  return (
-    <div>NFTDetails</div>
-  )
+  return <div>NFTDetails</div>;
 }
