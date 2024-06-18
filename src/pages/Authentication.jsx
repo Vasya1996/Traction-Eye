@@ -1,8 +1,8 @@
 import { IoIosArrowBack } from "react-icons/io";
-import logo from "../image/tractionEye.svg";
+import logo from "./image/tractionEye.svg";
 import { RiUserAddLine } from "react-icons/ri";
 
-export default function Authorization() {
+function Authentication() {
   return (
     <div className="text-center bg-gray-100 flex flex-col h-screen items-center w-screen py-3 px-5 ">
       <div className="w-full  flex flex-col h-screen items-center ">
@@ -12,9 +12,7 @@ export default function Authorization() {
           </span>
           <span>
             {" "}
-            <a href="" className=" text-red-500 no-underline font-semibold ">
-              Manage
-            </a>
+            <a className=" text-red-500 no-underline font-semibold ">Manage</a>
           </span>
         </div>
 
@@ -66,3 +64,4 @@ export default function Authorization() {
     </div>
   );
 }
+export default Authentication;

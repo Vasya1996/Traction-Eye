@@ -11,7 +11,7 @@ export const shortenWallet = (address, length = 4) => {
   return `${address.slice(0, length)}...${address.slice(-length)}`;
 };
 
-// Функция для получения информации о кошельке
+
 export const fetchWalletInfo = async (walletAddress) => {
   try {
     const response = await axios.get(`${API_TONCENTER_URL}/wallet`, {
@@ -26,4 +26,3 @@ export const fetchWalletInfo = async (walletAddress) => {
     throw error; 
   }
 };
-

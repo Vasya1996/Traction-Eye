@@ -1,7 +1,9 @@
+
 import React, { useState } from 'react';
 import '../App.css';
+
 import { IoIosArrowBack } from "react-icons/io";
-import logo from '../image/tractionEye.svg'
+import logo from "../image/tractionEye.svg";
 import { RiUserAddLine } from "react-icons/ri";
 import { useRouter } from '../components/Router';
 import { shortenWallet } from '../components/utilities';
@@ -27,11 +29,15 @@ function App() {
   };
 
   return (
-    <div className="App bg-gray-100 flex flex-col h-screen items-center w-screen py-3 px-5 ">
-      <div className='w-full  flex flex-col h-screen items-center '>
-        <div className='flex flex-row justify-between p-3 items-center w-full'>
-          <span onClick={()=>navigateBack()}><IoIosArrowBack color='black' size={20}/></span>
-          <span onClick={()=>navigate('/profiles-manage')} className=' text-red-500 no-underline font-semibold '>Manage</span>
+    <div className="text-center bg-gray-100 flex flex-col h-screen items-center w-screen py-3 px-5 ">
+      <div className="w-full  flex flex-col h-screen items-center ">
+        <div className="flex flex-row justify-between p-3 items-center w-full">
+          <span onClick={() => navigate(-1)}>
+            <IoIosArrowBack color="black" size={20} />
+          </span>
+          <span onClick={() => navigate("/profiles-manage")} className=" text-red-500 no-underline font-semibold ">
+            Manage
+          </span>
         </div>
 
         <span className='text-black font-semibold  mt-6'  style={{fontSize:'24px'}}>Tap Account To Login</span>
@@ -45,10 +51,10 @@ function App() {
             <div className='flex flex-col'>
               <span className='font-semibold '>{userData && userData.name}</span>
               <span className='text-gray-500 text-sm'>{shortenWallet(userFriendlyAddress)}</span>
-            </div>
 
+            </div>
           </div>
-          <span className='font-semibold text-lg text-black'>$145</span>
+          <span className="font-semibold text-lg text-black">$145</span>
         </button>
 
         <button className='text-red-500 text-lg flex flex-row w-5/6 justify-center items-center gap-2 bg-white py-4 mt-10 rounded-lg'>
@@ -61,8 +67,9 @@ function App() {
         </button>
       </div>
 
-      <span className='text-gray-500 text-lg'>The total networth of the wallets is <span className='text-black font-bold text-lg'>$150</span></span>
-
+      <span className="text-gray-500 text-lg">
+        The total networth of the wallets is <span className="text-black font-bold text-lg">$150</span>
+      </span>
     </div>
   );
 }

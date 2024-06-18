@@ -85,6 +85,7 @@ const Home = () => {
     fetchAssets(userFriendlyAddress);
   }, [userFriendlyAddress]);
 
+
   useEffect(() => {
     const user = JSON.parse(window.localStorage.getItem('user'));
     if (!user) {
@@ -168,22 +169,29 @@ const Home = () => {
           </ResponsiveContainer>
         </div>
       </div>
-      <div className='flex flex-col min-h-3/5 bg-white rounded-t-3xl px-5 pt-8 h-full'>
-        <div className='flex flex-row justify-between'>
-          <div className='flex flex-row items-center gap-2'>
-            <img src={elipse} alt='elipse' className='h-5 w-5' />
-            <span className='font-bold text-xl'>Assets</span>
+      <div className="flex flex-col min-h-3/5 bg-white rounded-t-3xl px-5 pt-8">
+        <div className="flex flex-row justify-between">
+          <div className="flex flex-row items-center gap-2">
+            <img src={elipse} alt="elipse" className="h-5 w-5" />
+            <span className="font-bold text-xl">Assets</span>
           </div>
-          <div className='flex flex-row items-center gap-1'>
-            <FaClipboardList size={16} className='text-gray-500' />
-            <span className='font-semibold text-md text-gray-500'>Transactions</span>
+          <div className="flex flex-row items-center gap-1">
+            <FaClipboardList size={20} className="text-gray-500" />
+            <span className="font-semibold text-lg text-gray-500">Transactions</span>
           </div>
         </div>
-        <div className='mt-8 flex justify-between text-gray-400 font-semibold text-center'>
-          <span className='text-left' style={{ flex: 4 }}>ASSETS/AMOUNT</span>
-          <span className='' style={{ flex: 3 }}>PRICE</span>
-          <span className='text-right' style={{ flex: 3 }}>USD VALUE</span>
+        <div className="mt-8 flex justify-between text-gray-400 font-semibold text-center">
+          <span className="text-left" style={{ flex: 4 }}>
+            ASSETS/AMOUNT
+          </span>
+          <span className="" style={{ flex: 3 }}>
+            PRICE
+          </span>
+          <span className="text-right" style={{ flex: 3 }}>
+            USD VALUE
+          </span>
         </div>
+
         <div className='flex flex-col gap-5 mt-8 mb-10'>
           {
             assets.map((asset) => (
@@ -202,8 +210,14 @@ const Home = () => {
                   {'$' + asset.amount.toFixed(2) * asset.price_usd.toFixed(2)}
                 </span>
               </div>
-            ))
-          }
+              <span className="font-semibold text-gray-700 text-center flex-1" style={{ flex: 3 }}>
+                {"$" + asset.price}
+              </span>
+              <span className="font-semibold text-gray-700 text-center flex-1" style={{ flex: 3 }}>
+                {"$" + asset.usd_val}
+              </span>
+            </div>
+          ))}
         </div>
 
           {/* NFTs */}
