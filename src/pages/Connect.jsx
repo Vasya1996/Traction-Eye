@@ -16,7 +16,8 @@ function Connect() {
   const [address] = useState();
   const [p_payload, set_p_payload] = useState();
 
-  const BASEBACKENDURL = "http://facegame.w1.ru/";
+  const BASEBACKENDURL = 'https://facegame.tw1.ru'
+  let proof_payload = 'undefined'
 
   useEffect(() => {
     fetch(BASEBACKENDURL + "get_unsigned_payload")
