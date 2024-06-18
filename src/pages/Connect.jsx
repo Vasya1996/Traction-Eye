@@ -13,7 +13,7 @@ function Connect() {
   const {navigate} = useRouter()
   const [tonConnectUI] = useTonConnectUI();
 
-  const BASEBACKENDURL = 'https://facegame.tw1.ru/'
+  const BASEBACKENDURL = 'https://facegame.tw1.ru'
   let proof_payload = 'undefined'
 
   useEffect(() => {
