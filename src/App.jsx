@@ -12,7 +12,7 @@ function App() {
   const [location, reactNav] = useIntegration(navigator);
 
   useEffect(() => {
-    navigator.attach();
+    if (import.meta.env.PROD) navigator.attach();
     return () => navigator.detach();
   }, [navigator]);
 

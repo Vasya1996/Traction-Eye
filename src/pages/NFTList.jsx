@@ -2,7 +2,7 @@ import { IoIosArrowBack } from "react-icons/io";
 import logo from "../image/tractionEye.svg";
 import { RiUserAddLine } from "react-icons/ri";
 
-function App() {
+function NFTList() {
   return (
     <div className="text-center bg-gray-100 flex flex-col h-screen items-center w-screen py-3 px-5 ">
       <div className="w-full  flex flex-col h-screen items-center ">
@@ -66,4 +66,4 @@ function App() {
     </div>
   );
 }
-export default App;
+export default NFTList;
