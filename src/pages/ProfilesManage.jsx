@@ -6,7 +6,7 @@ export default function ProfilesManage() {
   return (
     <div className="text-center bg-gray-100 flex flex-col h-screen items-center w-screen py-5 px-5 ">
       <div className="w-full  flex flex-col h-screen items-center ">
-        <div className="flex flex-row justify-end p-3 items-center w-full">
+        <div className="flex flex-row justify-end p-3 items-center cursor-pointer w-full">
           <span
             onClick={() => {
               navigate(-1);
