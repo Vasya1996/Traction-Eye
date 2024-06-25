@@ -2,17 +2,32 @@ import { IoIosArrowBack } from "react-icons/io";
 import logo from "../image/tractionEye.svg";
 import { RiUserAddLine } from "react-icons/ri";
 import { useNavigate } from "react-router-dom";
+import { useTonConnectUI } from '@tonconnect/ui-react';
+
+
 
 function ProfilesList() {
   const navigate = useNavigate();
+  const [tonConnectUI] = useTonConnectUI();
+
+  const navigateBack = () => {
+    if (history.length > 1) {
+      const newHistory = [...history];
+      newHistory.pop();
+      setHistory(newHistory);
+      setCurrentPath(newHistory[newHistory.length - 1]);
+    }
+  };
+
+
   return (
     <div className="text-center bg-gray-100 flex flex-col h-screen items-center w-screen py-3 px-5 ">
       <div className="w-full  flex flex-col h-screen items-center ">
         <div className="flex flex-row justify-between p-3 items-center w-full">
           <span onClick={() => navigate(-1)}>
-            <IoIosArrowBack color="black" size={20} />
+            <IoIosArrowBack color="black cursor-pointer" size={20} />
           </span>
-          <span onClick={() => navigate("/profiles-manage")} className=" text-red-500 no-underline font-semibold ">
+          <span onClick={navigateBack()} className=" text-red-500 no-underline font-semibold ">
             Manage
           </span>
         </div>
@@ -35,26 +50,13 @@ function ProfilesList() {
           <span className="font-semibold text-lg text-black">$145</span>
         </button>
 
-        <button className="flex flex-row bg-white p-3 mt-2 rounded-lg justify-between items-center w-full">
-          <div className="flex flex-row items-center gap-2">
-            <div className="w-8 h-8 rounded-full flex items-center justify-center  bg-black">
-              <img src={logo} alt="logo" className="h-6 w-6 " />
-            </div>
 
-            <div className="flex flex-col">
-              <span className="font-semibold">0xe442....2133</span>
-              <span className="text-gray-500 text-sm">0xe442....2133</span>
-            </div>
-          </div>
-          <span className="font-semibold text-lg text-black">$5</span>
-        </button>
-
-        <button className="text-red-500 text-lg flex flex-row w-5/6 justify-center items-center gap-2 bg-white py-4 mt-10 rounded-lg">
+        <button onClick={() => navigate("/connect")} className="text-red-500 text-lg flex flex-row w-5/6 justify-center items-center gap-2 bg-white py-4 mt-10 rounded-lg">
           <RiUserAddLine size={20} color="red" />
           <span>Add account</span>
         </button>
 
-        <button className="text-red-500 text-lg flex flex-row w-5/6 justify-center items-center gap-2 bg-white py-4 mt-2 rounded-lg">
+        <button onClick={tonConnectUI.disconnect()} className="text-red-500 text-lg flex flex-row w-5/6 justify-center items-center gap-2 bg-white py-4 mt-2 rounded-lg">
           <span className="text-gray-400">Logout</span>
         </button>
       </div>
