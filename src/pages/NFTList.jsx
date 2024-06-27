@@ -2,6 +2,7 @@ import React from 'react';
 import { IoIosArrowBack } from 'react-icons/io';
 import { FaPlusCircle } from 'react-icons/fa';
 import { useNavigate } from "react-router-dom";
+import nftExample from '../image/nftExample.webp';
 
 
 const nftData = [
@@ -35,8 +36,8 @@ export default function NftPage() {
       </div>
       <div className="nft-grid grid grid-cols-2 gap-4">
         {nftData.map((nft, index) => (
-          <div key={index} className="nft-item h-52 rounded-lg border bg-gray-100">
-            <img src={nft.image_url} alt={nft.name} className="rounded-lg" />
+          <div onClick={() => navigate("/nft")} key={index} className="nft-item cursor-pointer h-52 mb-5 rounded-lg border bg-gray-100">
+            <img src={nftExample} alt={nft.name} className="rounded-lg" />
           </div>
         ))}
       </div>
