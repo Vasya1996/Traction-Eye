@@ -4,6 +4,7 @@ import Authorization from "./pages/Authorization";
 import ProfilesList from "./pages/ProfilesList";
 import ProfilesManage from "./pages/ProfilesManage";
 import NFTList from "./pages/NFTList";
+import NFTDetails from './pages/NFTDetails';
 
 const routes = [
   {
@@ -26,6 +27,10 @@ const routes = [
   {
     path: "auth",
     component: <Authorization />,
+  },
+  {
+    path: "nft",
+    component: <NFTDetails />,
   },
   {
     path: "nft-list",
