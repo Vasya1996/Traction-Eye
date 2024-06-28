@@ -4,30 +4,22 @@ import { RiUserAddLine } from "react-icons/ri";
 import { useNavigate } from "react-router-dom";
 import { useTonConnectUI } from '@tonconnect/ui-react';
 
-
-
 function ProfilesList() {
   const navigate = useNavigate();
   const [tonConnectUI] = useTonConnectUI();
 
   const navigateBack = () => {
-    if (history.length > 1) {
-      const newHistory = [...history];
-      newHistory.pop();
-      setHistory(newHistory);
-      setCurrentPath(newHistory[newHistory.length - 1]);
-    }
+    navigate(-1); // Navigate back one step using react-router-dom's navigate function
   };
-
 
   return (
     <div className="text-center bg-gray-100 flex flex-col h-screen items-center w-screen py-3 px-5 ">
       <div className="w-full  flex flex-col h-screen items-center ">
         <div className="flex flex-row justify-between p-3 items-center w-full">
-          <span onClick={() => navigate(-1)}>
-            <IoIosArrowBack color="black cursor-pointer" size={20} />
+          <span onClick={navigateBack}>
+            <IoIosArrowBack color="black" size={20} className="cursor-pointer" />
           </span>
-          <span onClick={navigateBack()} className=" text-red-500 no-underline font-semibold ">
+          <span className="text-red-500 no-underline font-semibold cursor-pointer" onClick={() => navigate('/manage')}>
             Manage
           </span>
         </div>
@@ -50,13 +42,12 @@ function ProfilesList() {
           <span className="font-semibold text-lg text-black">$145</span>
         </button>
 
-
         <button onClick={() => navigate("/connect")} className="text-red-500 text-lg flex flex-row w-5/6 justify-center items-center gap-2 bg-white py-4 mt-10 rounded-lg">
           <RiUserAddLine size={20} color="red" />
           <span>Add account</span>
         </button>
 
-        <button onClick={tonConnectUI.disconnect()} className="text-red-500 text-lg flex flex-row w-5/6 justify-center items-center gap-2 bg-white py-4 mt-2 rounded-lg">
+        <button onClick={() => tonConnectUI.disconnect()} className="text-red-500 text-lg flex flex-row w-5/6 justify-center items-center gap-2 bg-white py-4 mt-2 rounded-lg">
           <span className="text-gray-400">Logout</span>
         </button>
       </div>
@@ -67,4 +58,5 @@ function ProfilesList() {
     </div>
   );
 }
+
 export default ProfilesList;
