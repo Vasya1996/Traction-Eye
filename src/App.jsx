@@ -5,7 +5,7 @@ import { Router } from "react-router-dom";
 import { initNavigator, SDKProvider as TMASDKProvider } from "@tma.js/sdk-react";
 import { useIntegration } from "@tma.js/react-router-integration";
 
-const manifestFile = "https://raw.githubusercontent.com/real-og/traction-eye-bot/master/tonconnect-manifest.json";
+export const manifestFile = "https://raw.githubusercontent.com/real-og/traction-eye-bot/master/tonconnect-manifest.json";
 
 function App() {
   const navigator = useMemo(() => initNavigator("app-navigation-state"), []);

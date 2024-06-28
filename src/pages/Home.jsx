@@ -1,20 +1,20 @@
 import { useEffect, useState } from "react";
-import { useTonAddress, useTonWallet } from "@tonconnect/ui-react";
+import { useTonAddress } from "@tonconnect/ui-react";
 import logo from "../image/tractionEye.svg";
 import { AreaChart, Area, ResponsiveContainer } from "recharts";
-import { shortenWallet, fetchWalletInfo } from '../components/utilities';
+import { manifestFile } from "../App";
+
+import { shortenWallet } from '../components/utilities';
 import elipse from "../image/Ellipse 7.png";
-import tonSymbol from '../image/ton_symbol.svg'
+import tonSymbol from '../image/ton_symbol.svg';
 import { FaClipboardList } from "react-icons/fa";
 import { initCloudStorage } from "@tma.js/sdk-react";
 import { useNavigate } from "react-router-dom";
-
 import axios from 'axios';
 
-// icons
+
 import { IoAnalyticsOutline } from "react-icons/io5";
 import { IoIosArrowForward } from 'react-icons/io';
-import { LiaToolsSolid } from "react-icons/lia";
 import { RiNftLine } from "react-icons/ri";
 
 export default function Home() {
@@ -22,68 +22,95 @@ export default function Home() {
   const userFriendlyAddress = useTonAddress();
   const [assets, setAssets] = useState([]);
   const [nfts, setNFTS] = useState([]);
-  const [userData, setUserData] = useState(null);
-
-  const rawAddress = useTonAddress(false);
   const [walletInfo, setWalletInfo] = useState(null);
-  
   const cloudStorage = initCloudStorage();
   const navigate = useNavigate();
   const [isOpen, setIsOpen] = useState(false);
   const [visibleAssets, setVisibleAssets] = useState(5);
-  
+  const [totalBalance, setTotalBalance] = useState(0); // State для общего баланса
+  const [LPStonFi, setLPStonFi ] = useState([]);
+
   const showMore = () => {
     setVisibleAssets(prev => prev + 5);
   };
-  
+
+
   useEffect(() => {
     const fetchNFT = async (userFriendlyAddress) => {
-      const API_TE_URL = 'https://facegame.tw1.ru';  
+      const API_TE_URL = 'https://facegame.tw1.ru';
       try {
         const response = await axios.post(`${API_TE_URL}/nfts_by_wallet/`, {
           wallet_address: userFriendlyAddress
         });
-  
+
         if (!response.data) {
-          throw new Error('Failed to fetch assets');
+          throw new Error('Failed to fetch NFTs');
         }
-  
+
         if (Array.isArray(response.data.nfts)) {
           setNFTS(response.data.nfts);
         } else {
           console.error('NFTs data is not an array:', response.data);
         }
       } catch (error) {
-        console.error('Failed to fetch NFTS:', error);
+        console.error('Failed to fetch NFTs:', error);
       }
     };
-  
-    fetchNFT(userFriendlyAddress);
+
+    if (userFriendlyAddress) {
+      fetchNFT(userFriendlyAddress);
+    }
   }, [userFriendlyAddress]);
-  
+
+  // Fetch Liquid Pools
+  useEffect(() => {
+    const fetchLPStonFi = async (userFriendlyAddress) => {
+      const API_TE_URL = 'https://facegame.tw1.ru';
+      try {
+        const response = await axios.post(`${API_TE_URL}/stonfi_info/`, {
+          wallet_address:userFriendlyAddress
+        });
+
+        if (Array.isArray(response.data)) {
+          setLPStonFi(response.data);
+
+        } else {
+          console.error('LP data is not an array:', response.data);
+        }
+      } catch (error) {
+        console.error('Failed to fetch LP StonFi:', error);
+      }
+    };
+
+    if (userFriendlyAddress) {
+      fetchLPStonFi(userFriendlyAddress);
+      console.log(LPStonFi);
+    }
+  }, [userFriendlyAddress]);
+
+  // Fetch Assets
   useEffect(() => {
     const fetchAssets = async (userFriendlyAddress) => {
       const API_TE_URL = 'https://facegame.tw1.ru';
       try {
         const response = await axios.post(`${API_TE_URL}/assets_by_wallet/`, {
-          wallet_address: userFriendlyAddress
+          wallet_address:userFriendlyAddress
         });
-  
-        if (!response.data) {
-          throw new Error('Failed to fetch assets');
-        }
-  
+
         if (Array.isArray(response.data.assets)) {
           setAssets(response.data.assets);
+          calculateTotalBalance(response.data.assets); // Вызов функции для расчета общего баланса
         } else {
-          console.error('Asset data is not an array:', response.data);
+          console.error('Assets data is not an array:', response.data);
         }
       } catch (error) {
         console.error('Failed to fetch assets:', error);
       }
     };
-  
-    fetchAssets(userFriendlyAddress);
+
+    if (userFriendlyAddress) {
+      fetchAssets(userFriendlyAddress);
+    }
   }, [userFriendlyAddress]);
 
   useEffect(() => {
@@ -92,8 +119,7 @@ export default function Home() {
       .then((res) => {
         if (res) {
           const wallet = JSON.parse(res);
-
-          if (res.length !== 0) {
+          if (wallet && Object.keys(wallet).length > 0) {
             setWalletInfo(wallet);
           } else {
             navigate("/connect");
@@ -105,7 +131,7 @@ export default function Home() {
       .catch(() => {
         navigate("/connect");
       });
-  }, []);
+  }, [cloudStorage, navigate]);
 
   function generateDataset() {
     const dataset = [];
@@ -118,11 +144,37 @@ export default function Home() {
     }
     return dataset;
   }
-  
+
   useEffect(() => {
     const generatedData = generateDataset();
     setData(generatedData);
   }, []);
+
+  // Total Balance
+  const calculateTotalBalance = (assets) => {
+    let total = 0;
+    assets.forEach(asset => {
+      total += (asset.amount / 10**9) * asset.price_usd;
+    });
+    setTotalBalance(total.toFixed(2)); // Задаем общий баланс с округлением до двух знаков после запятой
+  };
+
+  // const renderNFTs = () => {
+  //   if (nfts.length === 0) {
+  //     return <span className="mt-14 text-xl font-semibold text-gray-400">You have no NFTs ;(</span>;
+  //   } else {
+  //     return nfts.map((nft, index) => (
+  //       <div key={index}>
+  //         <p>{nft.name}</p>
+  //         <p>{nft.description}</p>
+  //         {nft.image_url && <img src={nft.image_url} alt={nft.name} />}
+  //       </div>
+  //     ));
+  //   }
+  // };
+
+
+
 
   return (
     <div className="h-screen overflow-visible w-full bg-gray-700">
@@ -134,13 +186,13 @@ export default function Home() {
             </div>
             <div className="flex flex-col">
               <span className="font-semibold text-gray-300 text-xl">WhalePanda</span>
-              <span className="text-gray-400 text-md flex items-center centfont-semibold">{shortenWallet(userFriendlyAddress) ? <IoIosArrowForward className="ml-1"/> : "" }</span>
+              <span className="text-gray-400 text-md flex items-center centfont-semibold">{userFriendlyAddress ? <span className="flex items-center">{shortenWallet(userFriendlyAddress)}<IoIosArrowForward className="ml-1"/></span> : "" }</span>
             </div>
           </div>
           <div className="flex flex-col">
             <span className="font-semibold text-sm text-gray-400">Net Worth</span>
             <span className="font-semibold text-3xl text-white">
-            {walletInfo ? `$ ${walletInfo.balance}` : '$ ...'}
+              ${totalBalance}
             </span>
             <span className="text-md text-green-600 font-bold">+0.12% ($0)</span>
           </div>
@@ -175,7 +227,7 @@ export default function Home() {
             USD VALUE
           </span>
         </div>
-        
+
         <div className='flex flex-col gap-5 mt-8 mb-10'>
           {assets.slice(0, visibleAssets).map((asset) => (
             <div key={asset.name}>
@@ -183,7 +235,7 @@ export default function Home() {
                 <div className='flex gap-2 items-center flex-1' style={{ flex: 4 }}>
                   <img src={asset.image_url} alt='logo' className='w-12 h-12' />
                   <div className='flex flex-col'>
-                    <span className='font-semibold text-md text-gray-700'>{asset.amount}</span>
+                    <span className='font-semibold text-md text-gray-700'>{(asset.amount / 10**9).toFixed(3)}</span>
                     <span className='font-semibold text-gray-300'>{asset.symbol}</span>
                   </div>
                 </div>
@@ -191,16 +243,16 @@ export default function Home() {
                   <span className="mx-auto">{'$' + asset.price_usd.toFixed(2)}</span>
                 </span>
                 <span className='font-semibold text-gray-700 items-center flex text-center flex-1' style={{ flex: 3 }}>
-                  <span className="mx-auto">{'$' + (asset.amount * asset.price_usd).toFixed(2)}</span>
+                  <span className="mx-auto">{'$' + ((asset.amount / 10**9) * asset.price_usd).toFixed(2)}</span>
                 </span>
               </div>
             </div>
           ))}
           {visibleAssets < assets.length && (
-            <button 
-              onClick={showMore} 
+            <button
+              onClick={showMore}
               className='mt-4 py-2 px-4 bg-blue-500 text-white font-semibold rounded'>
-              Show more 
+              Show more
             </button>
           )}
         </div>
@@ -213,14 +265,13 @@ export default function Home() {
                 <RiNftLine className="size-6" />
                 <span className="font-bold text-lg flex ml-2">NFTs</span>
               </div>
-              <IoIosArrowForward onClick={() => navigate("/nft-list")} className={`ml-2 size-6 text-gray-400 cursor-pointer transform ${isOpen ? 'rotate-90' : 'rotate-0'}`} />
+              {nfts.length !== 0 ? <IoIosArrowForward onClick={() => navigate("/nft-list")} className={`ml-2 size-6 text-gray-400 cursor-pointer transform ${isOpen ? 'rotate-90' : 'rotate-0'}`} /> : ""}
             </div>
           </div>
-          {isOpen && (
             <div className="dropdown-content">
               <div className="nfts-list flex justify-center">
                 {nfts.length === 0 ? (
-                  <span className="mt-20 text-xl font-semibold text-gray-400">You have no NFTs ;(</span>
+                  <span className="mt-14 text-xl font-semibold text-gray-400">You have no NFTs ;(</span>
                 ) : (
                   nfts.map((nft, index) => (
                     <div key={index}>
@@ -232,69 +283,67 @@ export default function Home() {
                 )}
               </div>
             </div>
-          )}
         </div>
 
         {/* Tools */}
         <div className="tools-part mt-10">
-  <div className="tools-header flex items-center mb-5">
-    <LiaToolsSolid className="size-6" />
-    <span className="font-bold text-lg ml-2">Tools</span>
-  </div>
-  <div className="flex justify-between items-center mb-3">
-    <div className="flex items-center">
-      <img src="https://static.ston.fi/favicon/android-chrome-512x512.png" alt="STON.fi Logo" className="w-8 h-8 mr-2" />
-      <span className="font-bold text-lg">STON.fi</span>
-    </div>
-    <button className="flex items-center text-gray-500">
-      <span className="flex items-center gap-2 bg-gray-300 py-1 px-3 rounded-lg">
-        LP Analytics <IoAnalyticsOutline className="size-7" />
-      </span>
-    </button>
-  </div>
-  <div className="tool-card bg-white rounded-lg p-4 shadow-lg">
-    <div className="flex justify-between items-center mb-4">
-      <span className="text-blue-500 bg-gray-200 px-2 py-1 rounded-lg">Liquidity Pool</span>
-      <span className="text-lg font-semibold">$16.51</span>
-    </div>
-    <div className="tool-body p-4 rounded-lg">
-      <div className="flex justify-between font-semibold text-gray-700 mb-2">
-        <span className="w-1/3">Supplied</span>
-        <span className="w-1/3 text-center">Amount</span>
-        <span className="w-1/3 text-right">USD Value</span>
-      </div>
-      <div className="tool-supplied mb-2">
-        <div className="flex justify-between items-center">
-          <div className="flex items-center w-1/3 bg-black p-2 rounded-full ">
-            <img src={tonSymbol} alt="Toncoin" className="w-6 h-6 mr-2" />
-            <span className="text-gray-400">Toncoin</span>
+          <div className="tools-header flex items-center mb-5">
+            <IoAnalyticsOutline className="size-6" />
+            <span className="font-bold text-lg ml-2">Tools</span>
           </div>
-          <div className="text-center w-1/3">
-            <span className="block text-gray-700">0.0025</span>
+          <div className="flex justify-between items-center mb-3">
+            <div className="flex items-center">
+              <img src="https://static.ston.fi/favicon/android-chrome-512x512.png" alt="STON.fi Logo" className="w-8 h-8 mr-2" />
+              <span className="font-bold text-lg">STON.fi</span>
+            </div>
+            <button className="flex items-center text-gray-500">
+              <span className="flex items-center gap-2 bg-gray-300 py-1 px-3 rounded-lg">
+                LP Analytics <IoAnalyticsOutline className="size-7" />
+              </span>
+            </button>
           </div>
-          <div className="text-right w-1/3">
-            <span className="text-gray-500">$8.26</span>
+          <div className="tool-card bg-white rounded-lg p-4">
+            <div className="flex justify-between items-center mb-4">
+              <span className="text-blue-500 bg-gray-200 px-2 py-1 rounded-lg">Liquidity Pool</span>
+              <span className="text-lg font-semibold">$16.51</span>
+            </div>
+            <div className="tool-body p-4 rounded-lg">
+              <div className="flex justify-between font-semibold text-gray-700 mb-2">
+                <span className="w-1/3">Supplied</span>
+                <span className="w-1/3 text-center">Amount</span>
+                <span className="w-1/3 text-right">USD Value</span>
+              </div>
+              <div className="tool-supplied mb-2">
+                <div className="flex justify-between items-center">
+                  <div className="flex items-center w-1/3 bg-black p-2 rounded-full ">
+                    <img src={tonSymbol} alt="Toncoin" className="w-6 h-6 mr-2" />
+                    <span className="text-gray-400">Toncoin</span>
+                  </div>
+                  <div className="text-center w-1/3">
+                    <span className="block text-gray-700">0.0025</span>
+                  </div>
+                  <div className="text-right w-1/3">
+                    <span className="text-gray-500">$8.26</span>
+                  </div>
+                </div>
+              </div>
+              <div className="tool-supplied">
+                <div className="flex justify-between items-center">
+                  <div className="flex items-center w-1/3 bg-black p-2 rounded-full ">
+                    <img src={logo} alt="Traction" className="w-6 h-6 mr-2" />
+                    <span className="text-gray-400">Traction</span>
+                  </div>
+                  <div className="text-center w-1/3">
+                    <span className="block text-gray-700">8.252</span>
+                  </div>
+                  <div className="text-right w-1/3">
+                    <span className="text-gray-500">$8.25</span>
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
-      </div>
-      <div className="tool-supplied">
-        <div className="flex justify-between items-center">
-          <div className="flex items-center w-1/3 bg-black p-2 rounded-full ">
-            <img src={logo} alt="Traction" className="w-6 h-6 mr-2" />
-            <span className="text-gray-400">Traction</span>
-          </div>
-          <div className="text-center w-1/3">
-            <span className="block text-gray-700">8.252</span>
-          </div>
-          <div className="text-right w-1/3">
-            <span className="text-gray-00">$8.25</span>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-</div>
-
 
       </div>
     </div>
