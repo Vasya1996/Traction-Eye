@@ -1,5 +1,5 @@
-import Connect from "./pages/Connect";
-import Home from "./pages/Home";
+import Connect from "./pages/Connect.tsx";
+import Home from "./pages/Home.tsx";
 import Authorization from "./pages/Authorization";
 import ProfilesList from "./pages/ProfilesList";
 import ProfilesManage from "./pages/ProfilesManage";

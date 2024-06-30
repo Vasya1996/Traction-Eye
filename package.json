@@ -9,7 +9,8 @@
     "build": "vite build",
     "lint": "eslint . --ext js,jsx --report-unused-disable-directives --max-warnings 0",
     "preview": "vite preview",
-    "format": "prettier --write **/**/*.{js,jsx,json}"
+    "format": "prettier --write **/**/*.{js,jsx,json}",
+    "localdev": "cloudflared tunnel --url http://localhost:5173"
   },
   "dependencies": {
     "@tma.js/react-router-integration": "^4.0.2",
@@ -25,8 +26,9 @@
     "vite": "^5.3.1"
   },
   "devDependencies": {
-    "@types/react": "^18.2.66",
-    "@types/react-dom": "^18.2.22",
+    "@types/react": "^18.3.3",
+    "@types/react-dom": "^18.3.0",
+    "@types/react-router-dom": "^5.3.3",
     "@vitejs/plugin-react": "^4.2.1",
     "autoprefixer": "^10.4.19",
     "eslint": "^8.57.0",
@@ -35,6 +37,7 @@
     "eslint-plugin-react-refresh": "^0.4.6",
     "postcss": "^8.4.38",
     "tailwindcss": "^3.4.4",
+    "typescript": "^5.5.2",
     "vite": "^5.2.0"
   }
 }

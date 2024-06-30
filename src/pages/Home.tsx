@@ -34,7 +34,6 @@ export default function Home() {
     setVisibleAssets(prev => prev + 5);
   };
 
-
   useEffect(() => {
     const fetchNFT = async (userFriendlyAddress) => {
       const API_TE_URL = 'https://facegame.tw1.ru';
@@ -114,23 +113,33 @@ export default function Home() {
   }, [userFriendlyAddress]);
 
   useEffect(() => {
-    cloudStorage
-      .get("wallets")
-      .then((res) => {
-        if (res) {
-          const wallet = JSON.parse(res);
-          if (wallet && Object.keys(wallet).length > 0) {
-            setWalletInfo(wallet);
-          } else {
-            navigate("/connect");
-          }
-        } else {
-          navigate("/connect");
-        }
-      })
-      .catch(() => {
+    const getWallets = async () => {
+      await cloudStorage.delete("wallets");
+      const wallets = await cloudStorage.get("wallets");
+      console.log(wallets);
+      if (!wallets) {
         navigate("/connect");
-      });
+      }
+      return wallets;
+    }
+    getWallets();
+    // cloudStorage
+    //   .get("wallets")
+    //   .then((res) => {
+    //     if (res) {
+    //       const wallet = JSON.parse(res);
+    //       if (wallet && Object.keys(wallet).length > 0) {
+    //         setWalletInfo(wallet);
+    //       } else {
+    //         navigate("/connect");
+    //       }
+    //     } else {
+    //       navigate("/connect");
+    //     }
+    //   })
+    //   .catch(() => {
+    //     navigate("/connect");
+    //   });
   }, [cloudStorage, navigate]);
 
   function generateDataset() {
@@ -172,9 +181,6 @@ export default function Home() {
   //     ));
   //   }
   // };
-
-
-
 
   return (
     <div className="h-screen overflow-visible w-full bg-gray-700">
@@ -284,7 +290,6 @@ export default function Home() {
               </div>
             </div>
         </div>
-
         {/* Tools */}
         <div className="tools-part mt-10">
           <div className="tools-header flex items-center mb-5">
@@ -344,7 +349,6 @@ export default function Home() {
             </div>
           </div>
         </div>
-
       </div>
     </div>
   );
