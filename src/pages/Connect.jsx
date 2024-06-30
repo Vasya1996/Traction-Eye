@@ -16,7 +16,9 @@ function Connect() {
   const [address] = useState();
   const [p_payload, set_p_payload] = useState();
 
-  const BASEBACKENDURL = "http://facegame.w1.ru/";
+
+
+  const BASEBACKENDURL = "https://facegame.tw1.ru/";
 
   useEffect(() => {
     fetch(BASEBACKENDURL + "get_unsigned_payload")
@@ -28,11 +30,11 @@ function Connect() {
       })
       .then((data) => {
         set_p_payload(data.unsigned_proof_payload);
-        console.log("first request " + p_payload);
+        console.log(data.unsigned_proof_payload)
         tonConnectUI.setConnectRequestParameters({
           state: "ready",
           value: {
-            tonProof: p_payload, // here you insert payload
+            tonProof: data.unsigned_proof_payload, 
           },
         });
       })
@@ -40,18 +42,18 @@ function Connect() {
         console.error("Error fetching data:", error);
       });
   }, [tonConnectUI]);
-
+  
   useEffect(
     () =>
       tonConnectUI.onStatusChange((wallet) => {
-        console.log(p_payload);
+        console.log(wallet);
 
         const dataToSend = {
-          proof_payload: p_payload,
+          proof_payload: wallet.connectItems.tonProof.proof.payload,
           wallet_info: wallet,
         };
 
-        console.log(wallet);
+        console.log(wallet.connectItems.tonProof.proof.payload);
 
         fetch(BASEBACKENDURL + "token", {
           method: "POST",
@@ -68,6 +70,8 @@ function Connect() {
           })
           .then((data) => {
             const JWT_token = data.token;
+            console.log(JWT_token)
+            console.log(data.username)
 
             cloudStorage
               .get("wallets")
@@ -162,7 +166,7 @@ function Connect() {
             </div>
             <IoIosArrowForward size={20} color="black" />
           </button>
-          <button className="border p-3 connect-btn rounded-xl flex flex-row justify-between items-center w-full">
+          <button onClick={() => tonConnectUI.disconnect()} className="border p-3 connect-btn rounded-xl flex flex-row justify-between items-center w-full">
             <div className="flex items-center gap-2">
               <div className="rounded-xl h-10 w-10 flex overflow-hidden">
                 <img src={tonkeeplogo} alt="tonkeeplogo" className="h-10 w-10" />
