@@ -2,14 +2,14 @@ import { useEffect, useState } from "react";
 import { IoIosArrowForward } from "react-icons/io";
 import tonkeeplogo from "../image/ton_keep.png";
 import Wallet from "../image/wallet.svg";
-import { useTonConnectModal, useTonWallet } from "@tonconnect/ui-react";
+import { ConnectedWallet, useTonConnectModal, useTonWallet } from "@tonconnect/ui-react";
 import { useTonConnectUI } from "@tonconnect/ui-react";
 import { AreaChart, Area, ResponsiveContainer } from "recharts";
 import { initCloudStorage } from "@tma.js/sdk";
 import { useNavigate } from "react-router-dom";
 
 function Connect() {
-  const { open, close } = useTonConnectModal();
+  const { open, close, state } = useTonConnectModal();
   const wallet = useTonWallet();
   const navigate = useNavigate();
   const [tonConnectUi] = useTonConnectUI();
@@ -28,20 +28,38 @@ function Connect() {
       }
 
       const data = await response.json();
+      set_p_payload(data.unsigned_proof_payload);
       return data.unsigned_proof_payload;
     } catch (error) {
       console.error("Failed to fetch data:", error);
     }
   };
 
-  const handleStatusChange = async () => {
-    console.log("handle status change");
+  useEffect(() => {
+    console.log("set p", p_payload);
+    tonConnectUi.setConnectRequestParameters({
+      state: "ready",
+      value: {
+        tonProof: p_payload,
+      },
+    });
+  }, [p_payload]);
+
+  useEffect(() => {
+    tonConnectUi.onStatusChange((wallet) => {
+      if (wallet) {
+        console.log(wallet);
+        handleStatusChange(wallet);
+      }
+    });
+  }, []);
+
+  const handleStatusChange = async (wallet: ConnectedWallet) => {
     const dataToSend = {
-      proof_payload: p_payload,
+      proof_payload: wallet.connectItems?.tonProof.proof.payload,
       wallet_info: wallet,
     };
 
-    console.log(dataToSend);
     try {
       const response = await fetch(BASEBACKENDURL + "token", {
         method: "POST",
@@ -57,6 +75,7 @@ function Connect() {
 
       const data = await response.json();
       const JWT_token = data.token;
+      console.log(data, JWT_token);
 
       try {
         const storedWallets = await cloudStorage.get("wallets");
@@ -64,6 +83,7 @@ function Connect() {
         console.log(wallets);
         wallets.push({ JWT_token, username: data.username, address });
         await cloudStorage.set("wallets", JSON.stringify(wallets));
+        console.log("new", await cloudStorage.get("wallets"));
       } catch (error) {
         const newWallet = [{ JWT_token, username: data.username, address }];
         await cloudStorage.set("wallets", JSON.stringify(newWallet));
@@ -75,194 +95,13 @@ function Connect() {
     }
   };
 
-  // useEffect(() => {
-  //   const fetchData = async () => {
-  //     const payload = await fetchUnsignedPayload();
-  //     if (payload) {
-  //       set_p_payload(payload);
-  //       tonConnectUi.setConnectRequestParameters({
-  //         state: "loading",
-  //         value: {
-  //           tonProof: payload, 
-  //         },
-  //       });
-  //     }
-  //   };
-  //   fetchData();
-  //   open();
-  // }, []);
-
   useEffect(() => {
+    const fetchData = async () => {
+      await fetchUnsignedPayload();
+    };
+    fetchData();
     open();
-    fetch(BASEBACKENDURL + "get_unsigned_payload")
-      .then((response) => {
-        if (!response.ok) {
-          throw new Error("Network response was not ok");
-        }
-        return response.json();
-      })
-      .then((data) => {
-        set_p_payload(data.unsigned_proof_payload);
-        console.log("first request " + data.unsigned_proof_payload);
-        tonConnectUi.setConnectRequestParameters({
-          state: "ready",
-          value: {
-            tonProof: data.unsigned_proof_payload, // here you insert payload
-          },
-        });
-      })
-      .catch((error) => {
-        console.error("Error fetching data:", error);
-      });
-  }, [tonConnectUi]);
-
-
-  useEffect(() => {
-    console.log("useeffect");
-    console.log(wallet);
-    // tonConnectUi.setConnectRequestParameters({
-    //   state: "ready",
-    //   value: {
-    //     tonProof: wallet.connectItems?.tonProof.name,
-    //   },
-    // });
-    // handleStatusChange();
-  }, [wallet]);
-
-  // useEffect(() => {
-  //   tonConnectUi.onStatusChange(handleStatusChange);
-  // }, [p_payload]);
-
-  // useEffect(() => {
-  //   const fetchUnsignedPayload = async () => {
-  //     try {
-  //       const response = await fetch(BASEBACKENDURL + "get_unsigned_payload");
-
-  //       if (!response.ok) {
-  //         throw new Error("Network response was not ok: " + response.statusText);
-  //       }
-
-  //       const data = await response.json();
-  //       set_p_payload(data.unsigned_proof_payload);
-  // tonConnectUI.setConnectRequestParameters({
-  //         state: "ready",
-  //         value: {
-  //           tonProof: p_payload,
-  //         },
-  //       });
-  //       return data;
-  //     } catch (error) {
-  //       console.error("Failed to fetch data:", error);
-  //     }
-  //   };
-  //   fetchUnsignedPayload();
-
-  //   // fetch(BASEBACKENDURL + "get_unsigned_payload")
-  //   //   .then((response) => {
-  //   //     if (!response.ok) {
-  //   //       throw new Error("Network response was not ok");
-  //   //     }
-  //   //     return response.json();
-  //   //   })
-  //   //   .then((data) => {
-  //   //     console.log("then");
-  //   //     set_p_payload(data.unsigned_proof_payload);
-  //   //     console.log("first request " + p_payload);
-  //   //     tonConnectUI.setConnectRequestParameters({
-  //   //       state: "ready",
-  //   //       value: {
-  //   //         tonProof: p_payload,
-  //   //       },
-  //   //     });
-  //   //   })
-  //   //   .catch((error) => {
-  //   //     console.error("Error fetching data:", error);
-  //   //   });
-  // }, [tonConnectUI]);
-
-  // useEffect(() => {
-  //   const handleStatusChange = async (wallet) => {
-  //     console.log(p_payload);
-
-  //     const dataToSend = {
-  //       proof_payload: p_payload,
-  //       wallet_info: wallet,
-  //     };
-
-  //     try {
-  //       const response = await fetch(BASEBACKENDURL + "token", {
-  //         method: "POST",
-  //         headers: {
-  //           "Content-Type": "application/json",
-  //         },
-  //         body: JSON.stringify(dataToSend),
-  //       });
-
-  //       if (!response.ok) {
-  //         throw new Error("Network response was not ok");
-  //       }
-
-  //       const data = await response.json();
-  //       const JWT_token = data.token;
-
-  //       try {
-  //         const storedWallets = await cloudStorage.get("wallets");
-  //         console.log(storedWallets);
-  //         const wallets = JSON.parse(storedWallets);
-  //         wallets.push({ JWT_token, username: data.username, address });
-  //         await cloudStorage.set("wallets", JSON.stringify(wallets));
-  //       } catch (error) {
-  //         // If there's an error (like wallets not being present), create new entry
-  //         const newWallet = [{ JWT_token, username: data.username, address }];
-  //         await cloudStorage.set("wallets", JSON.stringify(newWallet));
-  //       }
-
-  //       navigate("/");
-  //     } catch (error) {
-  //       console.error("Error fetching data:", error);
-  //     }
-  //   };
-
-  //   tonConnectUI.onStatusChange(handleStatusChange);
-  // }, [tonConnectUI, p_payload, BASEBACKENDURL, address, cloudStorage, navigate]);
-
-  // const data_chart = [
-  //   { day: "start", value: 10 },
-  //   { day: "end", value: 10 },
-  // ];
-
-  // useEffect(() => {
-  //   const controller = new AbortController();
-  //   const signal = controller.signal;
-
-  //   const initializeConnection = async () => {
-  //     try {
-  //       open({ signal });
-  //     } catch (error) {
-  //       if (error.name !== "AbortError") {
-  //         console.error("Failed to open connection:", error);
-  //       }
-  //     }
-  //   };
-
-  //   initializeConnection();
-
-  //   return () => {
-  //     controller.abort();
-  //   };
-  // }, []);
-
-  // const handleWalletConnect = async () => {
-  //   try {
-  //     const controller = new AbortController();
-  //     const signal = controller.signal;
-
-  //     open({ signal });
-  //     // close()
-  //   } catch (error) {
-  //     console.error("Failed to connect wallet:", error);
-  //   }
-  // };
+  }, []);
 
   return (
     <div className="h-screen w-screen bg-gray-700">

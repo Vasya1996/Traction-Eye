@@ -5,7 +5,7 @@ import { Router } from "react-router-dom";
 import { initNavigator, SDKProvider as TMASDKProvider } from "@tma.js/sdk-react";
 import { useIntegration } from "@tma.js/react-router-integration";
 
-export const manifestFile = "https://raw.githubusercontent.com/real-og/traction-eye-bot/master/tonconnect-manifest.json";
+export const manifestFile = "https://defendant-mason-hide-microphone.trycloudflare.com/tonconnect-manifest.json";
 
 function App() {
   const navigator = useMemo(() => initNavigator("app-navigation-state"), []);
@@ -18,7 +18,7 @@ function App() {
 
   return (
     <TMASDKProvider acceptCustomStyles debug>
-      <TonConnectUIProvider manifestUrl={manifestFile} actionsConfiguration={{ twaReturnUrl: "/" }}>
+      <TonConnectUIProvider manifestUrl={manifestFile} actionsConfiguration={{ twaReturnUrl: "https://defendant-mason-hide-microphone.trycloudflare.com/" }}>
         <Router location={location} navigator={reactNav}>
           <AppRoutes />
         </Router>

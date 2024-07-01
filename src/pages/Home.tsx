@@ -35,7 +35,7 @@ export default function Home() {
   };
 
   useEffect(() => {
-    const fetchNFT = async (userFriendlyAddress) => {
+    const fetchNFT = async (userFriendlyAddress: string) => {
       const API_TE_URL = 'https://facegame.tw1.ru';
       try {
         const response = await axios.post(`${API_TE_URL}/nfts_by_wallet/`, {
@@ -63,7 +63,7 @@ export default function Home() {
 
   // Fetch Liquid Pools
   useEffect(() => {
-    const fetchLPStonFi = async (userFriendlyAddress) => {
+    const fetchLPStonFi = async (userFriendlyAddress: string) => {
       const API_TE_URL = 'https://facegame.tw1.ru';
       try {
         const response = await axios.post(`${API_TE_URL}/stonfi_info/`, {
@@ -89,7 +89,7 @@ export default function Home() {
 
   // Fetch Assets
   useEffect(() => {
-    const fetchAssets = async (userFriendlyAddress) => {
+    const fetchAssets = async (userFriendlyAddress: string) => {
       const API_TE_URL = 'https://facegame.tw1.ru';
       try {
         const response = await axios.post(`${API_TE_URL}/assets_by_wallet/`, {
@@ -114,7 +114,6 @@ export default function Home() {
 
   useEffect(() => {
     const getWallets = async () => {
-      await cloudStorage.delete("wallets");
       const wallets = await cloudStorage.get("wallets");
       console.log(wallets);
       if (!wallets) {

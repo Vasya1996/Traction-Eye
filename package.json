@@ -10,7 +10,7 @@
     "lint": "eslint . --ext js,jsx --report-unused-disable-directives --max-warnings 0",
     "preview": "vite preview",
     "format": "prettier --write **/**/*.{js,jsx,json}",
-    "localdev": "cloudflared tunnel --url http://localhost:5173"
+    "tunnel": "cloudflared tunnel --url http://localhost:5173"
   },
   "dependencies": {
     "@tma.js/react-router-integration": "^4.0.2",
