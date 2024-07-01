@@ -34,9 +34,8 @@ export default function Home() {
     setVisibleAssets(prev => prev + 5);
   };
 
-
   useEffect(() => {
-    const fetchNFT = async (userFriendlyAddress) => {
+    const fetchNFT = async (userFriendlyAddress: string) => {
       const API_TE_URL = 'https://facegame.tw1.ru';
       try {
         const response = await axios.post(`${API_TE_URL}/nfts_by_wallet/`, {
@@ -64,7 +63,7 @@ export default function Home() {
 
   // Fetch Liquid Pools
   useEffect(() => {
-    const fetchLPStonFi = async (userFriendlyAddress) => {
+    const fetchLPStonFi = async (userFriendlyAddress: string) => {
       const API_TE_URL = 'https://facegame.tw1.ru';
       try {
         const response = await axios.post(`${API_TE_URL}/stonfi_info/`, {
@@ -90,7 +89,7 @@ export default function Home() {
 
   // Fetch Assets
   useEffect(() => {
-    const fetchAssets = async (userFriendlyAddress) => {
+    const fetchAssets = async (userFriendlyAddress: string) => {
       const API_TE_URL = 'https://facegame.tw1.ru';
       try {
         const response = await axios.post(`${API_TE_URL}/assets_by_wallet/`, {
@@ -114,23 +113,15 @@ export default function Home() {
   }, [userFriendlyAddress]);
 
   useEffect(() => {
-    cloudStorage
-      .get("wallets")
-      .then((res) => {
-        if (res) {
-          const wallet = JSON.parse(res);
-          if (wallet && Object.keys(wallet).length > 0) {
-            setWalletInfo(wallet);
-          } else {
-            navigate("/connect");
-          }
-        } else {
-          navigate("/connect");
-        }
-      })
-      .catch(() => {
+    const getWallets = async () => {
+      const wallets = await cloudStorage.get("wallets");
+      console.log(wallets);
+      if (!wallets) {
         navigate("/connect");
-      });
+      }
+      return wallets;
+    }
+    getWallets();
   }, [cloudStorage, navigate]);
 
   function generateDataset() {
@@ -172,9 +163,6 @@ export default function Home() {
   //     ));
   //   }
   // };
-
-
-
 
   return (
     <div className="h-screen overflow-visible w-full bg-gray-700">
@@ -284,7 +272,6 @@ export default function Home() {
               </div>
             </div>
         </div>
-
         {/* Tools */}
         <div className="tools-part mt-10">
           <div className="tools-header flex items-center mb-5">
@@ -344,7 +331,6 @@ export default function Home() {
             </div>
           </div>
         </div>
-
       </div>
     </div>
   );
