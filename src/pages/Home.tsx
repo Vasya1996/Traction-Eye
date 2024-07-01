@@ -122,23 +122,6 @@ export default function Home() {
       return wallets;
     }
     getWallets();
-    // cloudStorage
-    //   .get("wallets")
-    //   .then((res) => {
-    //     if (res) {
-    //       const wallet = JSON.parse(res);
-    //       if (wallet && Object.keys(wallet).length > 0) {
-    //         setWalletInfo(wallet);
-    //       } else {
-    //         navigate("/connect");
-    //       }
-    //     } else {
-    //       navigate("/connect");
-    //     }
-    //   })
-    //   .catch(() => {
-    //     navigate("/connect");
-    //   });
   }, [cloudStorage, navigate]);
 
   function generateDataset() {

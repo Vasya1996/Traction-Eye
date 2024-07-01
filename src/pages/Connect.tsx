@@ -9,8 +9,7 @@ import { initCloudStorage } from "@tma.js/sdk";
 import { useNavigate } from "react-router-dom";
 
 function Connect() {
-  const { open, close, state } = useTonConnectModal();
-  const wallet = useTonWallet();
+  const { open } = useTonConnectModal();
   const navigate = useNavigate();
   const [tonConnectUi] = useTonConnectUI();
   const cloudStorage = initCloudStorage();
@@ -36,7 +35,6 @@ function Connect() {
   };
 
   useEffect(() => {
-    console.log("set p", p_payload);
     tonConnectUi.setConnectRequestParameters({
       state: "ready",
       value: {
@@ -48,7 +46,6 @@ function Connect() {
   useEffect(() => {
     tonConnectUi.onStatusChange((wallet) => {
       if (wallet) {
-        console.log(wallet);
         handleStatusChange(wallet);
       }
     });
@@ -75,21 +72,16 @@ function Connect() {
 
       const data = await response.json();
       const JWT_token = data.token;
-      console.log(data, JWT_token);
 
       try {
         const storedWallets = await cloudStorage.get("wallets");
-        const wallets = JSON.parse(storedWallets || "[]"); // Initialize with empty array if null
-        console.log(wallets);
+        const wallets = JSON.parse(storedWallets || "[]");
         wallets.push({ JWT_token, username: data.username, address });
         await cloudStorage.set("wallets", JSON.stringify(wallets));
-        console.log("new", await cloudStorage.get("wallets"));
+        navigate("/");
       } catch (error) {
-        const newWallet = [{ JWT_token, username: data.username, address }];
-        await cloudStorage.set("wallets", JSON.stringify(newWallet));
+        console.log("error", error);
       }
-
-      navigate("/");
     } catch (error) {
       console.error("Error fetching data:", error);
     }
