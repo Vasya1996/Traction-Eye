@@ -2,18 +2,35 @@ import React from 'react';
 import { IoIosArrowBack } from 'react-icons/io';
 import { FaPlusCircle } from 'react-icons/fa';
 import { useNavigate } from "react-router-dom";
-import nftExample from '../image/nftExample.webp';
+import nftImg from "../assets/nft.avif";
 
 
 const nftData = [
-  { name: 'NFT 1', image_url: 'path/to/image1.jpg' },
-  { name: 'NFT 2', image_url: 'path/to/image2.jpg' },
-  { name: 'NFT 3', image_url: 'path/to/image3.jpg' },
-  { name: 'NFT 4', image_url: 'path/to/image4.jpg' },
-  { name: 'NFT 5', image_url: 'path/to/image5.jpg' },
-  { name: 'NFT 6', image_url: 'path/to/image6.jpg' },
-  { name: 'NFT 7', image_url: 'path/to/image7.jpg' },
-  { name: 'NFT 8', image_url: 'path/to/image8.jpg' },
+  {
+    name: "NFT NAME",
+    description: "Nft description",
+    image_url: nftImg,
+  },
+  {
+    name: "NFT NAME",
+    description: "Nft description",
+    image_url: nftImg,
+  },
+  {
+    name: "NFT NAME",
+    description: "Nft description",
+    image_url: nftImg,
+  },
+  {
+    name: "NFT NAME",
+    description: "Nft description",
+    image_url: nftImg,
+  },
+  {
+    name: "NFT NAME",
+    description: "Nft description",
+    image_url: nftImg,
+  },
 ];
 
 
@@ -36,8 +53,8 @@ export default function NftPage() {
       </div>
       <div className="nft-grid grid grid-cols-2 gap-4">
         {nftData.map((nft, index) => (
-          <div onClick={() => navigate("/nft")} key={index} className="nft-item cursor-pointer h-52 mb-5 rounded-lg border bg-gray-100">
-            <img src={nftExample} alt={nft.name} className="rounded-lg" />
+          <div onClick={() => navigate("/nft")} key={index} className="cursor-pointer h-fit p-[0.8px] rounded-lg border bg-gray-100">
+            <img src={nft.image_url} alt={nft.name} className="rounded-lg" />
           </div>
         ))}
       </div>

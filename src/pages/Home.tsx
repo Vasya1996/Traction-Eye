@@ -270,7 +270,7 @@ export default function Home() {
         </div>
 
         {/* NFTs */}
-        <div className="nft-part bg-white rounded-lg h-56 p-6 dropdown">
+        <div className="nft-part bg-white rounded-lg h-fit p-6 dropdown">
           <div className="dropdown-label">
             <div className="nft-h flex justify-between">
               <div className="flex">
@@ -288,15 +288,13 @@ export default function Home() {
             </div>
           </div>
           <div className="dropdown-content">
-            <div className="nfts-list grid grid-cols-3 p-1 gap-2">
+            <div className="nfts-list grid grid-cols-3 p-1 gap-1 items-center justify-center">
               {nfts.length === 0 ? (
                 <span className="mt-14 text-xl font-semibold text-gray-400">You have no NFTs ;(</span>
               ) : (
                 nfts.map((nft, index) => (
-                  <div className="flex flex-col gap-2 items-center justify-center" key={index}>
-                    {nft.image_url && <img src={nft.image_url} alt={nft.name} />}
-                    <p className="text-sm">{nft.name}</p>
-                    {/* <p className="text-sm">{nft.description}</p> */}
+                  <div className="flex flex-col gap-1 items-center justify-center rounded-md mt-2" key={index}>
+                    {nft.image_url && <img className="w-20 h-20 rounded-md" src={nft.image_url} alt={nft.name} />}
                   </div>
                 ))
               )}
