@@ -5,6 +5,7 @@ import ProfilesList from "./pages/ProfilesList";
 import ProfilesManage from "./pages/ProfilesManage";
 import NFTList from "./pages/NFTList";
 import NFTDetails from './pages/NFTDetails';
+import AssetDetails from "./pages/AssetDetails";
 
 const routes = [
   {
@@ -36,6 +37,10 @@ const routes = [
     path: "nft-list",
     component: <NFTList />,
   },
+  {
+    path: "asset/:id",
+    component: <AssetDetails />,
+  }
 ];
 
 export default routes;

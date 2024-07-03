@@ -113,6 +113,8 @@ export default function Home() {
     }
   }, [userFriendlyAddress]);
 
+
+
   useEffect(() => {
     cloudStorage
       .get("wallets")
@@ -174,8 +176,6 @@ export default function Home() {
   // };
 
 
-
-
   return (
     <div className="h-screen overflow-visible w-full bg-gray-700">
       <div className="h-2/5 flex flex-col justify-between pt-5 ">
@@ -191,8 +191,8 @@ export default function Home() {
           </div>
           <div className="flex flex-col">
             <span className="font-semibold text-sm text-gray-400">Net Worth</span>
-            <span className="font-semibold text-3xl text-white">
-              ${totalBalance}
+            <span className="font-semibold text-4xl text-white">
+              ${totalBalance ? totalBalance : ". .."}
             </span>
             <span className="text-md text-green-600 font-bold">+0.12% ($0)</span>
           </div>
@@ -228,9 +228,15 @@ export default function Home() {
           </span>
         </div>
 
+        {/* Assets */}
+        {!totalBalance ?
+            <span className="flex justify-center text-center font-semibold size-6 text-gray-600">Loading Assets...</span>
+        :
         <div className='flex flex-col gap-5 mt-8 mb-10'>
           {assets.slice(0, visibleAssets).map((asset) => (
-            <div key={asset.name}>
+            <div
+            onClick={() => navigate("/asset/:id)")}
+            key={asset.name}>
               <div className='flex flex-row justify-between cursor-pointer'>
                 <div className='flex gap-2 items-center flex-1' style={{ flex: 4 }}>
                   <img src={asset.image_url} alt='logo' className='w-12 h-12' />
@@ -256,6 +262,9 @@ export default function Home() {
             </button>
           )}
         </div>
+}
+
+
 
         {/* NFTs */}
         <div className="nft-part bg-white rounded-lg h-56 p-6 dropdown">
@@ -304,40 +313,40 @@ export default function Home() {
           </div>
           <div className="tool-card bg-white rounded-lg p-4">
             <div className="flex justify-between items-center mb-4">
-              <span className="text-blue-500 bg-gray-200 px-2 py-1 rounded-lg">Liquidity Pool</span>
-              <span className="text-lg font-semibold">$16.51</span>
+              <span className="text-blue-500 bg-blue-100 px-3 py-1 rounded-full">Liquidity Pool</span>
+              <span className="text-lg font-bold">$16.51</span>
             </div>
             <div className="tool-body p-4 rounded-lg">
-              <div className="flex justify-between font-semibold text-gray-700 mb-2">
+              <div className="flex justify-between font-semibold text-gray-400 mb-2">
                 <span className="w-1/3">Supplied</span>
                 <span className="w-1/3 text-center">Amount</span>
                 <span className="w-1/3 text-right">USD Value</span>
               </div>
               <div className="tool-supplied mb-2">
                 <div className="flex justify-between items-center">
-                  <div className="flex items-center w-1/3 bg-black p-2 rounded-full ">
+                  <div className="flex items-center w-1/3 p-2 rounded-full ">
                     <img src={tonSymbol} alt="Toncoin" className="w-6 h-6 mr-2" />
-                    <span className="text-gray-400">Toncoin</span>
+                    <span className="font-bold text-gray-600">Toncoin</span>
                   </div>
                   <div className="text-center w-1/3">
                     <span className="block text-gray-700">0.0025</span>
                   </div>
                   <div className="text-right w-1/3">
-                    <span className="text-gray-500">$8.26</span>
+                    <span className="text-gray-700">$8.26</span>
                   </div>
                 </div>
               </div>
               <div className="tool-supplied">
                 <div className="flex justify-between items-center">
-                  <div className="flex items-center w-1/3 bg-black p-2 rounded-full ">
+                  <div className="flex items-center w-1/3 p-2 rounded-full ">
                     <img src={logo} alt="Traction" className="w-6 h-6 mr-2" />
-                    <span className="text-gray-400">Traction</span>
+                    <span className="font-bold text-gray-600">Traction</span>
                   </div>
                   <div className="text-center w-1/3">
                     <span className="block text-gray-700">8.252</span>
                   </div>
                   <div className="text-right w-1/3">
-                    <span className="text-gray-500">$8.25</span>
+                    <span className="text-gray-700">$8.25</span>
                   </div>
                 </div>
               </div>
