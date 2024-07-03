@@ -18,7 +18,7 @@ function App() {
 
   return (
     <TMASDKProvider acceptCustomStyles debug>
-      <TonConnectUIProvider manifestUrl={manifestFile} actionsConfiguration={{ twaReturnUrl: "/" }}>
+      <TonConnectUIProvider manifestUrl={manifestFile} actionsConfiguration={{ twaReturnUrl: "https://defendant-mason-hide-microphone.trycloudflare.com/" }}>
         <Router location={location} navigator={reactNav}>
           <AppRoutes />
         </Router>

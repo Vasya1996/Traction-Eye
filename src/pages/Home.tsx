@@ -4,17 +4,17 @@ import logo from "../image/tractionEye.svg";
 import { AreaChart, Area, ResponsiveContainer } from "recharts";
 import { manifestFile } from "../App";
 
-import { shortenWallet } from '../components/utilities';
+import { shortenWallet } from "../components/utilities";
 import elipse from "../image/Ellipse 7.png";
-import tonSymbol from '../image/ton_symbol.svg';
+import tonSymbol from "../image/ton_symbol.svg";
+import nftImg from "../assets/nft.avif";
 import { FaClipboardList } from "react-icons/fa";
 import { initCloudStorage } from "@tma.js/sdk-react";
 import { useNavigate } from "react-router-dom";
-import axios from 'axios';
-
+import axios from "axios";
 
 import { IoAnalyticsOutline } from "react-icons/io5";
-import { IoIosArrowForward } from 'react-icons/io';
+import { IoIosArrowForward } from "react-icons/io";
 import { RiNftLine } from "react-icons/ri";
 
 export default function Home() {
@@ -28,32 +28,31 @@ export default function Home() {
   const [isOpen, setIsOpen] = useState(false);
   const [visibleAssets, setVisibleAssets] = useState(5);
   const [totalBalance, setTotalBalance] = useState(0); // State для общего баланса
-  const [LPStonFi, setLPStonFi ] = useState([]);
+  const [LPStonFi, setLPStonFi] = useState([]);
 
   const showMore = () => {
-    setVisibleAssets(prev => prev + 5);
+    setVisibleAssets((prev) => prev + 5);
   };
 
-
   useEffect(() => {
-    const fetchNFT = async (userFriendlyAddress) => {
-      const API_TE_URL = 'https://facegame.tw1.ru';
+    const fetchNFT = async (userFriendlyAddress: string) => {
+      const API_TE_URL = "https://facegame.tw1.ru";
       try {
         const response = await axios.post(`${API_TE_URL}/nfts_by_wallet/`, {
-          wallet_address: userFriendlyAddress
+          wallet_address: userFriendlyAddress,
         });
 
         if (!response.data) {
-          throw new Error('Failed to fetch NFTs');
+          throw new Error("Failed to fetch NFTs");
         }
 
         if (Array.isArray(response.data.nfts)) {
           setNFTS(response.data.nfts);
         } else {
-          console.error('NFTs data is not an array:', response.data);
+          console.error("NFTs data is not an array:", response.data);
         }
       } catch (error) {
-        console.error('Failed to fetch NFTs:', error);
+        console.error("Failed to fetch NFTs:", error);
       }
     };
 
@@ -64,21 +63,20 @@ export default function Home() {
 
   // Fetch Liquid Pools
   useEffect(() => {
-    const fetchLPStonFi = async (userFriendlyAddress) => {
-      const API_TE_URL = 'https://facegame.tw1.ru';
+    const fetchLPStonFi = async (userFriendlyAddress: string) => {
+      const API_TE_URL = "https://facegame.tw1.ru";
       try {
         const response = await axios.post(`${API_TE_URL}/stonfi_info/`, {
-          wallet_address:userFriendlyAddress
+          wallet_address: userFriendlyAddress,
         });
 
         if (Array.isArray(response.data)) {
           setLPStonFi(response.data);
-
         } else {
-          console.error('LP data is not an array:', response.data);
+          console.error("LP data is not an array:", response.data);
         }
       } catch (error) {
-        console.error('Failed to fetch LP StonFi:', error);
+        console.error("Failed to fetch LP StonFi:", error);
       }
     };
 
@@ -90,21 +88,21 @@ export default function Home() {
 
   // Fetch Assets
   useEffect(() => {
-    const fetchAssets = async (userFriendlyAddress) => {
-      const API_TE_URL = 'https://facegame.tw1.ru';
+    const fetchAssets = async (userFriendlyAddress: string) => {
+      const API_TE_URL = "https://facegame.tw1.ru";
       try {
         const response = await axios.post(`${API_TE_URL}/assets_by_wallet/`, {
-          wallet_address:userFriendlyAddress
+          wallet_address: userFriendlyAddress,
         });
 
         if (Array.isArray(response.data.assets)) {
           setAssets(response.data.assets);
           calculateTotalBalance(response.data.assets); // Вызов функции для расчета общего баланса
         } else {
-          console.error('Assets data is not an array:', response.data);
+          console.error("Assets data is not an array:", response.data);
         }
       } catch (error) {
-        console.error('Failed to fetch assets:', error);
+        console.error("Failed to fetch assets:", error);
       }
     };
 
@@ -116,23 +114,15 @@ export default function Home() {
 
 
   useEffect(() => {
-    cloudStorage
-      .get("wallets")
-      .then((res) => {
-        if (res) {
-          const wallet = JSON.parse(res);
-          if (wallet && Object.keys(wallet).length > 0) {
-            setWalletInfo(wallet);
-          } else {
-            navigate("/connect");
-          }
-        } else {
-          navigate("/connect");
-        }
-      })
-      .catch(() => {
+    const getWallets = async () => {
+      const wallets = await cloudStorage.get("wallets");
+      console.log(wallets);
+      if (!wallets) {
         navigate("/connect");
-      });
+      }
+      return wallets;
+    };
+    getWallets();
   }, [cloudStorage, navigate]);
 
   function generateDataset() {
@@ -155,8 +145,8 @@ export default function Home() {
   // Total Balance
   const calculateTotalBalance = (assets) => {
     let total = 0;
-    assets.forEach(asset => {
-      total += (asset.amount / 10**9) * asset.price_usd;
+    assets.forEach((asset) => {
+      total += (asset.amount / 10 ** 9) * asset.price_usd;
     });
     setTotalBalance(total.toFixed(2)); // Задаем общий баланс с округлением до двух знаков после запятой
   };
@@ -175,6 +165,25 @@ export default function Home() {
   //   }
   // };
 
+  useEffect(() => {
+    setNFTS([
+      {
+        name: "NFT NAME",
+        description: "Nft description",
+        image_url: nftImg,
+      },
+      {
+        name: "NFT NAME",
+        description: "Nft description",
+        image_url: nftImg,
+      },
+      {
+        name: "NFT NAME",
+        description: "Nft description",
+        image_url: nftImg,
+      },
+    ]);
+  }, []);
 
   return (
     <div className="h-screen overflow-visible w-full bg-gray-700">
@@ -186,7 +195,16 @@ export default function Home() {
             </div>
             <div className="flex flex-col">
               <span className="font-semibold text-gray-300 text-xl">WhalePanda</span>
-              <span className="text-gray-400 text-md flex items-center centfont-semibold">{userFriendlyAddress ? <span className="flex items-center">{shortenWallet(userFriendlyAddress)}<IoIosArrowForward className="ml-1"/></span> : "" }</span>
+              <span className="text-gray-400 text-md flex items-center centfont-semibold">
+                {userFriendlyAddress ? (
+                  <span className="flex items-center">
+                    {shortenWallet(userFriendlyAddress)}
+                    <IoIosArrowForward className="ml-1" />
+                  </span>
+                ) : (
+                  ""
+                )}
+              </span>
             </div>
           </div>
           <div className="flex flex-col">
@@ -245,19 +263,17 @@ export default function Home() {
                     <span className='font-semibold text-gray-300'>{asset.symbol}</span>
                   </div>
                 </div>
-                <span className='font-semibold text-gray-700 items-center flex text-center flex-1' style={{ flex: 3 }}>
-                  <span className="mx-auto">{'$' + asset.price_usd.toFixed(2)}</span>
+                <span className="font-semibold text-gray-700 items-center flex text-center flex-1" style={{ flex: 3 }}>
+                  <span className="mx-auto">{"$" + asset.price_usd.toFixed(2)}</span>
                 </span>
-                <span className='font-semibold text-gray-700 items-center flex text-center flex-1' style={{ flex: 3 }}>
-                  <span className="mx-auto">{'$' + ((asset.amount / 10**9) * asset.price_usd).toFixed(2)}</span>
+                <span className="font-semibold text-gray-700 items-center flex text-center flex-1" style={{ flex: 3 }}>
+                  <span className="mx-auto">{"$" + ((asset.amount / 10 ** 9) * asset.price_usd).toFixed(2)}</span>
                 </span>
               </div>
             </div>
           ))}
           {visibleAssets < assets.length && (
-            <button
-              onClick={showMore}
-              className='mt-4 py-2 px-4 bg-blue-500 text-white font-semibold rounded'>
+            <button onClick={showMore} className="mt-4 py-2 px-4 bg-blue-500 text-white font-semibold rounded">
               Show more
             </button>
           )}
@@ -267,33 +283,37 @@ export default function Home() {
 
 
         {/* NFTs */}
-        <div className="nft-part bg-white rounded-lg h-56 p-6 dropdown">
+        <div className="nft-part bg-white rounded-lg h-fit p-6 dropdown">
           <div className="dropdown-label">
             <div className="nft-h flex justify-between">
               <div className="flex">
                 <RiNftLine className="size-6" />
                 <span className="font-bold text-lg flex ml-2">NFTs</span>
               </div>
-              {nfts.length !== 0 ? <IoIosArrowForward onClick={() => navigate("/nft-list")} className={`ml-2 size-6 text-gray-400 cursor-pointer transform ${isOpen ? 'rotate-90' : 'rotate-0'}`} /> : ""}
+              {nfts.length !== 0 ? (
+                <IoIosArrowForward
+                  onClick={() => navigate("/nft-list")}
+                  className={`ml-2 size-6 text-gray-400 cursor-pointer transform ${isOpen ? "rotate-90" : "rotate-0"}`}
+                />
+              ) : (
+                ""
+              )}
             </div>
           </div>
-            <div className="dropdown-content">
-              <div className="nfts-list flex justify-center">
-                {nfts.length === 0 ? (
-                  <span className="mt-14 text-xl font-semibold text-gray-400">You have no NFTs ;(</span>
-                ) : (
-                  nfts.map((nft, index) => (
-                    <div key={index}>
-                      <p>{nft.name}</p>
-                      <p>{nft.description}</p>
-                      {nft.image_url && <img src={nft.image_url} alt={nft.name} />}
-                    </div>
-                  ))
-                )}
-              </div>
+          <div className="dropdown-content">
+            <div className="nfts-list grid grid-cols-3 p-1 gap-1 items-center justify-center">
+              {nfts.length === 0 ? (
+                <span className="mt-14 text-xl font-semibold text-gray-400">You have no NFTs ;(</span>
+              ) : (
+                nfts.map((nft, index) => (
+                  <div className="flex flex-col gap-1 items-center justify-center rounded-md mt-2" key={index}>
+                    {nft.image_url && <img className="w-20 h-20 rounded-md" src={nft.image_url} alt={nft.name} />}
+                  </div>
+                ))
+              )}
             </div>
+          </div>
         </div>
-
         {/* Tools */}
         <div className="tools-part mt-10">
           <div className="tools-header flex items-center mb-5">
@@ -302,7 +322,11 @@ export default function Home() {
           </div>
           <div className="flex justify-between items-center mb-3">
             <div className="flex items-center">
-              <img src="https://static.ston.fi/favicon/android-chrome-512x512.png" alt="STON.fi Logo" className="w-8 h-8 mr-2" />
+              <img
+                src="https://static.ston.fi/favicon/android-chrome-512x512.png"
+                alt="STON.fi Logo"
+                className="w-8 h-8 mr-2"
+              />
               <span className="font-bold text-lg">STON.fi</span>
             </div>
             <button className="flex items-center text-gray-500">
@@ -353,7 +377,6 @@ export default function Home() {
             </div>
           </div>
         </div>
-
       </div>
     </div>
   );
