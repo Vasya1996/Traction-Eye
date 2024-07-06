@@ -1,6 +1,7 @@
 import { defineConfig } from 'vite';
 import tsconfigPaths from 'vite-tsconfig-paths';
 import react from '@vitejs/plugin-react-swc';
+import path from 'path';
 // import basicSsl from '@vitejs/plugin-basic-ssl';
 
 // https://vitejs.dev/config/
@@ -18,6 +19,11 @@ export default defineConfig({
     // basicSsl(),
   ],
   publicDir: './public',
+  resolve: {
+    alias: {
+      "@": path.resolve(__dirname, "./src"),
+    },
+  },
   server: {
     // Uncomment this line if you want to expose your dev server and access it from the devices
     // in the same network.

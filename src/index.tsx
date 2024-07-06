@@ -6,7 +6,6 @@ import { Root } from '@/components/Root';
 // the Telegram application, just in your browser.
 import './mockEnv.ts';
 
-import '@telegram-apps/telegram-ui/dist/styles.css';
 import './index.css';
 
 ReactDOM.createRoot(document.getElementById('root')!).render(<Root/>);
