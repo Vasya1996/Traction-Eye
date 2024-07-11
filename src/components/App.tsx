@@ -13,15 +13,17 @@ import {
   Navigate,
   Route,
   Router,
-  Routes,
+  Routes
 } from 'react-router-dom';
 
 import { routes } from '@/navigation/routes.tsx';
+
 
 export const App: FC = () => {
   const miniApp = useMiniApp();
   const themeParams = useThemeParams();
   const viewport = useViewport();
+
 
   useEffect(() => {
     return bindMiniAppCSSVars(miniApp, themeParams);
@@ -35,10 +37,28 @@ export const App: FC = () => {
     return viewport && bindViewportCSSVars(viewport);
   }, [viewport]);
 
+
   // Create a new application navigator and attach it to the browser history, so it could modify
   // it and listen to its changes.
   const navigator = useMemo(() => initNavigator('app-navigation-state'), []);
   const [location, reactNavigator] = useIntegration(navigator);
+
+  useEffect(() => {
+    switch (location.pathname) {
+      case '/connect':
+        miniApp.setHeaderColor('#000000');
+        break;
+      case '/':
+        miniApp.setHeaderColor('#1F2937');
+        break;
+      // default:
+      //   miniApp.setHeaderColor('#000000');
+    }
+  }, [location, miniApp]);
+
+  // BG Color
+  // miniApp.setBgColor('#000000');
+
 
   // Don't forget to attach the navigator to allow it to control the BackButton state as well
   // as browser history.
