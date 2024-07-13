@@ -3,7 +3,7 @@ import {
   bindMiniAppCSSVars,
   bindThemeParamsCSSVars,
   bindViewportCSSVars,
-  initNavigator, useLaunchParams,
+  initNavigator,
   useMiniApp,
   useThemeParams,
   useViewport,
@@ -15,6 +15,7 @@ import {
   Router,
   Routes
 } from 'react-router-dom';
+import { postEvent } from '@telegram-apps/sdk';
 
 import { routes } from '@/navigation/routes.tsx';
 
@@ -37,6 +38,7 @@ export const App: FC = () => {
     return viewport && bindViewportCSSVars(viewport);
   }, [viewport]);
 
+  postEvent('web_app_expand')
 
   // Create a new application navigator and attach it to the browser history, so it could modify
   // it and listen to its changes.
@@ -51,6 +53,9 @@ export const App: FC = () => {
       case '/':
         miniApp.setHeaderColor('#1F2937');
         break;
+      case '/profiles':
+        miniApp.setHeaderColor('#f9fafb');
+      break;
       // default:
       //   miniApp.setHeaderColor('#000000');
     }

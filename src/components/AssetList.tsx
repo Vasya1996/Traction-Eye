@@ -23,7 +23,7 @@ const AssetList: React.FC<AssetListProps> = ({ assets }) => {
           <tr>
             <th className="py-2 px-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">ASSET / AMOUNT</th>
             <th className="py-2 px-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">PRICE</th>
-            <th className="py-2 px-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">USD VALUE</th>
+            <th className="py-2 px-3 text-end text-xs font-medium text-gray-500 uppercase tracking-wider">USD VALUE</th>
           </tr>
         </thead>
         <tbody>
