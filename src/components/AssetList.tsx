@@ -1,21 +1,12 @@
 // src/components/AssetList.tsx
-import { type FC, useEffect, useMemo } from 'react';
-
+import { type FC } from 'react';
 import AssetItem from './AssetItem';
 
-interface Asset {
-  icon: string;
-  name: string;
-  amount: number;
-  price: number;
-  usdValue: number;
-}
+// interfaces
+import { AssetListProps } from '../types/types';
+import { Asset } from '../types/types';
 
-interface AssetListProps {
-  assets: Asset[];
-}
-
-const AssetList: React.FC<AssetListProps> = ({ assets }) => {
+const AssetList: FC<AssetListProps> = ({ assets }) => {
   return (
     <div className="">
       <table className="min-w-full rounded-lg overflow-hidden">
@@ -27,7 +18,7 @@ const AssetList: React.FC<AssetListProps> = ({ assets }) => {
           </tr>
         </thead>
         <tbody>
-          {assets.map((asset, index) => (
+          {assets.map((asset: Asset, index) => (
             <AssetItem
               key={index}
               icon={asset.icon}

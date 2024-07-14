@@ -1,4 +1,4 @@
-import React, { FC, useState } from 'react';
+import { FC, useState } from 'react';
 import { ProfileItem } from '@/components/ProfileItem';
 import AddWallet from "@/pages/ProfilesListPage/AddWallet.svg";
 import { RxExit } from "react-icons/rx";
@@ -7,7 +7,6 @@ import { Link } from 'react-router-dom';
 // import { spawn } from 'child_process';
 // import { profile } from 'console';
 import { postEvent } from '@telegram-apps/sdk';
-import { string } from 'prop-types';
 
 
 const profiles = [
@@ -23,7 +22,7 @@ const ProfilesListPage: FC = () => {
   const handleClick = (param: string) => {
     if(param === 'manageSwitch') {
       setIsManaged(prevIsManaged => !prevIsManaged);
-      postEvent('web_app_trigger_haptic_feedback', {type: 'impact', impact_style: 'light'});
+      postEvent('web_app_trigger_haptic_feedback', {type: 'impact', impact_style: 'soft'});
 
       console.log('isManaged:', !isManaged); 
     } else {
@@ -56,7 +55,7 @@ const ProfilesListPage: FC = () => {
         <h2 className='font-semibold text-center text-xl mb-4'>Manage Profiles</h2>
         <ul className="profiles-list w-full">
           {profiles.map((profile) => (
-            <ProfileItem managed={isManaged} key={profile.wallet} username={profile.username} wallet={profile.wallet} />
+            <ProfileItem managed={isManaged} key={profile.wallet} username={profile.username} wallet={profile.wallet} balance={profile.balance}/>
           ))}
         </ul>
 
