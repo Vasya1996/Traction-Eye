@@ -1,4 +1,4 @@
-import { SDKProvider, useLaunchParams } from '@tma.js/sdk-react';
+import { SDKProvider, useLaunchParams } from '@telegram-apps/sdk-react';
 import { TonConnectUIProvider } from '@tonconnect/ui-react';
 import { type FC, useEffect, useMemo } from 'react';
 
@@ -23,7 +23,7 @@ const ErrorBoundaryError: FC<{ error: unknown }> = ({ error }) => (
 const Inner: FC = () => {
   const debug = useLaunchParams().startParam === 'debug';
   const manifestUrl = useMemo(() => {
-    return new URL('tonconnect-manifest.json', window.location.href).toString();
+    return new URL('tonconnect-manifest.json', "https://proposals-possibly-pediatric-promise.trycloudflare.com").toString(); //тут пока ссылка на туннель, каждый раз новая. при деплое на прод нужно заменить на прод адрес
   }, []);
 
   // Enable debug mode to see all the methods sent and events received.
