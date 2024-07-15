@@ -1,23 +1,18 @@
-import type { FC } from "react";
+import { FC } from "react";
 import { Link } from 'react-router-dom';
-
-// Components
 import AssetList from "@/components/AssetList";
-// import { ChartHome } from "@/components/ChartHome";
-import { Skeleton } from "@/components/ui/skeleton"
-
+import { Skeleton } from "@/components/ui/skeleton";
 import TONLogo from '@/pages/IndexPage/ton_symbol.svg';
-import TELogo from '@/pages/ConnectPage/Logo.svg'
-
-// icons
+import TELogo from '@/pages/ConnectPage/Logo.svg';
+import ExampleNFT from '../NFTListPage/ExampleNFT.jpg';
 import { MdOutlineKeyboardArrowRight } from "react-icons/md";
 import { TbCircleDotted } from "react-icons/tb";
 import { PiImages } from "react-icons/pi";
 import { IoAnalyticsOutline } from "react-icons/io5";
 import { FaArrowRight } from "react-icons/fa6";
 
-
-
+// Interfaces
+import NFTCard from "@/components/NFTCard";
 
 const assets = [
 	{ icon: TONLogo, name: 'Toncoin', amount: 96.4293, price: 1, usdValue: 96.43 },
@@ -28,7 +23,49 @@ const assets = [
   ];
 
 
-const nfts = [];
+export const nfts = [
+    {   
+        id: 0,
+        nft_address: 'DdfjJDKSH3dkvDLKDslkfd',
+        name: '3D TON',
+        description: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Atque aut saepe aliquid expedita temporibus tempora voluptatibus ipsa.',
+        image_url: ExampleNFT,
+        collection_name: 'TONFT'
+    },
+    {   
+        id: 1,
+        nft_address: 'SLDvg234vvDKf4llDc1m',
+        name: '3D TON',
+        description: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Atque aut saepe aliquid expedita temporibus tempora voluptatibus ipsa.',
+        image_url: ExampleNFT,
+        collection_name: 'TONFT'
+    },
+    {   
+        id: 2,
+        nft_address: 'DdfjJDKSH3dkvDLKDslkfd',
+        name: 'Example NFT',
+        description: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Atque aut saepe aliquid expedita temporibus tempora voluptatibus ipsa.',
+        image_url: ExampleNFT,
+        collection_name: 'TONFT'
+    },
+    {   
+        id: 3,
+        nft_address: 'DdfjJDKSH3dkvDLKDslkfd',
+        name: '3D TON',
+        description: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Atque aut saepe aliquid expedita temporibus tempora voluptatibus ipsa.',
+        image_url: ExampleNFT,
+        collection_name: 'TONFT'
+    },
+    { 
+        id: 4,
+        nft_address: 'DdfjJDKSH3dkvDLKDslkfd',
+        name: '3D TON',
+        description: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Atque aut saepe aliquid expedita temporibus tempora voluptatibus ipsa.',
+        image_url: ExampleNFT,
+        collection_name: 'TONFT'
+    }
+];
+
 
 export const IndexPage: FC = () => {
 
@@ -70,29 +107,55 @@ export const IndexPage: FC = () => {
 				}
 
 			</div>
-			
-			<div className="nfts mb-4">
-						{nfts.length === 0 ?
-				<div className="bg-white shadow-sm h-36 rounded-lg px-3 py-2">
-					<p className="font-semibold text-xl items-center flex"><PiImages className="mr-1"/> NFTs</p>
+      
+           <div className="nfts mb-4">
+            {nfts.length !== 0 ?
+                <div className="bg-white shadow-sm h-36 rounded-lg p-3">
+                    <p className="font-semibold text-xl items-center flex">
+                        <PiImages className="mr-1"/> NFTs
+                    </p>
 
-					<div className="nft-preview py-5">
-						<div className="flex justify-center items-center gap-3">
-							<Skeleton className="h-16 w-16 rounded-xl bg-slate-200" />
-							<Skeleton className="h-16 w-16 rounded-xl bg-slate-200" />
-							<Skeleton className="h-16 w-16 rounded-xl bg-slate-200" />
-							<Link to={'/'}><span className="h-12 w-12 items-center flex justify-center bg-gray-200 rounded-xl"><FaArrowRight className="text-gray-700"/></span></Link>
-						</div>
-				</div>
-				</div>
-							:
-							'Loading'
-						}
-			</div>
-
-			<div className="tools">
-				<p className="font-semibold flex items-center text-xl"><IoAnalyticsOutline className="mr-2"/>Tools</p>
-			</div>
-		</div>
-	</div>;
+      <div className="nft-preview py-5">
+        <div className="flex justify-center items-center gap-3">
+          {nfts.slice(0, 3).map((nft) => (
+            <NFTCard key={nft.id} nft={nft} />
+          ))}
+          <Link to={'/nfts'}>
+            <span className="h-16 shadow-md w-16 items-center flex justify-center bg-gray-200 rounded-xl">
+              <FaArrowRight className="text-gray-700" />
+            </span>
+          </Link>
+        </div>
+      </div>
+                </div>
+                :
+                <div className="bg-white shadow-sm h-36 rounded-lg p-3">
+                    <p className="font-semibold text-xl items-center flex">
+                        <PiImages className="mr-1"/>NFTs
+                    </p>
+                    <div className="nft-preview py-5">
+                        <div className="flex justify-center items-center gap-3">
+                            <Skeleton className="h-16 w-16 rounded-xl bg-slate-200" />
+                            <Skeleton className="h-16 w-16 rounded-xl bg-slate-200" />
+                            <Skeleton className="h-16 w-16 rounded-xl bg-slate-200" />
+                            <Link to={'/nfts'}>
+                                <span className="h-12 w-12 items-center flex justify-center bg-gray-200 rounded-xl">
+                                    <FaArrowRight className="text-gray-700"/>
+                                </span>
+                            </Link>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+                <div className="tools">
+                    <p className="font-semibold flex items-center text-xl">
+                        <IoAnalyticsOutline className="mr-2"/>Tools
+                    </p>
+                </div>
+            </div>
+        </div>
+    );
 };
+
+export default IndexPage;

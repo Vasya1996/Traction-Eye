@@ -1,6 +1,6 @@
+
 import { type FC } from 'react';
 // import { Link } from 'react-router-dom';
-
 
 interface AssetItemProps {
     icon: string; // URL иконки
@@ -24,7 +24,4 @@ interface AssetItemProps {
         <td className="py-2 px-3 text-end">${usdValue.toFixed(3)}</td>
       </tr>
 
-    );
-  };
-  
-  export default AssetItem;
+export default AssetItem;

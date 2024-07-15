@@ -28,32 +28,41 @@ export const App: FC = () => {
 		return bindThemeParamsCSSVars(themeParams);
 	}, [themeParams]);
 
-	useEffect(() => {
+  	useEffect(() => {
 		return viewport && bindViewportCSSVars(viewport);
 	}, [viewport]);
+  
+    postEvent('web_app_expand');
+    postEvent('web_app_setup_swipe_behavior', {allow_vertical_swipe: false});
+ 
+  // Create a new application navigator and attach it to the browser history, so it could modify
+  // it and listen to its changes.
+  const navigator = useMemo(() => initNavigator('app-navigation-state'), []);
+  const [location, reactNavigator] = useIntegration(navigator);
+  
 
-	postEvent("web_app_expand");
+  useEffect(() => {
+    switch (true) {
+        case location.pathname === '/connect':
+            miniApp.setHeaderColor('#000000');
+            miniApp.setBgColor('#000000');
+            break;
+        case location.pathname === '/':
+            miniApp.setHeaderColor('#1F2937');
+            miniApp.setBgColor('#f9fafb');
+            break;
+        case location.pathname === '/profiles':
+            miniApp.setHeaderColor('#f9fafb');
+            miniApp.setBgColor('#f9fafb');
+            break;
+        case location.pathname === '/nfts':
+        case location.pathname.startsWith('/nft/'):
+            miniApp.setHeaderColor('#f9fafb');
+            miniApp.setBgColor('#f9fafb');
+            break;
+    }
+}, [location, miniApp]);
 
-	// Create a new application navigator and attach it to the browser history, so it could modify
-	// it and listen to its changes.
-	const navigator = useMemo(() => initNavigator("app-navigation-state"), []);
-	const [location, reactNavigator] = useIntegration(navigator);
-
-	useEffect(() => {
-		switch (location.pathname) {
-			case "/connect":
-				miniApp.setHeaderColor("#000000");
-				break;
-			case "/":
-				miniApp.setHeaderColor("#1F2937");
-				break;
-			case "/profiles":
-				miniApp.setHeaderColor("#f9fafb");
-				break;
-			// default:
-			//   miniApp.setHeaderColor('#000000');
-		}
-	}, [location, miniApp]);
 
 	// BG Color
 	// miniApp.setBgColor('#000000');
