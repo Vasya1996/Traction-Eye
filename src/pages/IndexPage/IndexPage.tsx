@@ -66,7 +66,7 @@ export const IndexPage: FC = () => {
 					<Skeleton className="h-3 w-40 bg-gray-200" />
 					</div>
 				</div>
-					: <AssetList assets={assets}></AssetList>	
+					: <AssetList></AssetList>	
 				}
 
 			</div>
