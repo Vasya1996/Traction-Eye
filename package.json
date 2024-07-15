@@ -20,6 +20,7 @@
     "@tonconnect/ui-react": "^2.0.5",
     "chart.js": "^4.4.3",
     "class-variance-authority": "^0.7.0",
+    "clipboard-copy": "^4.0.1",
     "cloudflared": "^0.5.2",
     "clsx": "^2.1.1",
     "eruda": "^3.0.1",
@@ -31,7 +32,8 @@
     "react-router-dom": "^6.23.0",
     "recharts": "^2.12.7",
     "tailwind-merge": "^2.4.0",
-    "tailwindcss-animate": "^1.0.7"
+    "tailwindcss-animate": "^1.0.7",
+    "uuid": "^10.0.0"
   },
   "devDependencies": {
     "@eslint/js": "^9.2.0",
