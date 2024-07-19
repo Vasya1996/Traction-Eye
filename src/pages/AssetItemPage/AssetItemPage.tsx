@@ -1,18 +1,21 @@
-import React, { FC } from "react";
-import { Link } from 'react-router-dom';
-import AssetList from "@/components/AssetList";
-import { Skeleton } from "@/components/ui/skeleton";
-import TONLogo from '@/pages/IndexPage/ton_symbol.svg';
+// import React, { FC } from "react";
+
+import { FC } from "react";
+
+// import { Link } from 'react-router-dom';
+// import AssetList from "@/components/AssetList";
+// import { Skeleton } from "@/components/ui/skeleton";
+// import TONLogo from '@/pages/IndexPage/ton_symbol.svg';
 import TELogo from '@/pages/ConnectPage/Logo.svg';
-import { API } from "@/api/api";
-import { useQuery } from "@tanstack/react-query";
+// import { API } from "@/api/api";
+// import { useQuery } from "@tanstack/react-query";
 
 import { useParams } from "react-router-dom";
 
 import { MdOutlineKeyboardArrowRight } from "react-icons/md";
-import { TbCircleDotted } from "react-icons/tb";
-import { PiImages } from "react-icons/pi";
-import { IoAnalyticsOutline } from "react-icons/io5";
+// import { TbCircleDotted } from "react-icons/tb";
+// import { PiImages } from "react-icons/pi";
+// import { IoAnalyticsOutline } from "react-icons/io5";
 
 
 const AssetItemPage: FC = () => {

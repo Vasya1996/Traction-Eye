@@ -7,14 +7,15 @@ import { PiImages } from "react-icons/pi";
 import { FaArrowRight } from "react-icons/fa6";
 import { NFT } from '@/types/types';
 import { useQuery } from "@tanstack/react-query";
-import { useTonWallet } from "@tonconnect/ui-react";
+// import { useTonWallet } from "@tonconnect/ui-react";
 import { fetchNFTsByWallet } from "@/pages/NFTListPage/NFTListPage";
 
 
 const NFTList: FC = () => {
-    const wallet = useTonWallet();
-    const userFriendlyAddress = wallet?.address || 'UQCHNmmeeo4v1k92G0Wj5edo_hhEH2quRlwp0w652oljJxzW';
+    // const wallet = useTonWallet();
+    // const userFriendlyAddress = wallet?.address || 'UQCHNmmeeo4v1k92G0Wj5edo_hhEH2quRlwp0w652oljJxzW';
 
+    const userFriendlyAddress =  'UQCHNmmeeo4v1k92G0Wj5edo_hhEH2quRlwp0w652oljJxzW'
     const { data, isFetching, error } = useQuery({
         queryKey: ["nfts", userFriendlyAddress],
         queryFn: () => fetchNFTsByWallet(userFriendlyAddress),

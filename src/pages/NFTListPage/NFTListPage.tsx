@@ -1,8 +1,8 @@
 import { FC } from 'react';
 import { Link } from 'react-router-dom';
-import { postEvent } from '@telegram-apps/sdk';
+// import { postEvent } from '@telegram-apps/sdk';
 import { useQuery } from "@tanstack/react-query";
-import { useTonWallet } from "@tonconnect/ui-react";
+// import { useTonWallet } from "@tonconnect/ui-react";
 import { Skeleton } from "@/components/ui/skeleton";
 import TONLogo from './ton_symbol.svg';
 import { NFT } from '@/types/types';
@@ -10,7 +10,8 @@ import { v4 as uuidv4 } from 'uuid';
 
 
 const handleHapticClick = (style: string) => {
-  postEvent('web_app_trigger_haptic_feedback', { type: 'impact', impact_style: style });
+    style
+//   postEvent('web_app_trigger_haptic_feedback', { type: 'impact', impact_style: style });
 };
 
 export const fetchNFTsByWallet = async (walletAddress: string) => {

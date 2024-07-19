@@ -1,14 +1,14 @@
 import { FC } from "react";
 import { Link } from 'react-router-dom';
 import AssetList from "@/components/AssetList";
-import { Skeleton } from "@/components/ui/skeleton";
-import TONLogo from '@/pages/IndexPage/ton_symbol.svg';
+// import { Skeleton } from "@/components/ui/skeleton";
+// import TONLogo from '@/pages/IndexPage/ton_symbol.svg';
 import TELogo from '@/pages/ConnectPage/Logo.svg';
-import ExampleNFT from '../NFTListPage/ExampleNFT.jpg';
+// import ExampleNFT from '../NFTListPage/ExampleNFT.jpg';
 import { MdOutlineKeyboardArrowRight } from "react-icons/md";
-import { PiImages } from "react-icons/pi";
-import { IoAnalyticsOutline } from "react-icons/io5";
-import { FaArrowRight } from "react-icons/fa6";
+// import { PiImages } from "react-icons/pi";
+// import { IoAnalyticsOutline } from "react-icons/io5";
+// import { FaArrowRight } from "react-icons/fa6";
 import NFTList from "@/components/NFTList";
 import { IoStatsChart } from "react-icons/io5";
 

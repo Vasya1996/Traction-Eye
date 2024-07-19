@@ -1,14 +1,15 @@
-import { useEffect, type FC } from "react";
-import { useTonAddress } from "@tonconnect/ui-react";
+// import { useEffect, type FC } from "react";
+import { type FC } from "react";
+// import { useTonAddress } from "@tonconnect/ui-react";
 import Logo from "./Logo.svg";
 import { Link } from 'react-router-dom';
-import { TonConnectButton } from "@tonconnect/ui-react";
+// import { TonConnectButton } from "@tonconnect/ui-react";
 
-import { useNavigate } from "react-router-dom";
+// import { useNavigate } from "react-router-dom";
 
 export const ConnectPage: FC = () => {
-	const userFriendlyAddress = useTonAddress();
-  const navigate = useNavigate();
+	// const userFriendlyAddress = useTonAddress();
+  // const navigate = useNavigate();
 
 	return (
 		    <div className='h-screen p-4 bg-black justify-center items-center'>

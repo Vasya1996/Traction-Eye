@@ -1,13 +1,13 @@
 import { FC } from 'react';
-import { useParams } from 'react-router-dom';
+// import { useParams } from 'react-router-dom';
 import { useQuery } from '@tanstack/react-query';
 import copy from 'clipboard-copy';
 import { postEvent } from '@telegram-apps/sdk';
 import { FaRegCopy } from 'react-icons/fa6';
-import { IoMdDoneAll } from 'react-icons/io';
+// import { IoMdDoneAll } from 'react-icons/io';
 
-import TONLogo from './ton_symbol.svg';
-import { NFT } from '@/types/types';
+// import TONLogo from './ton_symbol.svg';
+// import { NFT } from '@/types/types';
 
 const fetchNFTById = async (id: string) => {
     try {
@@ -35,7 +35,8 @@ const fetchNFTById = async (id: string) => {
 };
 
 const NFTItemPage: FC = () => {
-    const { id } = useParams<{ name: string }>();
+    // const { id } = useParams<{ name: string }>();
+    const id = 'some_id'
     console.log(`Component rendered with NFT: ${id}`);
 
     const { data: nft, isLoading, isError } = useQuery({
