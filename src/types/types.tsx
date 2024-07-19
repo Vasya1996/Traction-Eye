@@ -1,5 +1,5 @@
 export interface NFT {
-    id: number;
+    id: string;
     nft_address: string;
     name: string;
     description: string;
@@ -8,6 +8,7 @@ export interface NFT {
 }
 
 export interface Asset {
+    id: string;
     icon: string;
     name: string;
     amount: number;
@@ -25,4 +26,5 @@ export interface ProfileItemProps {
     balance: number;
     managed: boolean;
 }
+
 

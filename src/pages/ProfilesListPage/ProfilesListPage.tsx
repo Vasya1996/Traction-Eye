@@ -11,7 +11,7 @@ import { postEvent } from '@telegram-apps/sdk';
 
 const profiles = [
   { username: "WhalePanda", wallet: "EQBVZB9x5FbLZaFYlDddnP_qZQwgjYuRMv5Ly_fMHtks43PV", balance:1533 },
-  { username: "CryptoBag", wallet: "EQBmW-ZO76IcA-uVo4Zug1tU_TJ6qLZjAZ1PgULY9QYvZ8LX", balance:495 }
+  // { username: "CryptoBag", wallet: "EQBmW-ZO76IcA-uVo4Zug1tU_TJ6qLZjAZ1PgULY9QYvZ8LX", balance:495 }
 ];
 
 const totalBalance = profiles.reduce((acc, profile) => acc + profile.balance, 0);

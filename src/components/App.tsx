@@ -12,6 +12,8 @@ import { type FC, useEffect, useMemo } from "react";
 import { Navigate, Route, Router, Routes } from "react-router-dom";
 import { postEvent } from "@telegram-apps/sdk";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { TonConnectUIProvider } from '@tonconnect/ui-react';
+
 
 import { routes } from "@/navigation/routes.tsx";
 const queryClient = new QueryClient();
@@ -64,9 +66,6 @@ export const App: FC = () => {
 }, [location, miniApp]);
 
 
-	// BG Color
-	// miniApp.setBgColor('#000000');
-
 	// Don't forget to attach the navigator to allow it to control the BackButton state as well
 	// as browser history.
 	useEffect(() => {
@@ -75,15 +74,17 @@ export const App: FC = () => {
 	}, [navigator]);
 
 	return (
-		<QueryClientProvider client={queryClient}>
-			<Router location={location} navigator={reactNavigator}>
-				<Routes>
-					{routes.map((route) => (
-						<Route key={route.path} {...route} />
-					))}
-					<Route path="*" element={<Navigate to="/" />} />
-				</Routes>
-			</Router>
-		</QueryClientProvider>
+		<TonConnectUIProvider manifestUrl="https://raw.githubusercontent.com/real-og/traction-eye-bot/master/tonconnect-manifest.json">
+			<QueryClientProvider client={queryClient}>
+				<Router location={location} navigator={reactNavigator}>
+					<Routes>
+						{routes.map((route) => (
+							<Route key={route.path} {...route} />
+						))}
+						<Route path="*" element={<Navigate to="/" />} />
+					</Routes>
+				</Router>
+			</QueryClientProvider>
+		</TonConnectUIProvider>
 	);
 };
