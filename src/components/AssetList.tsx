@@ -1,21 +1,18 @@
 import AssetItem from "./AssetItem";
 import { useQuery } from "@tanstack/react-query";
 import { API } from "@/api/api";
-// import { useTonWallet } from "@tonconnect/ui-react";
-// 
 import { Skeleton } from "@/components/ui/skeleton";
 
 import { TbCircleDotted } from "react-icons/tb";
-
-
+import { useTonAddress } from "@tonconnect/ui-react";
 
 const AssetList = () => {
+	const userFriendlyAddress = useTonAddress();
+
 	const { data, isFetching } = useQuery({
 		queryKey: ["assets"],
-		queryFn: () =>
-			API.getAssetsByWallet("UQCHNmmeeo4v1k92G0Wj5edo_hhEH2quRlwp0w652oljJxzW"),
+		queryFn: () => API.getAssetsByWallet(userFriendlyAddress),
 	});
-	// const userFriendlyAddress = useTonWallet();
 
 	const assetsArr = data?.assets;
 
@@ -58,7 +55,9 @@ const AssetList = () => {
 				<p className="font-semibold flex items-center text-xl mb-3">
 					<TbCircleDotted className="mr-2 text-yellow-700 size-5" />
 					Assets
-					<span className="ml-1 text-gray-400 text-base">{assetsArr.length === 0 ? "" : `(${assetsArr.length})`}</span>
+					<span className="ml-1 text-gray-400 text-base">
+						{assetsArr.length === 0 ? "" : `(${assetsArr.length})`}
+					</span>
 				</p>
 				<table className="min-w-full rounded-lg overflow-hidden">
 					<thead>
@@ -78,6 +77,7 @@ const AssetList = () => {
 					<tbody>
 						{assetsArr?.map((asset, index) => (
 							<AssetItem
+								key={asset.name}
 								id={index}
 								icon={asset?.image_url}
 								name={asset?.name}
