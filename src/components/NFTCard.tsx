@@ -2,7 +2,7 @@
 
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { NFT } from '@/types/types'; // Подставьте свой путь к интерфейсу
+import { NFT } from '@/types/index'; // Подставьте свой путь к интерфейсу
 
 interface NFTCardProps {
     nft: NFT;
