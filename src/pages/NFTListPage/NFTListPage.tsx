@@ -18,7 +18,7 @@ const NFTListPage: FC = () => {
 	}
 
 	return (
-		<div className="h-full p-4 bg-gray-50 flex flex-col items-center">
+		<div className="p-4 bg-gray-50 flex flex-col items-center h-full">
 			<div className="flex justify-start mb-5 w-full">
 				<span className="font-semibold flex items-center text-center text-lg">
 					The Open Network
@@ -28,7 +28,6 @@ const NFTListPage: FC = () => {
 					</span>
 				</span>
 			</div>
-
 			<ul className="grid grid-cols-2 flex-col gap-5 mx-auto">
 				{nfts.map((nft: NFT) => (
 					<li key={nft.nft_address}>

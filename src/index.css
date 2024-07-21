@@ -3,5 +3,8 @@
   @tailwind utilities;
 
   @layer base {
+    #root {
+      height: 100dvh;
+    }
   }
   

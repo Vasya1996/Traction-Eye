@@ -30,7 +30,7 @@ const NFTItemPage: FC = () => {
 	};
 
 	return (
-		<div className="h-screen bg-gray-50 flex flex-col p-5">
+		<div className="bg-gray-50 flex flex-col p-5">
 			<img
 				className="rounded-lg shadow-lg w-full"
 				src={nft.image_url}
