@@ -1,4 +1,4 @@
-import { FC } from "react";
+import { FC, useEffect } from "react";
 import { Link } from "react-router-dom";
 import NFTCard from "@/components/NFTCard";
 import { PiImages } from "react-icons/pi";
@@ -8,10 +8,13 @@ import { useQuery } from "@tanstack/react-query";
 import { useTonAddress } from "@tonconnect/ui-react";
 import NFTSkeletons from "./skeletons/NFTSkeletons";
 import { API } from "@/api/api";
+import { useStore } from "@/store/store";
 
 const NFTList: FC = () => {
 	const userFriendlyAddress =
 		useTonAddress() || "UQCHNmmeeo4v1k92G0Wj5edo_hhEH2quRlwp0w652oljJxzW";
+
+  const setNfts = useStore((state) => state.setNfts);
 
 	const { data, isFetching, error } = useQuery({
 		queryKey: ["nfts", userFriendlyAddress],
@@ -19,7 +22,14 @@ const NFTList: FC = () => {
 		enabled: !!userFriendlyAddress,
 	});
 
-	const nfts = data?.nfts || [];
+	useEffect(() => {
+		if (data?.nfts) {
+			setNfts(data.nfts);
+		}
+	}, [data, setNfts]);
+
+	const nfts = useStore((state) => state.nfts);
+
 
 	if (isFetching) {
 		return <NFTSkeletons />;
