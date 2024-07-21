@@ -22,7 +22,6 @@ export const IndexPage: FC = () => {
 
 	return (
 		<div className="h-screen bg-gray-800 py-4">
-      <button onClick={() => {navigate('/connect')}}>ds</button>
 			<div className="hero h-56 px-3">
 				<div className="userdata flex">
 					<Link to={"/profiles"}>
