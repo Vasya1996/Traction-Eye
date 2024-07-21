@@ -2,9 +2,12 @@ import { FC } from "react";
 import { Link } from "react-router-dom";
 import TONLogo from "./ton_symbol.svg";
 import { NFT } from "@/types/index";
+import { useStore } from "@/store/store";
 
 const NFTListPage: FC = () => {
-	const nfts: NFT[] = [];
+	const nfts = useStore((state) => state.nfts);
+
+  console.log("nfts", nfts);
 
 	if (nfts.length === 0) {
 		return (
@@ -29,7 +32,7 @@ const NFTListPage: FC = () => {
 			<ul className="grid grid-cols-2 flex-col gap-5 mx-auto">
 				{nfts.map((nft: NFT) => (
 					<li key={nft.nft_address}>
-						<Link to={`/nft/${nft.id}`}>
+						<Link to={`/nft/${nft.nft_address}`}>
 							<img
 								className="w-48 h-48 rounded-xl"
 								src={nft.image_url}

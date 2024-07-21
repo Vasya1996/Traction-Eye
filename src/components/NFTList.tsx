@@ -49,7 +49,7 @@ const NFTList: FC = () => {
 				<div className="nft-preview py-5">
 					<div className="flex justify-center items-center gap-3">
 						{nfts.slice(0, 3).map((nft: NFT) => (
-							<NFTCard key={nft.id} nft={nft} />
+							<NFTCard key={nft.name} nft={nft} />
 						))}
 						<Link to={"/nfts"}>
 							<span className="h-16 shadow-md w-16 items-center flex justify-center bg-gray-200 rounded-xl">

@@ -7,7 +7,6 @@ export interface Asset {
 }
 
 export interface NFT {
-  id: string;
   nft_address: string;
   name: string;
   description: string;
