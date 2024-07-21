@@ -10,20 +10,19 @@ import LiquidityPoolCard from "@/components/LiquidityPoolCard";
 import { useTonAddress } from "@tonconnect/ui-react";
 
 export const IndexPage: FC = () => {
-	const userFriendlyAddress = useTonAddress();
-  const navigate = useNavigate();
+	const navigate = useNavigate();
+  const walletAdress = useTonAddress();
 
   useEffect(() => {
-    console.log(userFriendlyAddress);
-    if (!userFriendlyAddress) {
-      console.log(true);
-      navigate('/connect')
-    }
-  }, []);
-
+    if (walletAdress) return;
+    setTimeout(() => {
+      navigate("connect");
+    }, 100)
+  }, [walletAdress])
 
 	return (
 		<div className="h-screen bg-gray-800 py-4">
+      <button onClick={() => {navigate('/connect')}}>ds</button>
 			<div className="hero h-56 px-3">
 				<div className="userdata flex">
 					<Link to={"/profiles"}>
@@ -49,7 +48,7 @@ export const IndexPage: FC = () => {
 					<p className="font-semibold flex items-center text-xl">
 						<IoStatsChart className="mr-1" /> Tools
 					</p>
-          <LiquidityPoolCard />
+					<LiquidityPoolCard />
 				</div>
 			</div>
 		</div>

@@ -10,7 +10,9 @@ export const ConnectPage = () => {
 	const navigate = useNavigate();
 
 	useEffect(() => {
+    if (!userFriendlyAddress) return;
 		setTimeout(() => {
+      //ds
 			navigate("/");
 		}, 2000);
 	}, [userFriendlyAddress]);
