@@ -12,5 +12,16 @@ export const API = {
 			console.error("Error fetching users:", error);
 			throw error;
 		}
+  },
+
+  getNftsByWallet: async (wallet: string) => {
+    try {
+      const payload = { wallet_address: wallet };
+      const response = await apiClient.post(endpoints.gethNFTsByWallet, payload);
+      return response.data;
+    } catch (error) {
+      console.error("Error fetching nfts:", error);
+			throw error;
+    }
   }
 }

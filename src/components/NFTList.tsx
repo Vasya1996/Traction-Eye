@@ -3,11 +3,11 @@ import { Link } from "react-router-dom";
 import NFTCard from "@/components/NFTCard";
 import { PiImages } from "react-icons/pi";
 import { FaArrowRight } from "react-icons/fa6";
-import { NFT } from "@/types/types";
+import { NFT } from "@/types/index";
 import { useQuery } from "@tanstack/react-query";
 import { useTonAddress } from "@tonconnect/ui-react";
-import { fetchNFTsByWallet } from "@/pages/NFTListPage/NFTListPage";
 import NFTSkeletons from "./skeletons/NFTSkeletons";
+import { API } from "@/api/api";
 
 const NFTList: FC = () => {
 	const userFriendlyAddress =
@@ -15,7 +15,7 @@ const NFTList: FC = () => {
 
 	const { data, isFetching, error } = useQuery({
 		queryKey: ["nfts", userFriendlyAddress],
-		queryFn: () => fetchNFTsByWallet(userFriendlyAddress),
+		queryFn: () => API.getNftsByWallet(userFriendlyAddress),
 		enabled: !!userFriendlyAddress,
 	});
 

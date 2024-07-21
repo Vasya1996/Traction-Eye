@@ -1,12 +1,3 @@
-export interface NFT {
-    id: string;
-    nft_address: string;
-    name: string;
-    description: string;
-    image_url: string;
-    collection_name: string;
-}
-
 export interface Asset {
     id: string;
     icon: string;
