@@ -11,8 +11,7 @@ import { API } from "@/api/api";
 import { useStore } from "@/store/store";
 
 const NFTList: FC = () => {
-	const userFriendlyAddress =
-		useTonAddress() || "UQCHNmmeeo4v1k92G0Wj5edo_hhEH2quRlwp0w652oljJxzW";
+	const userFriendlyAddress = useTonAddress();
 
   const setNfts = useStore((state) => state.setNfts);
 

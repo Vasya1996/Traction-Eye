@@ -1,5 +1,5 @@
-import { FC } from "react";
-import { Link } from "react-router-dom";
+import { FC, useEffect } from "react";
+import { Link, useNavigate } from "react-router-dom";
 import AssetList from "@/components/AssetList";
 import TELogo from "@/pages/ConnectPage/Logo.svg";
 import { MdOutlineKeyboardArrowRight } from "react-icons/md";
@@ -7,8 +7,21 @@ import NFTList from "@/components/NFTList";
 import { IoStatsChart } from "react-icons/io5";
 
 import LiquidityPoolCard from "@/components/LiquidityPoolCard";
+import { useTonAddress } from "@tonconnect/ui-react";
 
 export const IndexPage: FC = () => {
+	const userFriendlyAddress = useTonAddress();
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    console.log(userFriendlyAddress);
+    if (!userFriendlyAddress) {
+      console.log(true);
+      navigate('/connect')
+    }
+  }, []);
+
+
 	return (
 		<div className="h-screen bg-gray-800 py-4">
 			<div className="hero h-56 px-3">

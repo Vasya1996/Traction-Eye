@@ -6,8 +6,7 @@ import { API } from "@/api/api";
 import { useTonAddress } from "@tonconnect/ui-react";
 
 const LiquidityPool: FC = () => {
-	const userFriendlyAddress =
-		useTonAddress() || "UQCHNmmeeo4v1k92G0Wj5edo_hhEH2quRlwp0w652oljJxzW";
+	const userFriendlyAddress = useTonAddress();
 
 	const { data } = useQuery({
 		queryFn: () => API.getStonfiInfo(userFriendlyAddress),
@@ -66,7 +65,7 @@ const LiquidityPool: FC = () => {
 									<span className="text-black">{token.token_name}</span>
 								</div>
 								<p className="col-span-1 flex justify-start text-black">
-									{token.amount}
+									{+token?.amount / Math.pow(10, 9)}
 								</p>
 								<p className="col-span-1 text-black">
 									{+token.amount * +token.usd_value}$
@@ -101,7 +100,7 @@ const LiquidityPool: FC = () => {
 										<span className="text-black">{token.token_name}</span>
 									</div>
 									<p className="col-span-1 flex justify-start text-black">
-										{token.amount}
+										{+token?.amount / Math.pow(10, 9)}
 									</p>
 									<p className="col-span-1 text-black">
 										{+token.amount * +token.usd_value}$
