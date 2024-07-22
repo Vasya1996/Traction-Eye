@@ -4,6 +4,7 @@ import {
 	bindThemeParamsCSSVars,
 	bindViewportCSSVars,
 	initNavigator,
+	useInitData,
 	useMiniApp,
 	useThemeParams,
 	useViewport,
@@ -22,6 +23,8 @@ export const App: FC = () => {
 	const miniApp = useMiniApp();
 	const themeParams = useThemeParams();
 	const viewport = useViewport();
+  const initDataRaw = useInitData();
+  console.log(initDataRaw);
 	useEffect(() => {
 		return bindMiniAppCSSVars(miniApp, themeParams);
 	}, [miniApp, themeParams]);
@@ -30,7 +33,7 @@ export const App: FC = () => {
 		return bindThemeParamsCSSVars(themeParams);
 	}, [themeParams]);
 
-  	useEffect(() => {
+  useEffect(() => {
 		return viewport && bindViewportCSSVars(viewport);
 	}, [viewport]);
   
@@ -78,7 +81,7 @@ export const App: FC = () => {
 	}, [navigator]);
 
 	return (
-		<TonConnectUIProvider manifestUrl="https://raw.githubusercontent.com/real-og/traction-eye-bot/master/tonconnect-manifest.json">
+		<TonConnectUIProvider>
 			<QueryClientProvider client={queryClient}>
 				<Router location={location} navigator={reactNavigator}>
 					<Routes>
