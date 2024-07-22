@@ -1,17 +1,29 @@
 import { FC, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import AssetList from "@/components/AssetList";
-import TELogo from "@/pages/ConnectPage/Logo.svg";
+// import { Skeleton } from "@/components/ui/skeleton";
+// import TONLogo from '@/pages/IndexPage/ton_symbol.svg';
+import TELogo from '@/pages/IndexPage/TELogo.svg';
+// import ExampleNFT from '../NFTListPage/ExampleNFT.jpg';
+
 import { MdOutlineKeyboardArrowRight } from "react-icons/md";
 import NFTList from "@/components/NFTList";
 import { IoStatsChart } from "react-icons/io5";
+import { IoDiamondOutline } from "react-icons/io5";
+import { postEvent } from '@telegram-apps/sdk';
+
 
 import LiquidityPoolCard from "@/components/LiquidityPoolCard";
 import { useTonAddress } from "@tonconnect/ui-react";
 
 export const IndexPage: FC = () => {
+
 	const navigate = useNavigate();
   const walletAdress = useTonAddress();
+      
+  const handlePremiumClick = () => {
+    postEvent('web_app_trigger_haptic_feedback', {type: 'impact', impact_style: 'medium'});
+   };
 
   useEffect(() => {
     if (walletAdress) return;
@@ -23,7 +35,7 @@ export const IndexPage: FC = () => {
 	return (
 		<div className="h-screen bg-gray-800 py-4">
 			<div className="hero h-56 px-3">
-				<div className="userdata flex">
+				<div className="userdata flex justify-between items-center">
 					<Link to={"/profiles"}>
 						<div className="flex items-center">
 							<img
@@ -38,6 +50,9 @@ export const IndexPage: FC = () => {
 							<MdOutlineKeyboardArrowRight className="text-zinc-400 my-auto size-5" />
 						</div>
 					</Link>
+          
+          <Link onClick={handlePremiumClick} className="flex items-center text-yellow-300 shadow-md shadow-yellow-500/40 mr-1 px-3 bg-black border rounded-xl h-9" to={'/premium'}><IoDiamondOutline className="mr-2" />Get Premium</Link>
+          
 				</div>
 			</div>
 			<div className="p-5 rounded-t-3xl data bg-gray-50">

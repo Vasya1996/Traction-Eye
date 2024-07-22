@@ -1,0 +1,35 @@
+@keyframes sparkle {
+    0%, 100% {
+        opacity: 0.5;
+        transform: scale(1);
+    }
+    50% {
+        opacity: 1;
+        transform: scale(1.5);
+    }
+}
+
+.sparkle-container {
+    position: relative;
+    overflow: hidden;
+}
+
+.sparkle {
+    position: absolute;
+    width: 3px;
+    height: 3px;
+    background-color: rgba(255, 255, 255, 0.8);
+    border-radius: 50%;
+    animation: sparkle 1s infinite ease-in-out;
+}
+
+.sparkle:nth-child(1) { top: 10%; left: 20%; animation-delay: 0s; }
+.sparkle:nth-child(2) { top: 30%; left: 40%; animation-delay: 0.2s; }
+.sparkle:nth-child(3) { top: 50%; left: 60%; animation-delay: 0.4s; }
+.sparkle:nth-child(4) { top: 70%; left: 80%; animation-delay: 0.6s; }
+.sparkle:nth-child(5) { top: 90%; left: 20%; animation-delay: 0.8s; }
+.sparkle:nth-child(6) { top: 20%; left: 80%; animation-delay: 1s; }
+.sparkle:nth-child(7) { top: 40%; left: 60%; animation-delay: 1.2s; }
+.sparkle:nth-child(8) { top: 60%; left: 40%; animation-delay: 1.4s; }
+.sparkle:nth-child(9) { top: 80%; left: 20%; animation-delay: 1.6s; }
+.sparkle:nth-child(10) { top: 10%; left: 80%; animation-delay: 1.8s; }

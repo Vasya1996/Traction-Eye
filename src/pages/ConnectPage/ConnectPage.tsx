@@ -1,3 +1,9 @@
+
+// import { useEffect, type FC } from "react";
+import { type FC } from "react";
+// import { useTonAddress } from "@tonconnect/ui-react";
+import { Link } from 'react-router-dom';
+// import { TonConnectButton } from "@tonconnect/ui-react";
 import { useEffect } from "react";
 import { useTonAddress } from "@tonconnect/ui-react";
 import Logo from "./Logo.svg";
