@@ -7,7 +7,7 @@ import { useTonAddress } from "@tonconnect/ui-react";
 
 const LiquidityPool: FC = () => {
 	const userFriendlyAddress =
-		useTonAddress() || "UQBghyYO1PSqiHO70FNCE5NpU94rTE3pfxjGpzB2aD6fWVCO";
+		useTonAddress();
 
 	const { data } = useQuery({
 		queryFn: () => API.getStonfiInfo(userFriendlyAddress),
