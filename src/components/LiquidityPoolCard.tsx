@@ -6,7 +6,8 @@ import { API } from "@/api/api";
 import { useTonAddress } from "@tonconnect/ui-react";
 
 const LiquidityPool: FC = () => {
-	const userFriendlyAddress = useTonAddress();
+	const userFriendlyAddress =
+		useTonAddress() || "UQBghyYO1PSqiHO70FNCE5NpU94rTE3pfxjGpzB2aD6fWVCO";
 
 	const { data } = useQuery({
 		queryFn: () => API.getStonfiInfo(userFriendlyAddress),
@@ -15,7 +16,7 @@ const LiquidityPool: FC = () => {
 
 	const suppliedTokens = data?.supplied;
 	const rewardedTokens = data?.rewards;
-
+	console.log(suppliedTokens);
 	return (
 		<div>
 			<div className="flex justify-between items-center my-4">
@@ -65,11 +66,9 @@ const LiquidityPool: FC = () => {
 									<span className="text-black">{token.token_name}</span>
 								</div>
 								<p className="col-span-1 flex justify-start text-black">
-									{+token?.amount / Math.pow(10, 9)}
+									{(+token?.amount / Math.pow(10, +token.decimals)).toFixed(2)}
 								</p>
-								<p className="col-span-1 text-black">
-									{+token.amount * +token.usd_value}$
-								</p>
+								<p className="col-span-1 text-black">{token.usd_value}$</p>
 							</div>
 						))}
 					</div>
@@ -100,11 +99,11 @@ const LiquidityPool: FC = () => {
 										<span className="text-black">{token.token_name}</span>
 									</div>
 									<p className="col-span-1 flex justify-start text-black">
-										{+token?.amount / Math.pow(10, 9)}
+										{(+token?.amount / Math.pow(10, +token.decimals)).toFixed(
+											2
+										)}
 									</p>
-									<p className="col-span-1 text-black">
-										{+token.amount * +token.usd_value}$
-									</p>
+									<p className="col-span-1 text-black">{token.usd_value}$</p>
 								</div>
 							))}
 						</div>

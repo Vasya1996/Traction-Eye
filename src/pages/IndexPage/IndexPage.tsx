@@ -11,7 +11,7 @@ import { useTonAddress } from "@tonconnect/ui-react";
 
 export const IndexPage: FC = () => {
 	const navigate = useNavigate();
-  const walletAdress = useTonAddress();
+  const walletAdress = useTonAddress() || 'UQBghyYO1PSqiHO70FNCE5NpU94rTE3pfxjGpzB2aD6fWVCO';
 
   useEffect(() => {
     if (walletAdress) return;
