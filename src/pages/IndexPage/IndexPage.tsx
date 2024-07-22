@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import AssetList from "@/components/AssetList";
 // import { Skeleton } from "@/components/ui/skeleton";
 // import TONLogo from '@/pages/IndexPage/ton_symbol.svg';
-import TELogo from '@/pages/ConnectPage/Logo.svg';
+import TELogo from '@/pages/IndexPage/TELogo.svg';
 // import ExampleNFT from '../NFTListPage/ExampleNFT.jpg';
 import { MdOutlineKeyboardArrowRight } from "react-icons/md";
 // import { PiImages } from "react-icons/pi";
@@ -11,6 +11,9 @@ import { MdOutlineKeyboardArrowRight } from "react-icons/md";
 // import { FaArrowRight } from "react-icons/fa6";
 import NFTList from "@/components/NFTList";
 import { IoStatsChart } from "react-icons/io5";
+import { IoDiamondOutline } from "react-icons/io5";
+import { postEvent } from '@telegram-apps/sdk';
+
 
 import LiquidityPoolCard from "@/components/LiquidityPoolCard";
 
@@ -19,20 +22,29 @@ import LiquidityPoolCard from "@/components/LiquidityPoolCard";
 // Interfaces
 // import NFTCard from "@/components/NFTCard";s
 export const IndexPage: FC = () => {
+    const handlePremiumClick = () => {
+        postEvent('web_app_trigger_haptic_feedback', {type: 'impact', impact_style: 'medium'});
+    };
+
+
 	return (
 	  <div className="h-screen bg-gray-800">
 		<div className="hero h-56 px-3">
-		  <div className="userdata flex">
+		  <div className="userdata flex justify-between items-center">
 			<Link to={'/profiles'}>
 			  <div className="flex items-center">
-				<img className="h-11 w-11 py-3 px-2 bg-black rounded-full mr-3" src={TELogo} alt="" />
+				<img className="h-11 w-11 py-3 px-2 justify-between bg-black rounded-full mr-3" src={TELogo} alt="" />
 				<div className="mr-2 items=center">
 				  <p className="text-gray-300 font-semibold">WhalePanda</p>
 				  <p className="text-gray-400 font-light">N1uQ...D4sQ</p>
 				</div>
 				<MdOutlineKeyboardArrowRight className="text-zinc-400 my-auto size-5" />
 			  </div>
+
 			</Link>
+	
+			<Link onClick={handlePremiumClick} className="flex items-center text-yellow-300 shadow-md shadow-yellow-500/40 mr-1 px-3 bg-black border rounded-xl h-9" to={'/premium'}><IoDiamondOutline className="mr-2" />Get Premium</Link>
+		  
 		  </div>
 		</div>
   

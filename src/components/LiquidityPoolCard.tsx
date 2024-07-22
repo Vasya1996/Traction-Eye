@@ -1,8 +1,9 @@
 import { FC } from "react";
 import { MdOutlineKeyboardArrowRight } from "react-icons/md";
-import TONLogo from '@/pages/IndexPage/ton_symbol.svg'; // Ensure the correct path
-import TELogo from '@/pages/IndexPage/ton_symbol.svg';  // Ensure the correct path
-import STONLogo from '@/pages/IndexPage/stonfilogo.jpg'; // Ensure the correct path
+import TONLogo from '@/pages/IndexPage/ton_symbol.svg'; 
+import TELogo from '@/pages/IndexPage/ton_symbol.svg';  
+import { Link } from 'react-router-dom';
+import STONLogo from '@/pages/IndexPage/stonfilogo.jpg'; 
 
 const LiquidityPool: FC = () => {
   return (
@@ -12,9 +13,9 @@ const LiquidityPool: FC = () => {
             <img src={STONLogo} alt="STON.fi" className="rounded-lg h-8 w-8 mr-2" />
             <p className="font-semibold text-xl">STON.fi</p>
             </div>
-            <button className="text-blue-800 px-3 py-1 bg-gray-200 rounded-lg flex items-center">
+            <Link to='/premium' className="text-blue-800 px-3 py-1 bg-gray-200 rounded-lg flex items-center">
             LP analytics <MdOutlineKeyboardArrowRight />
-            </button>
+            </Link>
         </div>
         <div className="p-4 bg-white rounded-lg shadow-md">
 
