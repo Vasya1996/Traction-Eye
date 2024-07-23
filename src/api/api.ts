@@ -1,4 +1,4 @@
-import { Asset, LiquidPoolInfo } from "@/types";
+import { Asset, LPResponse } from "@/types";
 import apiClient from "./apiClient";
 import endpoints from "./endpoints";
 
@@ -25,7 +25,7 @@ export const API = {
     }
   },
 
-  getStonfiInfo: async (wallet: string): Promise<LiquidPoolInfo> => {
+  getStonfiInfo: async (wallet: string): Promise<LPResponse> => {
     try {
       const payload = { wallet_address: wallet };
       const response = await apiClient.post(endpoints.getStonfiInfo, payload);
