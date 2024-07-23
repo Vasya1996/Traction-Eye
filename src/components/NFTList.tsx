@@ -11,7 +11,7 @@ import { API } from "@/api/api";
 import { useStore } from "@/store/store";
 
 const NFTList: FC = () => {
-	const userFriendlyAddress = useTonAddress();
+	const userFriendlyAddress = useTonAddress() || 'UQBghyYO1PSqiHO70FNCE5NpU94rTE3pfxjGpzB2aD6fWVCO';
 
   const setNfts = useStore((state) => state.setNfts);
 
@@ -20,6 +20,8 @@ const NFTList: FC = () => {
 		queryFn: () => API.getNftsByWallet(userFriendlyAddress),
 		enabled: !!userFriendlyAddress,
 	});
+
+  console.log(data);
 
 	useEffect(() => {
 		if (data?.nfts) {

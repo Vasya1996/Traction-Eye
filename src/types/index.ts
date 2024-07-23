@@ -8,10 +8,10 @@ export interface Asset {
 
 export interface NFT {
 	nft_address: string;
-	name: string;
-	description: string;
-	image_url: string;
-	collection_name: string;
+	name?: string;
+	description?: string;
+	image_url?: string;
+	collection_name?: string;
 }
 
 export interface LpTokenInfo {
