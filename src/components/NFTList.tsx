@@ -9,7 +9,6 @@ import { useTonAddress } from "@tonconnect/ui-react";
 import NFTSkeletons from "./skeletons/NFTSkeletons";
 import { API } from "@/api/api";
 import { useStore } from "@/store/store";
-import { spawn } from "child_process";
 
 const NFTList: FC = () => {
 	const userFriendlyAddress = useTonAddress();
