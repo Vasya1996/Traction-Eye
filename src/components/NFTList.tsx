@@ -9,6 +9,7 @@ import { useTonAddress } from "@tonconnect/ui-react";
 import NFTSkeletons from "./skeletons/NFTSkeletons";
 import { API } from "@/api/api";
 import { useStore } from "@/store/store";
+import { spawn } from "child_process";
 
 const NFTList: FC = () => {
 	const userFriendlyAddress = useTonAddress();
@@ -38,6 +39,7 @@ const NFTList: FC = () => {
 		return <div>Error fetching NFTs</div>;
 	}
 
+
 	return (
 		<div className="nfts mb-4">
 			<div className="bg-white shadow-sm h-36 rounded-lg p-3">
@@ -50,11 +52,18 @@ const NFTList: FC = () => {
 						{nfts.slice(0, 3).map((nft: NFT) => (
 							<NFTCard key={nft.name} nft={nft} />
 						))}
+
+
+						{nfts.length === 0 ? 
+						<span className="text-gray-400 items-center mt-5">No NFTs in Your Wallet</span>
+						:
 						<Link to={"/nfts"}>
 							<span className="h-16 shadow-md w-16 items-center flex justify-center bg-gray-200 rounded-xl">
 								<FaArrowRight className="text-gray-700" />
 							</span>
 						</Link>
+						}
+
 					</div>
 				</div>
 			</div>

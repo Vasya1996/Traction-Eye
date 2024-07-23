@@ -5,10 +5,13 @@ import { IoSwapVertical } from "react-icons/io5";
 import { GiFlame } from "react-icons/gi";
 import { FaSeedling } from "react-icons/fa";
 import { IoDiamondOutline } from "react-icons/io5";
+import { BiStats } from "react-icons/bi";
 
 import IconLogo from '@/pages/ProfilesListPage/AddWallet.svg';
 import { BsFillCollectionFill } from "react-icons/bs";
 import IconMoreFeatures from './Icon_more_features.png';
+
+
 
 // screenshots
 import FirstScreenShot from './1.png';
@@ -31,7 +34,7 @@ const PremiumBuyPage: FC = () => {
                 ))}
                 <div className="shadow-2xl p-2 rounded-full shadow-gray-500 mb-5">
                     <div className="justify-center text-center">
-                        <IoDiamondOutline className="justify-center flex text-yellow-400 text-7xl" />
+                        <BiStats className="justify-center flex text-yellow-400 text-7xl" />
                     </div>
                 </div>
 
@@ -40,6 +43,7 @@ const PremiumBuyPage: FC = () => {
             </div>
 
             <div className="grid grid-cols-2 gap-6 p-6 items-center ">
+
                 <div className="flex flex-col items-center p-4 pt-7 bg-gray-100 rounded-3xl shadow-md h-32">
                     <GiFlame className="text-4xl items-center flex text-gray-700 mb-2" />
                     <p className="text-center text-gray-700">Impermanent loss</p>
