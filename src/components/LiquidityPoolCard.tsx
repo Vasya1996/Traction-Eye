@@ -1,8 +1,5 @@
 import { FC } from "react";
 import { MdOutlineKeyboardArrowRight } from "react-icons/md";
-import TONLogo from '@/pages/IndexPage/ton_symbol.svg'; 
-import TELogo from '@/pages/IndexPage/ton_symbol.svg';  
-import { Link } from 'react-router-dom';
 import STONLogo from "@/pages/IndexPage/stonfilogo.jpg";
 import { useQuery } from "@tanstack/react-query";
 import { API } from "@/api/api";
