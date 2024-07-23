@@ -1,5 +1,5 @@
 // components/PremiumBuyPage.tsx
-import { FC, useState } from "react";
+import { FC, useState, useEffect } from "react";
 import { postEvent } from '@telegram-apps/sdk';
 import { IoSwapVertical } from "react-icons/io5";
 import { GiFlame } from "react-icons/gi";
@@ -24,7 +24,7 @@ const items: Item[] = [
     { id: 1, title: "Impermanent loss", subtitle: "Some subtitle text", icon: <GiFlame className="text-4xl text-gray-700 mb-2" /> },
     { id: 2, title: "Farm Rewards", subtitle: "Some subtitle text", icon: <FaSeedling className="text-4xl text-gray-700 mb-2" /> },
     { id: 3, title: "Profit from swap fees", subtitle: "Some subtitle text", icon: <IoSwapVertical className="text-4xl text-gray-700 mb-2" /> },
-    { id: 4, title: "Analytics", subtitle: "Analytics within a period of time", icon: <IoSwapVertical className="text-4xl text-gray-700 mb-2" /> }
+    { id: 4, title: "Analytics within a period of time", subtitle: "Some subtitle text", icon: <IoSwapVertical className="text-4xl text-gray-700 mb-2" /> }
 ];
 
 const PremiumBuyPage: FC = () => {
@@ -33,6 +33,14 @@ const PremiumBuyPage: FC = () => {
     const handleBuyClick = () => {
         postEvent('web_app_trigger_haptic_feedback', { type: 'notification', notification_type: 'warning' });
     };
+
+    useEffect(() => {
+        if (selectedId !== null) {
+            document.body.style.overflow = "hidden";
+        } else {
+            document.body.style.overflow = "auto";
+        }
+    }, [selectedId]);
 
     return (
         <div className="relative bg-white flex flex-col">
@@ -103,26 +111,26 @@ const PremiumBuyPage: FC = () => {
                 {selectedId && (
                     <>
                         <motion.div 
-                            className="fixed inset-0 bg-black bg-opacity-50 z-10" 
+                            className="fixed inset-0 bg-black bg-opacity-50 z-10 " 
                             initial={{ opacity: 0 }} 
-                            animate={{ opacity: 0.4 }} 
+                            animate={{ opacity: 5 }} 
                             exit={{ opacity: 0 }} 
                         />
                         <motion.div 
                             layoutId={selectedId.toString()} 
-                            className="fixed inset-2 flex items-center justify-center z-20 p-4"
+                            className="fixed inset-0 flex items-center justify-center z-20 p-4"
                         >
                             <motion.div 
                                 className="bg-white rounded-xl shadow-lg p-6 w-full max-w-md"
-                                initial={{ scale: 0.2, opacity: 0 }}
+                                initial={{ scale: 0.9, opacity: 0 }}
                                 animate={{ scale: 1, opacity: 1 }}
-                                exit={{ scale: 0.1, opacity: 0 }}
+                                exit={{ scale: 0.9, opacity: 0 }}
                             >
                                 <motion.h5>{items.find(item => item.id === selectedId)?.subtitle}</motion.h5>
                                 <motion.h2>{items.find(item => item.id === selectedId)?.title}</motion.h2>
                                 <motion.button 
                                     onClick={() => setSelectedId(null)} 
-                                    className="mt-4 bg-gray-300 px-4 py-2 flex justify-center rounded"
+                                    className="mt-4 bg-gray-300 px-4 py-2 text-center flex justify-center mx-auto rounded"
                                 >
                                     Close
                                 </motion.button>
