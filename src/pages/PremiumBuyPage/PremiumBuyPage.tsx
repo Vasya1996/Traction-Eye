@@ -1,7 +1,7 @@
 // components/PremiumBuyPage.tsx
 import { FC } from "react";
 import { postEvent } from '@telegram-apps/sdk';
-import { IoSwapVertical, IoAnalyticsOutline } from "react-icons/io5";
+import { IoSwapVertical } from "react-icons/io5";
 import { GiFlame } from "react-icons/gi";
 import { FaSeedling } from "react-icons/fa";
 import { IoDiamondOutline } from "react-icons/io5";
@@ -24,8 +24,8 @@ const PremiumBuyPage: FC = () => {
     };
 
     return (
-        <div className="relative h-screen flex flex-col">
-            <div className="relative h-72 bg-gradient-to-r from-black via-black via-yellow-000 via-black to-black rounded-b-3xl flex-col flex justify-center items-center sparkle-container">
+        <div className="relative bg-white flex flex-col">
+            <div className="relative h-52 bg-gradient-to-r from-black via-black via-yellow-000 via-black to-black rounded-b-3xl flex-col flex justify-center items-center sparkle-container">
                 {[...Array(10)].map((_, i) => (
                     <div key={i} className="sparkle"></div>
                 ))}
@@ -35,7 +35,7 @@ const PremiumBuyPage: FC = () => {
                     </div>
                 </div>
 
-                <p className="text-white text-xl">Traction Eye Premium</p>
+                <p className="text-white text-xl">Traction Eye <span className="text-yellow-400">Premium</span></p>
                 <p className="text-gray-400 font-light">PnL liquidity pool analytics Including:</p>
             </div>
 
@@ -53,7 +53,7 @@ const PremiumBuyPage: FC = () => {
                     <p className="text-center text-gray-700">Profit from swap fees</p>
                 </div>
                 <div className="flex flex-col items-center p-4 bg-gray-100 rounded-3xl shadow-md h-32">
-                    <IoAnalyticsOutline className="text-4xl text-gray-700 mb-2" />
+                    <IoSwapVertical className="text-4xl text-gray-700 mb-2" />
                     <p className="text-center text-gray-700">Analytics within a period of time</p>
                 </div>
             </div>
