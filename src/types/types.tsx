@@ -4,6 +4,7 @@ export interface Asset {
     name: string;
     amount: number;
     price: number;
+    symbol: string;
     usdValue: number;
 }
 
