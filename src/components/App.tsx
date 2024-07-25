@@ -67,7 +67,7 @@ export const App: FC = () => {
             break;
 		case location.pathname === '/premium':
 				miniApp.setHeaderColor('#000000');
-				miniApp.setBgColor('#f9fafb');
+				miniApp.setBgColor('#000000');
 			break;
     }
 }, [location, miniApp]);

@@ -11,12 +11,19 @@ import NFTList from "@/components/NFTList";
 import { IoStatsChart } from "react-icons/io5";
 import { IoDiamondOutline } from "react-icons/io5";
 import { postEvent } from '@telegram-apps/sdk';
+// import GetPremiumButton from './GetPremium.svg'
 
 
 import LiquidityPoolCard from "@/components/LiquidityPoolCard";
 import { useTonAddress } from "@tonconnect/ui-react";
 
 export const IndexPage: FC = () => {
+
+	const shortenWallet = (wallet: string, startLength: number = 4, endLength: number = 4): string => {
+		const start = wallet.substring(0, startLength);
+		const end = wallet.substring(wallet.length - endLength);
+		return `${start}...${end}`;
+	  };
 
 	const navigate = useNavigate();
   const walletAdress = useTonAddress();
@@ -44,15 +51,14 @@ export const IndexPage: FC = () => {
 								alt=""
 							/>
 							<div className="mr-2 items=center">
-								<p className="text-gray-300 font-semibold">WhalePanda</p>
-								<p className="text-gray-400 font-light">N1uQ...D4sQ</p>
+
+								<p className="text-gray-400 font-light">{shortenWallet(walletAdress)}</p>
 							</div>
 							<MdOutlineKeyboardArrowRight className="text-zinc-400 my-auto size-5" />
 						</div>
 					</Link>
           
-          <Link onClick={handlePremiumClick} className="flex items-center text-yellow-300 shadow-md shadow-yellow-500/40 mr-1 px-3 bg-black border rounded-xl h-9" to={'/premium'}><IoDiamondOutline className="mr-2" />Get Premium</Link>
-          
+          <Link onClick={handlePremiumClick} className="flex items-center text-yellow-300 shadow-md text-sm shadow-yellow-500/40 mr-1 px-3 bg-black border rounded-xl h-9" to={'/premium'}><IoDiamondOutline className="mr-2" />Get Premium</Link>         
 				</div>
 			</div>
 			<div className="p-5 rounded-t-3xl data bg-gray-50">
