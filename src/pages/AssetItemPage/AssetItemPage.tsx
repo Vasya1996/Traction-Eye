@@ -1,33 +1,43 @@
 import { FC } from "react";
 
-import TELogo from "@/pages/ConnectPage/Logo.svg";
-
-import { useParams } from "react-router-dom";
+import { useLocation, useParams } from "react-router-dom";
 
 import { MdOutlineKeyboardArrowRight } from "react-icons/md";
 import Chart from "@/components/Chart";
+import { useQuery } from "@tanstack/react-query";
+import { API } from "@/api/api";
+import { useTonAddress } from "@tonconnect/ui-react";
+import { AssetItemProps } from "@/components/AssetItem";
 
 const AssetItemPage: FC = () => {
 	const params = useParams();
+  const walletAdress = useTonAddress() || 'UQBghyYO1PSqiHO70FNCE5NpU94rTE3pfxjGpzB2aD6fWVCO';
+  const location = useLocation();
 
-	console.log(params);
+  const state = location.state as AssetItemProps;
+
+  const {data: chartData} = useQuery({
+    queryKey: [params],
+    queryFn: () => API.getChart(walletAdress, params.id!),
+  })
 
 	return (
 		<div className="h-screen bg-gray-800">
 			<div className="hero h-56 px-3">
-				<div className="userdata flex">
+				<div className="userdata">
 					<div className="flex items-center">
 						<img
-							className="h-11 w-11 py-3 px-2 bg-black rounded-full mr-3"
-							src={TELogo}
+							className="h-6 w-6 mr-3"
+							src={state.icon}
 							alt=""
 						/>
 						<div className="mr-2 items=center">
-							<p className="text-gray-300 font-semibold">TONCOIN</p>
-							<p className="text-gray-400 font-light">N1</p>
+							<p className="text-gray-300 font-semibold">{state.name}</p>
 						</div>
-            <Chart />
 						<MdOutlineKeyboardArrowRight className="text-zinc-400 my-auto size-5" />
+					</div>
+          <div className="max-w-full mt-14">
+							{chartData?.worth_chart ? <Chart worth_chart={chartData?.worth_chart} /> : null}
 					</div>
 				</div>
 			</div>

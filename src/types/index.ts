@@ -1,6 +1,7 @@
 export interface Asset {
 	image_url: string;
 	name: string;
+  address: string,
 	amount: number;
 	price_usd: number;
 	symbol: string;
@@ -29,3 +30,8 @@ export interface LPPairInfo {
 }
 
 export interface LPResponse extends Array<LPPairInfo> {}
+
+
+export interface ChartResponse {
+  worth_chart: Array<[number, number]>;
+}
