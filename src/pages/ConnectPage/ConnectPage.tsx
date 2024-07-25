@@ -1,8 +1,8 @@
-
 import { useEffect } from "react";
 import { useTonAddress } from "@tonconnect/ui-react";
 import Logo from "./Logo.svg";
 import { TonConnectButton } from "@tonconnect/ui-react";
+
 
 import { useNavigate } from "react-router-dom";
 
