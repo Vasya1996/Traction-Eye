@@ -7,7 +7,7 @@ import { TonConnectButton } from "@tonconnect/ui-react";
 import { useNavigate } from "react-router-dom";
 
 export const ConnectPage = () => {
-	const userFriendlyAddress = useTonAddress() || "UQBghyYO1PSqiHO70FNCE5NpU94rTE3pfxjGpzB2aD6fWVCO";
+	const userFriendlyAddress = useTonAddress();
 	const navigate = useNavigate();
   console.log(userFriendlyAddress);
 	useEffect(() => {
