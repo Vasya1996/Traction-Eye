@@ -30,7 +30,7 @@ export const IndexPage: FC = () => {
   }, [walletAdress])
 
 	return (
-		<div className="h-screen bg-gray-800 py-4">
+		<div className="h-screen bg-gray-800">
 			<div className="hero h-56 px-3">
 				<div className="userdata flex justify-between items-center">
 					<Link to={"/profiles"}>
