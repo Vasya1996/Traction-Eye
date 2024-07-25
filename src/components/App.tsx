@@ -61,10 +61,14 @@ export const App: FC = () => {
             miniApp.setBgColor('#f9fafb');
             break;
         case location.pathname === '/nfts':
-        case location.pathname.startsWith('/nft/'):
+        case location.pathname.startsWith('/nft'):
             miniApp.setHeaderColor('#f9fafb');
             miniApp.setBgColor('#f9fafb');
             break;
+		case location.pathname.startsWith('/asset'):
+			miniApp.setHeaderColor('#1F2937');
+			miniApp.setBgColor('#f9fafb');
+			break;
 		case location.pathname === '/premium':
 				miniApp.setHeaderColor('#000000');
 				miniApp.setBgColor('#000000');
