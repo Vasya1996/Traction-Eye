@@ -7,23 +7,25 @@ export interface Asset {
 }
 
 export interface NFT {
-  nft_address: string;
-  name: string;
-  description: string;
-  image_url: string;
-  collection_name: string;
+	nft_address: string;
+	name?: string;
+	description?: string;
+	image_url?: string;
+	collection_name?: string;
 }
 
 export interface LpTokenInfo {
-  token_name: string,
-  token_image_url: string,
-  amount: string,
-  decimals: string,
-  usd_value: string
+	token_name: string;
+	token_image_url: string;
+	amount: string;
+	decimals: string;
+	usd_value: string;
 }
 
-export interface LiquidPoolInfo {
-  supplied: LpTokenInfo[],
-  rewards: LpTokenInfo[],
-  usd_sum: string,
+export interface LPPairInfo {
+	supplied: LpTokenInfo[];
+	rewards: LpTokenInfo[];
+	usd_sum: string;
 }
+
+export interface LPResponse extends Array<LPPairInfo> {}

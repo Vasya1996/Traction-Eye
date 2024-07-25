@@ -1,7 +1,3 @@
-
-// import { useEffect, type FC } from "react";
-// import { useTonAddress } from "@tonconnect/ui-react";
-// import { TonConnectButton } from "@tonconnect/ui-react";
 import { useEffect } from "react";
 import { useTonAddress } from "@tonconnect/ui-react";
 import Logo from "./Logo.svg";
@@ -13,11 +9,10 @@ import { useNavigate } from "react-router-dom";
 export const ConnectPage = () => {
 	const userFriendlyAddress = useTonAddress();
 	const navigate = useNavigate();
-
+  console.log(userFriendlyAddress);
 	useEffect(() => {
     if (!userFriendlyAddress) return;
 		setTimeout(() => {
-      //ds
 			navigate("/");
 		}, 2000);
 	}, [userFriendlyAddress]);

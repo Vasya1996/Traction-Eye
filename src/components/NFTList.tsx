@@ -21,6 +21,8 @@ const NFTList: FC = () => {
 		enabled: !!userFriendlyAddress,
 	});
 
+  console.log(data);
+
 	useEffect(() => {
 		if (data?.nfts) {
 			setNfts(data.nfts);
