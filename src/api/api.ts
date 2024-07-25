@@ -1,4 +1,4 @@
-import { Asset, ChartResponse, LPResponse } from "@/types";
+import { Asset, ChartResponse, JettonInfo, LPResponse } from "@/types";
 import apiClient from "./apiClient";
 import endpoints from "./endpoints";
 
@@ -60,4 +60,24 @@ export const API = {
 			throw error;
 		}
 	},
+
+  getJettonInfo: async (
+		wallet: string,
+		assetWallet: string,
+    period_s = 0,
+	): Promise<JettonInfo> => {
+		try {
+			const payload = {
+				master_jetton_address: assetWallet,
+				wallet_address: wallet,
+				period_s,
+			};
+			const response = await apiClient.post(endpoints.getJettonInfo, payload);
+			return response.data;
+		} catch (error) {
+			console.error("Error fetching nfts:", error);
+			throw error;
+		}
+	},
+
 };

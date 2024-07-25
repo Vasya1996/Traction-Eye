@@ -35,3 +35,13 @@ export interface LPResponse extends Array<LPPairInfo> {}
 export interface ChartResponse {
   worth_chart: Array<[number, number]>;
 }
+
+export interface JettonInfo {
+    amount: number;
+    decimals: number;
+    pnl_usd: number;
+    pnl_percentage: number;
+    average_price: number;
+    price: number;
+    commisions:number;
+}

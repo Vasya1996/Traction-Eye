@@ -21,6 +21,13 @@ const AssetItemPage: FC = () => {
     queryFn: () => API.getChart(walletAdress, params.id!),
   })
 
+  const {data: jettonData} = useQuery({
+    queryKey: ['jettonData'],
+    queryFn: () => API.getJettonInfo(walletAdress, params.id!),
+  })
+
+  console.log(jettonData);
+
 	return (
 		<div className="h-screen bg-gray-800">
 			<div className="hero h-56 px-3">
@@ -39,6 +46,10 @@ const AssetItemPage: FC = () => {
           <div className="max-w-full mt-14">
 							{chartData?.worth_chart ? <Chart worth_chart={chartData?.worth_chart} /> : null}
 					</div>
+          <div>
+            <h1>{jettonData?.pnl_usd}$</h1>
+            <h2>{jettonData?.pnl_percentage}%</h2>
+          </div>
 				</div>
 			</div>
 		</div>
