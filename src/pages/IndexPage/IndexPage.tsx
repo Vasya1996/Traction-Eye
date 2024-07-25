@@ -41,7 +41,6 @@ export const IndexPage: FC = () => {
 								alt=""
 							/>
 							<div className="mr-2 items=center">
-								<p className="text-gray-300 font-semibold">WhalePanda</p>
 								<p className="text-gray-400 font-light">N1uQ...D4sQ</p>
 							</div>
 							<MdOutlineKeyboardArrowRight className="text-zinc-400 my-auto size-5" />
