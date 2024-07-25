@@ -81,6 +81,7 @@ const AssetList = () => {
 							<AssetItem
 								key={asset.name}
 								id={index}
+                adress={asset.address}
 								icon={asset?.image_url}
 								name={asset?.name}
 								amount={asset?.amount / Math.pow(10, 9)}

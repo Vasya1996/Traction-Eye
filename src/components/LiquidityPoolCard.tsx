@@ -5,13 +5,19 @@ import { useQuery } from "@tanstack/react-query";
 import { API } from "@/api/api";
 import { useTonAddress } from "@tonconnect/ui-react";
 
-const LiquidityPool: FC = () => {
+interface LiquidityPoolCardProps {
+  poolName: 'dedust' | 'stonfi';
+}
+
+const LiquidityPool: FC<LiquidityPoolCardProps> = ({ poolName }) => {
 	const userFriendlyAddress =
-		useTonAddress() || "UQBghyYO1PSqiHO70FNCE5NpU94rTE3pfxjGpzB2aD6fWVCO";
+		useTonAddress();
+
+  const poolQueryFn = poolName === 'dedust' ? API.getDedustInfo : API.getStonfiInfo;
 
 	const { data } = useQuery({
-		queryFn: () => API.getStonfiInfo(userFriendlyAddress),
-		queryKey: ["stonfi"],
+		queryFn: () => poolQueryFn(userFriendlyAddress),
+		queryKey: [poolName],
 	});
 
 	return (
@@ -20,10 +26,10 @@ const LiquidityPool: FC = () => {
 				<div className="flex items-center">
 					<img
 						src={STONLogo}
-						alt="STON.fi"
+						alt={poolName}
 						className="rounded-lg h-8 w-8 mr-2"
 					/>
-					<p className="font-semibold text-xl">STON.fi</p>
+					<p className="font-semibold text-xl capitalize">{poolName}</p>
 				</div>
 				<button className="text-blue-800 px-3 py-1 bg-gray-200 rounded-lg flex items-center">
 					LP analytics <MdOutlineKeyboardArrowRight />
