@@ -14,6 +14,8 @@ const AssetList = () => {
 		queryFn: () => API.getAssetsByWallet(userFriendlyAddress),
 	});
 
+  console.log(data?.assets);
+
 	const assetsArr = data?.assets;
 
 	if (isFetching && !assetsArr) {
