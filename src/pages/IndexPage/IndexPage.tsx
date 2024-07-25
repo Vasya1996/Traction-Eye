@@ -59,7 +59,8 @@ export const IndexPage: FC = () => {
 					<p className="font-semibold flex items-center text-xl">
 						<IoStatsChart className="mr-1" /> Tools
 					</p>
-					<LiquidityPoolCard />
+					<LiquidityPoolCard poolName="stonfi" />
+					<LiquidityPoolCard poolName="dedust" />
 				</div>
 			</div>
 		</div>

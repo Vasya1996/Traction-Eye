@@ -42,6 +42,17 @@ export const API = {
 		}
 	},
 
+  getDedustInfo: async (wallet: string): Promise<LPResponse> => {
+		try {
+			const payload = { wallet_address: wallet };
+			const response = await apiClient.post(endpoints.getDedustInfo, payload);
+			return response.data;
+		} catch (error) {
+			console.error("Error fetching nfts:", error);
+			throw error;
+		}
+	},
+
 	getChart: async (
 		wallet: string,
 		assetWallet: string,
