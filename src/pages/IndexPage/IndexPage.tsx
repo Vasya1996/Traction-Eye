@@ -16,7 +16,7 @@ import { useTonAddress } from "@tonconnect/ui-react";
 export const IndexPage: FC = () => {
 
 	const navigate = useNavigate();
-  const walletAdress = useTonAddress() || 'UQBghyYO1PSqiHO70FNCE5NpU94rTE3pfxjGpzB2aD6fWVCO';
+  const walletAdress = useTonAddress();
       
   const handlePremiumClick = () => {
     postEvent('web_app_trigger_haptic_feedback', {type: 'impact', impact_style: 'medium'});
