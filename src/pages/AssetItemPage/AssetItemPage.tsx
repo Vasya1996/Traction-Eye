@@ -5,6 +5,7 @@ import TELogo from "@/pages/ConnectPage/Logo.svg";
 import { useParams } from "react-router-dom";
 
 import { MdOutlineKeyboardArrowRight } from "react-icons/md";
+import Chart from "@/components/Chart";
 
 const AssetItemPage: FC = () => {
 	const params = useParams();
@@ -25,6 +26,7 @@ const AssetItemPage: FC = () => {
 							<p className="text-gray-300 font-semibold">TONCOIN</p>
 							<p className="text-gray-400 font-light">N1</p>
 						</div>
+            <Chart />
 						<MdOutlineKeyboardArrowRight className="text-zinc-400 my-auto size-5" />
 					</div>
 				</div>
