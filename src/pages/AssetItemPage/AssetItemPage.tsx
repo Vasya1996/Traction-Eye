@@ -32,7 +32,7 @@ const AssetItemPage: FC = () => {
     setTooltip(key);
     setTimeout(() => {
       setTooltip(null);
-    }, 5000);
+    }, 3000);
   };
 
   return (
