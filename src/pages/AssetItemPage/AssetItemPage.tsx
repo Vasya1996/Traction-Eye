@@ -11,21 +11,19 @@ import { postEvent } from '@telegram-apps/sdk';
 
 const AssetItemPage: FC = () => {
   const [tooltip, setTooltip] = useState<null | string>(null);
-  const [blur, setBlur] = useState<boolean>(false);
-
-  const params = useParams();
-  const walletAdress = useTonAddress() || 'UQBghyYO1PSqiHO70FNCE5NpU94rTE3pfxjGpzB2aD6fWVCO';
+  const params = useParams<{ id: string }>();
+  const walletAddress = useTonAddress() || 'UQBghyYO1PSqiHO70FNCE5NpU94rTE3pfxjGpzB2aD6fWVCO';
   const location = useLocation();
   const state = location.state as AssetItemProps;
 
   const { data: chartData } = useQuery({
-    queryKey: [params],
-    queryFn: () => API.getChart(walletAdress, params.id!),
+    queryKey: ['chartData', params.id],
+    queryFn: () => API.getChart(walletAddress, params.id!),
   });
 
   const { data: jettonData } = useQuery({
-    queryKey: ['jettonData'],
-    queryFn: () => API.getJettonInfo(walletAdress, params.id!),
+    queryKey: ['jettonData', params.id],
+    queryFn: () => API.getJettonInfo(walletAddress, params.id!),
   });
 
   const toggleTooltip = (key: string) => {
@@ -38,7 +36,7 @@ const AssetItemPage: FC = () => {
   };
 
   return (
-    <div className={`h-screen bg-gray-800 ${blur ? 'blur-sm' : ''}`}>
+    <div className={`h-screen bg-gray-800`}>
       <div className="h-56">
         <div className="hero px-3">
           <div className="userdata">
@@ -46,30 +44,28 @@ const AssetItemPage: FC = () => {
               <img
                 className="h-11 w-11 mr-2"
                 src={state.icon}
-                alt=""
+                alt={state.name}
               />
               <div className="items-center">
                 <p className="text-gray-300 text-sm font-semibold">{state.name}</p>
-                <div className="flex items-center items-center">
+                <div className="flex items-center">
                   <h1 className="text-xl flex justify-start text-white font-semibold">
-                    {(state.amount).toFixed(2)}
+                    {state.amount.toFixed(2)}
                   </h1>
-
                   <span className="text-gray-400 justify-center items-center flex font-light text-sm">
                     <PiApproximateEqualsBold className="mx-1" /> ${(state.amount * state.price).toFixed(2)}
                   </span>
                 </div>
               </div>
-
               <div className="flex-grow flex justify-end">
                 {jettonData?.pnl_percentage !== undefined ? (
                   jettonData.pnl_percentage >= 0 ? (
                     <span className="text-green-600 flex items-center justify-end">
-                      +{jettonData.pnl_percentage.toFixed(2)}% (${jettonData.pnl_usd})
+                      +{jettonData.pnl_percentage.toFixed(2)}% (${jettonData.pnl_usd.toFixed(2)})
                     </span>
                   ) : (
                     <span className="text-red-600 flex items-center justify-end">
-                      -{jettonData.pnl_percentage.toFixed(2)}% (${jettonData.pnl_usd})
+                      -{jettonData.pnl_percentage.toFixed(2)}% (${jettonData.pnl_usd.toFixed(2)})
                     </span>
                   )
                 ) : (
@@ -93,7 +89,7 @@ const AssetItemPage: FC = () => {
             <div className="font-semibold text-gray-500">${state.price.toFixed(2)}</div>
           </li>
           <li className="flex justify-between mb-5 relative">
-            <div className="text-black font-semibold flex items-center ">
+            <div className="text-black font-semibold flex items-center">
               Average price <MdOutlineInfo className="ml-1 text-gray-500 cursor-pointer" onClick={() => toggleTooltip('averagePrice')} />
               {tooltip === 'averagePrice' && (
                 <div className="absolute bg-black bg-opacity-75 backdrop-blur-md p-3 shadow-md rounded-xl mt-2 text-white z-10 font-light">
@@ -101,10 +97,10 @@ const AssetItemPage: FC = () => {
                 </div>
               )}
             </div>
-            <div className="font-semibold text-gray-500">${jettonData?.average_price ?? 'Loading...'}</div>
+            <div className="font-semibold text-gray-500">${jettonData?.average_price?.toFixed(2) ?? 'Loading...'}</div>
           </li>
           <li className="flex justify-between mb-5 relative">
-            <div className="text-black font-semibold flex items-center ">
+            <div className="text-black font-semibold flex items-center">
               Commissions <MdOutlineInfo className="ml-1 text-gray-500 cursor-pointer" onClick={() => toggleTooltip('commissions')} />
               {tooltip === 'commissions' && (
                 <div className="absolute bg-black bg-opacity-75 backdrop-blur-md p-3 shadow-md rounded-xl mt-2 text-white z-10 font-light">
@@ -112,14 +108,14 @@ const AssetItemPage: FC = () => {
                 </div>
               )}
             </div>
-            <div className="font-semibold text-gray-500">${jettonData?.commisions ?? 'Loading...'}</div>
+            <div className="font-semibold text-gray-500">${jettonData?.commisions.toFixed(2) ?? 'Loading...'}</div>
           </li>
           <li className="flex justify-between mb-5 relative">
-            <div className="text-black font-semibold flex items-center ">
+            <div className="text-black font-semibold flex items-center">
               Market Cap <MdOutlineInfo className="ml-1 text-gray-500 cursor-pointer" onClick={() => toggleTooltip('marketCap')} />
               {tooltip === 'marketCap' && (
                 <div className="absolute bg-black bg-opacity-75 backdrop-blur-md p-3 shadow-md rounded-xl mt-2 text-white z-10 font-light">
-                  Market Cap is the total market value of a company's outstanding shares.
+                  Market Cap is the total market value of a company`s outstanding shares.
                 </div>
               )}
             </div>
