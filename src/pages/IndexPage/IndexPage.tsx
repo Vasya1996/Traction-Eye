@@ -12,12 +12,24 @@ import { postEvent } from '@telegram-apps/sdk';
 
 import LiquidityPoolCard from "@/components/LiquidityPoolCard";
 import { useTonAddress } from "@tonconnect/ui-react";
+import { retrieveLaunchParams } from "@telegram-apps/sdk-react";
+import { API } from "@/api/api";
+import { useQuery } from "@tanstack/react-query";
 
 export const IndexPage: FC = () => {
 
 	const navigate = useNavigate();
-  const walletAdress = useTonAddress();
-      
+  const walletAdress = useTonAddress() || 'UQBghyYO1PSqiHO70FNCE5NpU94rTE3pfxjGpzB2aD6fWVCO';
+  const { initDataRaw } = retrieveLaunchParams();
+
+  const { data } = useQuery({
+    queryKey: ["login"],
+    queryFn: () => API.login(initDataRaw!),
+    enabled: !!initDataRaw,
+  })
+
+  console.log("token", data);
+  
   const handlePremiumClick = () => {
     postEvent('web_app_trigger_haptic_feedback', {type: 'impact', impact_style: 'medium'});
    };

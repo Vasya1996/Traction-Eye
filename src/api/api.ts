@@ -91,4 +91,16 @@ export const API = {
 		}
 	},
 
+  login: async (initData: string) => {
+		try {
+			const payload = {
+				init_data: initData,
+			};
+			const response = await apiClient.post(endpoints.login, payload);
+			return response.data;
+		} catch (error) {
+			console.error("Error loging", error);
+			throw error;
+		}
+	}
 };
