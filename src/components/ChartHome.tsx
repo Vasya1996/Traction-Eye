@@ -12,11 +12,20 @@ export function ChartHome() {
 		queryFn: () => API.getChart(walletAddress, "native"),
 	});
 
+	const { data: pnlData } = useQuery({
+		queryKey: ["pnlData"],
+		queryFn: () => API.getTotalPnl(walletAddress, 60),
+	});
+
 	return (
-		<>
-			{mainChartData?.worth_chart ? (
-				<Chart worth_chart={mainChartData?.worth_chart} />
+		<div className="py-6">
+			{mainChartData?.worth_chart && pnlData ? (
+				<>
+					<div className="text-green-400">PNL: {pnlData.pnl_usd} USD</div>
+					<div className="text-green-400">+{pnlData.pnl_percentage}</div>
+					<Chart worth_chart={mainChartData?.worth_chart} />
+				</>
 			) : null}
-		</>
+		</div>
 	);
 }
