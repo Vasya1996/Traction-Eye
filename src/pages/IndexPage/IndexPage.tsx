@@ -28,7 +28,11 @@ export const IndexPage: FC = () => {
 		enabled: !!initDataRaw,
 	});
 
-	console.log("token", data);
+  useEffect(() => {
+    if (data.token) {
+      localStorage.setItem('token', data.token);
+    }
+  }, [data])
 
 	const handlePremiumClick = () => {
 		postEvent("web_app_trigger_haptic_feedback", {
