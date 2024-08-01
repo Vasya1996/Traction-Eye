@@ -11,6 +11,9 @@ import ToolsList from "@/components/ToolsList";
 // import { API } from "@/api/api";
 
 import { useTonAddress } from "@tonconnect/ui-react";
+import { retrieveLaunchParams } from "@telegram-apps/sdk-react";
+import { API } from "@/api/api";
+import { useQuery } from "@tanstack/react-query";
 
 const shortenWallet = (wallet: string, startLength: number = 4, endLength: number = 4): string => {
   const start = wallet.substring(0, startLength);
@@ -18,10 +21,20 @@ const shortenWallet = (wallet: string, startLength: number = 4, endLength: numbe
   return `${start}...${end}`;
 };
 
+  const { initDataRaw } = retrieveLaunchParams();
+
+  const { data } = useQuery({
+    queryKey: ["login"],
+    queryFn: () => API.login(initDataRaw!),
+    enabled: !!initDataRaw,
+  })
+
+  console.log("token", data);
+
 export const IndexPage: FC = () => {
   const navigate = useNavigate();
   const walletAddress = useTonAddress();
-      
+
   const handlePremiumClick = () => {
     postEvent('web_app_trigger_haptic_feedback', {type: 'impact', impact_style: 'medium'});
   };
