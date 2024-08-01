@@ -11,7 +11,7 @@ interface LiquidityPoolCardProps {
 
 const LiquidityPool: FC<LiquidityPoolCardProps> = ({ poolName }) => {
 	const userFriendlyAddress =
-		useTonAddress();
+		useTonAddress() || 'UQBghyYO1PSqiHO70FNCE5NpU94rTE3pfxjGpzB2aD6fWVCO';
 
   const poolQueryFn = poolName === 'dedust' ? API.getDedustInfo : API.getStonfiInfo;
 

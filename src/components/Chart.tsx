@@ -1,6 +1,6 @@
 import { LineChart, Line, ResponsiveContainer } from "recharts";
 
-interface ChartProps {
+export interface ChartProps {
   worth_chart: Array<[number, number]>;
 }
 
