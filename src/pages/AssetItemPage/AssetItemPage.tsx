@@ -12,7 +12,7 @@ import { postEvent } from '@telegram-apps/sdk';
 const AssetItemPage: FC = () => {
   const [tooltip, setTooltip] = useState<null | string>(null);
   const params = useParams<{ id: string }>();
-  const walletAddress = useTonAddress() || 'UQBghyYO1PSqiHO70FNCE5NpU94rTE3pfxjGpzB2aD6fWVCO';
+  const walletAddress = useTonAddress();
   const location = useLocation();
   const state = location.state as AssetItemProps;
 

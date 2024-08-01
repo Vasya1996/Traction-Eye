@@ -7,7 +7,7 @@ import { TbCircleDotted } from "react-icons/tb";
 import { useTonAddress } from "@tonconnect/ui-react";
 
 const AssetList = () => {
-	const userFriendlyAddress = useTonAddress() || 'UQBghyYO1PSqiHO70FNCE5NpU94rTE3pfxjGpzB2aD6fWVCO';
+	const userFriendlyAddress = useTonAddress();
 
 	const { data, isFetching } = useQuery({
 		queryKey: ["assets"],

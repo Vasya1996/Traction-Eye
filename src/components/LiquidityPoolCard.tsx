@@ -7,15 +7,15 @@ import { API } from "@/api/api";
 import { useTonAddress } from "@tonconnect/ui-react";
 
 interface LiquidityPoolCardProps {
-  poolName: 'dedust' | 'stonfi';
+	poolName: "dedust" | "stonfi";
 }
 
 const LiquidityPool: FC<LiquidityPoolCardProps> = ({ poolName }) => {
-	const userFriendlyAddress =
-		useTonAddress() || 'UQBghyYO1PSqiHO70FNCE5NpU94rTE3pfxjGpzB2aD6fWVCO';
+	const userFriendlyAddress = useTonAddress();
 
-  const poolQueryFn = poolName === 'dedust' ? API.getDedustInfo : API.getStonfiInfo;
-  const icon = poolName === 'dedust' ? dedustLogo : STONLogo;
+	const poolQueryFn =
+		poolName === "dedust" ? API.getDedustInfo : API.getStonfiInfo;
+	const icon = poolName === "dedust" ? dedustLogo : STONLogo;
 
 	const { data } = useQuery({
 		queryFn: () => poolQueryFn(userFriendlyAddress),
@@ -26,11 +26,7 @@ const LiquidityPool: FC<LiquidityPoolCardProps> = ({ poolName }) => {
 		<div>
 			<div className="flex justify-between items-center my-4">
 				<div className="flex items-center">
-					<img
-						src={icon}
-						alt={poolName}
-						className="rounded-lg h-8 w-8 mr-2"
-					/>
+					<img src={icon} alt={poolName} className="rounded-lg h-8 w-8 mr-2" />
 					<p className="font-semibold text-xl capitalize">{poolName}</p>
 				</div>
 				<button className="text-blue-800 px-3 py-1 bg-gray-200 rounded-lg flex items-center">
