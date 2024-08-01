@@ -1,6 +1,7 @@
 import { FC } from "react";
 import { MdOutlineKeyboardArrowRight } from "react-icons/md";
 import STONLogo from "@/pages/IndexPage/stonfilogo.jpg";
+import dedustLogo from "@/pages/IndexPage/dedustlogo.png";
 import { useQuery } from "@tanstack/react-query";
 import { API } from "@/api/api";
 import { useTonAddress } from "@tonconnect/ui-react";
@@ -14,6 +15,7 @@ const LiquidityPool: FC<LiquidityPoolCardProps> = ({ poolName }) => {
 		useTonAddress() || 'UQBghyYO1PSqiHO70FNCE5NpU94rTE3pfxjGpzB2aD6fWVCO';
 
   const poolQueryFn = poolName === 'dedust' ? API.getDedustInfo : API.getStonfiInfo;
+  const icon = poolName === 'dedust' ? dedustLogo : STONLogo;
 
 	const { data } = useQuery({
 		queryFn: () => poolQueryFn(userFriendlyAddress),
@@ -25,7 +27,7 @@ const LiquidityPool: FC<LiquidityPoolCardProps> = ({ poolName }) => {
 			<div className="flex justify-between items-center my-4">
 				<div className="flex items-center">
 					<img
-						src={STONLogo}
+						src={icon}
 						alt={poolName}
 						className="rounded-lg h-8 w-8 mr-2"
 					/>
