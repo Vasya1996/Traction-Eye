@@ -1,5 +1,3 @@
-
-
 import { FC } from "react";
 import LiquidityPoolCard from "./LiquidityPoolCard";
 

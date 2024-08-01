@@ -4,8 +4,7 @@ import { useTonAddress } from "@tonconnect/ui-react";
 import { API } from "@/api/api";
 
 export function ChartHome() {
-	const walletAddress =
-		useTonAddress() || "UQBghyYO1PSqiHO70FNCE5NpU94rTE3pfxjGpzB2aD6fWVCO";
+	const walletAddress = useTonAddress();
 
 	const { data: mainChartData } = useQuery({
 		queryKey: ["mainChartData"],

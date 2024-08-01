@@ -19,8 +19,7 @@ import { ChartHome } from "@/components/ChartHome";
 
 export const IndexPage: FC = () => {
 	const navigate = useNavigate();
-	const walletAdress =
-		useTonAddress() || "UQBghyYO1PSqiHO70FNCE5NpU94rTE3pfxjGpzB2aD6fWVCO";
+	const walletAdress = useTonAddress();
 	const { initDataRaw } = retrieveLaunchParams();
 
 	const { data } = useQuery({
