@@ -23,21 +23,22 @@ const shortenWallet = (wallet: string, startLength: number = 4, endLength: numbe
 
   const { initDataRaw } = retrieveLaunchParams();
 
-  const { data } = useQuery({
-    queryKey: ["login"],
-    queryFn: () => API.login(initDataRaw!),
-    enabled: !!initDataRaw,
-  })
+  
+  export const IndexPage: FC = () => {
+    const navigate = useNavigate();
+    const walletAddress = useTonAddress();
+    
+    const handlePremiumClick = () => {
+      postEvent('web_app_trigger_haptic_feedback', {type: 'impact', impact_style: 'medium'});
+    };
 
-  console.log("token", data);
-
-export const IndexPage: FC = () => {
-  const navigate = useNavigate();
-  const walletAddress = useTonAddress();
-
-  const handlePremiumClick = () => {
-    postEvent('web_app_trigger_haptic_feedback', {type: 'impact', impact_style: 'medium'});
-  };
+    const { data } = useQuery({
+      queryKey: ["login"],
+      queryFn: () => API.login(initDataRaw!),
+      enabled: !!initDataRaw,
+    })
+  
+    console.log("token", data);
 
   useEffect(() => {
     if (walletAddress) return;
