@@ -1,11 +1,16 @@
 
-// import { useQuery } from "@tanstack/react-query";
-// import { API } from "@/api/api";
-// import { useTonWallet } from "@tonconnect/ui-react";
 
-// import { Skeleton } from "@/components/ui/skeleton";
+import { FC } from "react";
+import LiquidityPoolCard from "./LiquidityPoolCard";
 
-// const ToolsList = () => {
+const ToolsList: FC = () => {
     
-// };
+    return (
+        <div>
+            <LiquidityPoolCard poolName="stonfi" />
+            <LiquidityPoolCard poolName="dedust" />
+        </div>
+    )
+};
 
+export default ToolsList;

@@ -1,48 +1,71 @@
 import { useEffect } from "react";
 import { useTonAddress } from "@tonconnect/ui-react";
 import Logo from "./Logo.svg";
-import { TonConnectButton } from "@tonconnect/ui-react";
-
-
+import { useTonConnectUI } from '@tonconnect/ui-react';
+import { postEvent } from '@telegram-apps/sdk';
 import { useNavigate } from "react-router-dom";
 
 export const ConnectPage = () => {
 	const userFriendlyAddress = useTonAddress();
 	const navigate = useNavigate();
-  console.log(userFriendlyAddress);
+	console.log(userFriendlyAddress);
+
 	useEffect(() => {
-    if (!userFriendlyAddress) return;
+		if (!userFriendlyAddress) return;
 		setTimeout(() => {
 			navigate("/");
 		}, 2000);
 	}, [userFriendlyAddress]);
 
+	const [tonConnectUI] = useTonConnectUI();
+
+	const connectHandleClick = () => {
+		postEvent('web_app_trigger_haptic_feedback', { type: 'notification', notification_type: 'warning' });
+		tonConnectUI.openModal();
+	};
+
 	return (
-		<div className="p-4 bg-black justify-center items-center">
-			<div className="txt text-center mb-9 bg-zinc-900 rounded-lg p-5 text-gray-300 flex flex-col items-center">
-				<div className="logo-name mb-2 flex flex-col items-center">
-					<span className="w-24 h-24 mt-12 rounded-full bg-black flex items-center justify-center mb-3">
-						<img className="text-yellow-300 h-10" src={Logo} alt="" />
-					</span>
-					<h2 className="font-bold text-2xl">Traction Eye</h2>
-				</div>
+		<div className="h-screen flex flex-col bg-black p-4">
+			{/* Content container at the top */}
+			<div className="flex-grow flex flex-col justify-center items-center max-w-md w-full mx-auto mb-4">
+				<div className="text-center bg-zinc-900 rounded-xl p-4 text-gray-300 flex flex-col items-center">
+					<div className="logo-name mb-4 flex flex-col items-center">
+						<span className="w-20 h-20 rounded-full bg-black flex items-center justify-center mb-3">
+							<img className="text-yellow-300 h-8" src={Logo} alt="Logo" />
+						</span>
+						<h2 className="font-bold text-xl sm:text-2xl">Traction Eye</h2>
+					</div>
 
-				<h3 className="text-xl">Universal toolbar for investors</h3>
+					<h3 className="text-lg sm:text-xl mb-3">Universal toolbar for investors</h3>
 
-				<div className="text-s mt-10">
-					<span className="mx-auto text-5xl">💸</span>
-					<p className="flex mb-6 mt-2">
-						Analyse PnL and profitability of DeFi protocols on one screen
-					</p>
+					<div className="text-base mt-2 mb-4">
+						<div className="mb-6">
+							<span className="text-4xl sm:text-5xl">💸</span>
+							<p className="mt-1 text-sm sm:text-base">
+								Analyse PnL and profitability of DeFi protocols on one screen
+							</p>
+						</div>
 
-					<span className="mx-auto text-5xl">📊</span>
-					<p className="flex mt-2">
-						Track the onchain activity of influencers you trust and earn with
-						them
-					</p>
+						<div>
+							<span className="text-4xl sm:text-5xl">📊</span>
+							<p className="mt-1 text-sm sm:text-base">
+								Track the onchain activity of influencers you trust and earn with
+								them
+							</p>
+						</div>
+					</div>
 				</div>
 			</div>
-			<TonConnectButton className="w-full mx-auto" />
+
+			{/* Button container at the bottom */}
+			<div className="flex-none sticky bottom-0 flex justify-center mt-auto pb-4 w-full">
+				<button 
+					onClick={connectHandleClick} 
+					className="bg-yellow-400 py-4 px-8 rounded-2xl w-full sm:w-3/4 md:w-1/2 lg:w-40 flex justify-center items-center text-base sm:text-lg"
+				>
+					Connect Wallet
+				</button>
+			</div>
 		</div>
 	);
 };

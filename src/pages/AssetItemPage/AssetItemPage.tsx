@@ -33,12 +33,13 @@ const AssetItemPage: FC = () => {
     setTimeout(() => {
       setTooltip(null);
     }, 3000);
+
   };
 
   return (
     <div className={`h-screen bg-gray-800`}>
       <div className="h-56">
-        <div className="hero px-3">
+        <div className="hero px-3 sticky top-0 py-2 bg-opacity-90 rounded-b-2xl backdrop-blur-sm">
           <div className="userdata">
             <div className="flex items-center justify-start">
               <img
