@@ -1,6 +1,7 @@
 import { FC } from "react";
 import { MdOutlineKeyboardArrowRight } from "react-icons/md";
 import STONLogo from "@/pages/IndexPage/stonfilogo.jpg";
+import dedustLogo from "@/pages/IndexPage/dedustlogo.png";
 import { useQuery } from "@tanstack/react-query";
 import { API } from "@/api/api";
 import { useTonAddress } from "@tonconnect/ui-react";
@@ -10,9 +11,11 @@ interface LiquidityPoolCardProps {
 }
 
 const LiquidityPool: FC<LiquidityPoolCardProps> = ({ poolName }) => {
-const userFriendlyAddress = useTonAddress();
+const userFriendlyAddress =
+		useTonAddress() || 'UQBghyYO1PSqiHO70FNCE5NpU94rTE3pfxjGpzB2aD6fWVCO';
 
-const poolQueryFn = poolName === 'dedust' ? API.getDedustInfo : API.getStonfiInfo;
+  const poolQueryFn = poolName === 'dedust' ? API.getDedustInfo : API.getStonfiInfo;
+  const icon = poolName === 'dedust' ? dedustLogo : STONLogo;
 
 const { data: poolsData } = useQuery({
 	queryFn: () => poolQueryFn(userFriendlyAddress),
@@ -45,15 +48,14 @@ return (
 	<div className="p-4 bg-white rounded-lg shadow-md">
 		<div className="">
 		<div>
-			{poolsData?.map((lp, index) => (
-			<div key={index} className="mb-8">
-				<div className="flex justify-between items-center">
-				<p className="text-blue-500 bg-blue-100 rounded-full px-4 py-1 h-8">
-					Liquidity Pool
-				</p>
-				<p className="text-2xl font-bold mt-2">
-					${parseFloat(lp.usd_sum).toFixed(2)}
-				</p>
+			<div className="flex justify-between items-center my-4">
+				<div className="flex items-center">
+					<img
+						src={icon}
+						alt={poolName}
+						className="rounded-lg h-8 w-8 mr-2"
+					/>
+					<p className="font-semibold text-xl capitalize">{poolName}</p>
 				</div>
 				<div className="mt-4">
 				<div className="grid grid-cols-3 text-gray-500 text-xs">

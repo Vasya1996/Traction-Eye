@@ -102,5 +102,15 @@ export const API = {
 			console.error("Error loging", error);
 			throw error;
 		}
+	},
+
+  getTotalPnl: async (wallet_address: string, start_s: number): Promise<{pnl_usd: number, pnl_percentage: number}> => {
+		try {
+			const response = await apiClient.get(endpoints.getAssetsPnl(wallet_address, start_s));
+			return response.data;
+		} catch (error) {
+			console.error("Error getTotalPnl", error);
+			throw error;
+		}
 	}
 };
