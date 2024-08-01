@@ -1,94 +1,75 @@
-// components/NFTList.tsx
-import { FC } from "react";
-import { Link } from 'react-router-dom';
+import { FC, useEffect } from "react";
+import { Link } from "react-router-dom";
 import NFTCard from "@/components/NFTCard";
-import { Skeleton } from "@/components/ui/skeleton";
 import { PiImages } from "react-icons/pi";
 import { FaArrowRight } from "react-icons/fa6";
-import { NFT } from '@/types/types';
+import { NFT } from "@/types/index";
 import { useQuery } from "@tanstack/react-query";
-// import { useTonWallet } from "@tonconnect/ui-react";
-import { fetchNFTsByWallet } from "@/pages/NFTListPage/NFTListPage";
-
+import { useTonAddress } from "@tonconnect/ui-react";
+import NFTSkeletons from "./skeletons/NFTSkeletons";
+import { API } from "@/api/api";
+import { useStore } from "@/store/store";
 
 const NFTList: FC = () => {
-    // const wallet = useTonWallet();
-    // const userFriendlyAddress = wallet?.address || 'UQCHNmmeeo4v1k92G0Wj5edo_hhEH2quRlwp0w652oljJxzW';
+	const userFriendlyAddress = useTonAddress();
 
-    const userFriendlyAddress =  'UQCHNmmeeo4v1k92G0Wj5edo_hhEH2quRlwp0w652oljJxzW'
-    const { data, isFetching, error } = useQuery({
-        queryKey: ["nfts", userFriendlyAddress],
-        queryFn: () => fetchNFTsByWallet(userFriendlyAddress),
-        enabled: !!userFriendlyAddress
-    });
+  const setNfts = useStore((state) => state.setNfts);
 
-    const nfts = data?.nfts || [];
+	const { data, isFetching, error } = useQuery({
+		queryKey: ["nfts", userFriendlyAddress],
+		queryFn: () => API.getNftsByWallet(userFriendlyAddress),
+		enabled: !!userFriendlyAddress,
+	});
 
-    if (isFetching) {
-        return (
-            <div className="bg-white shadow-sm h-36 rounded-lg p-3">
-                <p className="font-semibold text-xl items-center flex">
-                    <PiImages className="mr-1" /> NFTs
-                </p>
-                <div className="nft-preview py-5">
-                    <div className="flex justify-center items-center gap-3">
-                        <Skeleton className="h-16 w-16 rounded-xl bg-slate-200" />
-                        <Skeleton className="h-16 w-16 rounded-xl bg-slate-200" />
-                        <Skeleton className="h-16 w-16 rounded-xl bg-slate-200" />
-                        <span className="h-12 w-12 items-center flex justify-center bg-gray-200 rounded-xl">
-                            <FaArrowRight className="text-gray-700" />
-                        </span>
-                    </div>
-                </div>
-            </div>
-        );
-    }
+  console.log(data);
 
-    if (error) {
-        return <div>Error fetching NFTs</div>;
-    }
+	useEffect(() => {
+		if (data?.nfts) {
+			setNfts(data.nfts);
+		}
+	}, [data, setNfts]);
 
-    return (
-        <div className="nfts mb-4">
-            {nfts.length !== 0 ? (
-                <div className="bg-white shadow-sm h-36 rounded-lg p-3">
-                    <p className="font-semibold text-xl items-center flex">
-                        <PiImages className="mr-1" /> NFTs <span className="ml-1 text-gray-400 text-base">({nfts.length})</span>
-                    </p>
-                    <div className="nft-preview py-5">
-                        <div className="flex justify-center items-center gap-3">
-                            {nfts.slice(0, 3).map((nft: NFT) => (
-                                <NFTCard key={nft.id} nft={nft} />
-                            ))}
-                            <Link to={'/nfts'}>
-                                <span className="h-16 shadow-md w-16 items-center flex justify-center bg-gray-200 rounded-xl">
-                                    <FaArrowRight className="text-gray-700" />
-                                </span>
-                            </Link>
-                        </div>
-                    </div>
-                </div>
-            ) : (
-                <div className="bg-white shadow-sm h-36 rounded-lg p-3">
-                    <p className="font-semibold text-xl items-center flex">
-                        <PiImages className="mr-1" /> NFTs
-                    </p>
-                    <div className="nft-preview py-5">
-                        <div className="flex justify-center items-center gap-3">
-                            <Skeleton className="h-16 w-16 rounded-xl bg-slate-200" />
-                            <Skeleton className="h-16 w-16 rounded-xl bg-slate-200" />
-                            <Skeleton className="h-16 w-16 rounded-xl bg-slate-200" />
-                            <Link to={'/nfts'}>
-                                <span className="h-12 w-12 items-center flex justify-center bg-gray-200 rounded-xl">
-                                    <FaArrowRight className="text-gray-700" />
-                                </span>
-                            </Link>
-                        </div>
-                    </div>
-                </div>
-            )}
-        </div>
-    );
+	const nfts = useStore((state) => state.nfts);
+
+
+	if (isFetching) {
+		return <NFTSkeletons />;
+	}
+
+	if (error) {
+		return <div>Error fetching NFTs</div>;
+	}
+
+
+	return (
+		<div className="nfts mb-4">
+			<div className="bg-white shadow-sm h-36 rounded-lg p-3">
+				<p className="font-semibold text-xl items-center flex">
+					<PiImages className="mr-1" /> NFTs{" "}
+					<span className="ml-1 text-gray-400 text-base">({nfts.length})</span>
+				</p>
+				<div className="nft-preview py-5">
+					<div className="flex justify-center items-center gap-3">
+						{nfts.slice(0, 3).map((nft: NFT) => (
+							<NFTCard key={nft.name} nft={nft} />
+						))}
+
+
+						{nfts.length === 0 ? 
+						<span className="text-gray-400 items-center mt-5">No NFTs in Your Wallet</span>
+						:
+						<Link to={"/nfts"}>
+							<span className="h-16 shadow-md w-16 items-center flex justify-center bg-gray-200 rounded-xl">
+								<FaArrowRight className="text-gray-700" />
+							</span>
+						</Link>
+						}
+
+					</div>
+				</div>
+			</div>
+		</div>
+	);
 };
 
 export default NFTList;

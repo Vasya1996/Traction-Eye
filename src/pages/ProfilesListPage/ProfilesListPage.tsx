@@ -46,7 +46,7 @@ const ProfilesListPage: FC = () => {
             ))}
           </ul>
           <div className="buttons flex mx-auto mt-10 flex-col gap-4 w-4/5">
-            <Link to={'/connect'} className='flex bg-yellow-400 p-3 items-center justify-center rounded-xl w-100'><img className='h-5 mr-2' src={AddWallet} alt="Add Wallet Icon" /> Add Account</Link>
+            <Link to={'/premium'} className='flex bg-yellow-400 p-3 items-center justify-center rounded-xl w-100'><img className='h-5 mr-2' src={AddWallet} alt="Add Wallet Icon" /> Add Account</Link>
             <Link to={'/connect'} className='flex bg-gray-300 p-3 items-center justify-center rounded-xl w-100'><RxExit className='h-5 mr-2'/> Disconnect</Link>
           </div>
         </div>

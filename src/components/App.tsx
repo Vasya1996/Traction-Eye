@@ -4,6 +4,7 @@ import {
 	bindThemeParamsCSSVars,
 	bindViewportCSSVars,
 	initNavigator,
+	useInitData,
 	useMiniApp,
 	useThemeParams,
 	useViewport,
@@ -22,6 +23,8 @@ export const App: FC = () => {
 	const miniApp = useMiniApp();
 	const themeParams = useThemeParams();
 	const viewport = useViewport();
+  const initDataRaw = useInitData();
+  console.log(initDataRaw);
 	useEffect(() => {
 		return bindMiniAppCSSVars(miniApp, themeParams);
 	}, [miniApp, themeParams]);
@@ -30,7 +33,7 @@ export const App: FC = () => {
 		return bindThemeParamsCSSVars(themeParams);
 	}, [themeParams]);
 
-  	useEffect(() => {
+  useEffect(() => {
 		return viewport && bindViewportCSSVars(viewport);
 	}, [viewport]);
   
@@ -58,10 +61,18 @@ export const App: FC = () => {
             miniApp.setBgColor('#f9fafb');
             break;
         case location.pathname === '/nfts':
-        case location.pathname.startsWith('/nft/'):
+        case location.pathname.startsWith('/nft'):
             miniApp.setHeaderColor('#f9fafb');
             miniApp.setBgColor('#f9fafb');
             break;
+		case location.pathname.startsWith('/asset'):
+			miniApp.setHeaderColor('#1F2937');
+			miniApp.setBgColor('#f9fafb');
+			break;
+		case location.pathname === '/premium':
+				miniApp.setHeaderColor('#000000');
+				miniApp.setBgColor('#000000');
+			break;
     }
 }, [location, miniApp]);
 
@@ -74,7 +85,7 @@ export const App: FC = () => {
 	}, [navigator]);
 
 	return (
-		<TonConnectUIProvider manifestUrl="https://raw.githubusercontent.com/real-og/traction-eye-bot/master/tonconnect-manifest.json">
+		<TonConnectUIProvider>
 			<QueryClientProvider client={queryClient}>
 				<Router location={location} navigator={reactNavigator}>
 					<Routes>

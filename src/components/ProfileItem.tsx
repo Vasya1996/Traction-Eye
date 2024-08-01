@@ -1,5 +1,5 @@
 import type { FC } from 'react';
-import ProfileAvatar from '@/pages/ConnectPage/Logo.svg' 
+import ProfileAvatar from '@/pages/IndexPage/TELogo.svg'; 
 import { postEvent } from '@telegram-apps/sdk';
 
 
@@ -26,7 +26,7 @@ export const ProfileItem: FC<ProfileItemProps> = ({ username, wallet, balance, m
     return (
         <li className='bg-white p-4 mb-2 shadow rounded-3xl flex justify-between items-center'>
             <div className='flex'>
-            <span className='bg-black items-center flex px-2 rounded-full mr-3'><img className='h-5' src={ProfileAvatar} alt="pfp" /></span>
+            <span className='bg-black items-center flex px-2 rounded-full mr-3'><img className='h-4' src={ProfileAvatar} alt="pfp" /></span>
         
                 <div>
                     <span className='block font-semibold'>{username}</span>
@@ -41,7 +41,7 @@ export const ProfileItem: FC<ProfileItemProps> = ({ username, wallet, balance, m
     return (
         <li className='bg-white p-4 mb-2 shadow rounded-3xl flex justify-between'>
             <div className='flex'>
-                <span className='bg-black items-center flex px-2 rounded-full mr-3'><img className='h-5' src={ProfileAvatar} alt="pfp" /></span>
+                <span className='bg-black items-center flex px-2 rounded-full mr-3'><img className='h-4' src={ProfileAvatar} alt="pfp" /></span>
         
                 <div>
                     <span className='block font-semibold'>{username}</span>
