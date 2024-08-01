@@ -30,8 +30,8 @@ export const IndexPage: FC = () => {
 	});
 
   useEffect(() => {
-    if (data.token) {
-      localStorage.setItem('token', data.token);
+    if (data?.token) {
+      localStorage.setItem('token', data?.token);
     }
   }, [data])
 
