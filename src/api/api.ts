@@ -1,6 +1,7 @@
-import { Asset, ChartResponse, JettonInfo, LPResponse } from "@/types";
+import { Asset, ChartResponse, JettonInfo, LPResponse  } from "@/types";
 import apiClient from "./apiClient";
 import endpoints from "./endpoints";
+
 
 export const API = {
 	getAssetsByWallet: async (wallet: string): Promise<{ assets: Asset[] }> => {
@@ -42,7 +43,7 @@ export const API = {
 		}
 	},
 
-  getDedustInfo: async (wallet: string): Promise<LPResponse> => {
+	getDedustInfo: async (wallet: string): Promise<LPResponse> => {
 		try {
 			const payload = { wallet_address: wallet };
 			const response = await apiClient.post(endpoints.getDedustInfo, payload);
@@ -72,7 +73,7 @@ export const API = {
 		}
 	},
 
-  getJettonInfo: async (
+	getJettonInfo: async (
 		wallet: string,
 		assetWallet: string,
     period_s = 0,
@@ -90,8 +91,8 @@ export const API = {
 			throw error;
 		}
 	},
-
-  login: async (initData: string) => {
+	
+	login: async (initData: string) => {
 		try {
 			const payload = {
 				init_data: initData,
@@ -104,7 +105,7 @@ export const API = {
 		}
 	},
 
-  getTotalPnl: async (wallet_address: string, start_s: number): Promise<{pnl_usd: number, pnl_percentage: number}> => {
+	getTotalPnl: async (wallet_address: string, start_s: number): Promise<{pnl_usd: number, pnl_percentage: number}> => {
 		try {
 			const response = await apiClient.get(endpoints.getAssetsPnl(wallet_address, start_s));
 			return response.data;

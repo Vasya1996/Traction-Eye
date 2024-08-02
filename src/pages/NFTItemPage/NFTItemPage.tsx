@@ -4,6 +4,7 @@ import { postEvent } from "@telegram-apps/sdk";
 import { FaRegCopy } from "react-icons/fa6";
 import { useParams } from "react-router-dom";
 import { useStore } from "@/store/store";
+// import { API } from "@/api/api";
 
 const NFTItemPage: FC = () => {
 	const { id } = useParams();
@@ -29,8 +30,10 @@ const NFTItemPage: FC = () => {
 		});
 	};
 
+	// const assetMarketCap = API.getJettonCap(nft.nft_address);
+
 	return (
-		<div className="bg-gray-50 flex flex-col p-5">
+		<div className="bg-gray-50 flex flex-col h-full p-5">
 			<img
 				className="rounded-3xl shadow-lg w-full"
 				src={nft.image_url}

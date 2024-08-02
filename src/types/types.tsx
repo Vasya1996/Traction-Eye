@@ -18,5 +18,6 @@ export interface ProfileItemProps {
     balance: number;
     managed: boolean;
 }
-
-
+export interface JettonCapResponse {
+    market_cap: number;
+}

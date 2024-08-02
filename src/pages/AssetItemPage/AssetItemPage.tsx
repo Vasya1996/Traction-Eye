@@ -36,6 +36,7 @@ const AssetItemPage: FC = () => {
 
   };
 
+
   return (
     <div className={`h-screen bg-gray-800`}>
       <div className="h-56">
