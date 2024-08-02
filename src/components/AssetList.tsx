@@ -38,10 +38,10 @@ const AssetList = () => {
 				{/* Skeleton loaders */}
 				{[...Array(3)].map((_, index) => (
 					<div key={index} className="flex items-center space-x-4 py-4">
-						<Skeleton className="h-12 w-12 rounded-full bg-gray-200" />
+						<Skeleton className="h-12 w-12 rounded-full bg-gray-300" />
 						<div className="space-y-2">
-							<Skeleton className="h-3 w-56 bg-gray-200" />
-							<Skeleton className="h-3 w-40 bg-gray-200" />
+							<Skeleton className="h-3 w-56 bg-gray-300" />
+							<Skeleton className="h-3 w-40 bg-gray-300" />
 						</div>
 					</div>
 				))}

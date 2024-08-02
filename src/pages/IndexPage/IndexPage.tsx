@@ -27,11 +27,11 @@ export const IndexPage: FC = () => {
 		enabled: !!initDataRaw,
 	});
 
-  useEffect(() => {
+	useEffect(() => {
     if (data?.token) {
-      localStorage.setItem('token', data?.token);
+        localStorage.setItem('token', data?.token);
     }
-  }, [data])
+	}, [data])
 
 	const handlePremiumClick = () => {
 		postEvent("web_app_trigger_haptic_feedback", {

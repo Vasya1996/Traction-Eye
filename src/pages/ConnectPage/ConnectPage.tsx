@@ -14,7 +14,7 @@ export const ConnectPage = () => {
 		if (!userFriendlyAddress) return;
 		setTimeout(() => {
 			navigate("/");
-		}, 2000);
+		});
 	}, [userFriendlyAddress]);
 
 	const [tonConnectUI] = useTonConnectUI();

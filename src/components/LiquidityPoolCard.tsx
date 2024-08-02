@@ -13,7 +13,7 @@ interface LiquidityPoolCardProps {
 }
 
 const handlePremiumClick = () => {
-	window.scrollTo({ top: 0, behavior: 'smooth' });
+	// window.scrollTo({ top: 0, behavior: 'smooth' });
 	postEvent("web_app_trigger_haptic_feedback", {
 		type: "impact",
 		impact_style: "medium",
@@ -32,7 +32,9 @@ const LiquidityPool: FC<LiquidityPoolCardProps> = ({ poolName }) => {
 		queryKey: [poolName],
 	});
 
-	return (
+	if (!data) {
+		null;
+	} else return (
 		<div>
 			<div className="flex justify-between items-center my-4">
 				<div className="flex items-center">
