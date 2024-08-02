@@ -43,7 +43,7 @@ const AssetItemPage: FC = () => {
           <div className="userdata">
             <div className="flex items-center justify-start">
               <img
-                className="h-11 w-11 mr-2"
+                className="h-11 w-11 mr-2 rounded-full"
                 src={state.icon}
                 alt={state.name}
               />

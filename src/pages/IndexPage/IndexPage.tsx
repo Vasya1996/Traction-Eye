@@ -6,11 +6,10 @@ import TELogo from "@/pages/IndexPage/TELogo.svg";
 
 import { MdOutlineKeyboardArrowRight } from "react-icons/md";
 import NFTList from "@/components/NFTList";
-import { IoStatsChart } from "react-icons/io5";
+import ProtocolsList from "@/components/ProtocolsList";
 import { IoDiamondOutline } from "react-icons/io5";
 import { postEvent } from "@telegram-apps/sdk";
 
-import LiquidityPoolCard from "@/components/LiquidityPoolCard";
 import { useTonAddress } from "@tonconnect/ui-react";
 import { retrieveLaunchParams } from "@telegram-apps/sdk-react";
 import { API } from "@/api/api";
@@ -49,10 +48,16 @@ export const IndexPage: FC = () => {
 		}, 100);
 	}, [walletAdress]);
 
+	const shortenWallet = (wallet: string, startLength: number = 4, endLength: number = 4): string => {
+		const start = wallet.substring(0, startLength);
+		const end = wallet.substring(wallet.length - endLength);
+		return `${start}...${end}`;
+	};
+
 	return (
 		<div className="h-screen bg-gray-800">
-			<div className="hero h-56 px-3 flex flex-col">
-				<div className="userdata flex justify-between items-center">
+			<div className="hero h-56 flex flex-col">
+				<div className="userdata px-4 flex justify-between items-center">
 					<Link to={"/profiles"}>
 						<div className="flex items-center">
 							<img
@@ -60,8 +65,8 @@ export const IndexPage: FC = () => {
 								src={TELogo}
 								alt=""
 							/>
-							<div className="mr-2 items=center">
-								<p className="text-gray-400 font-light">N1uQ...D4sQ</p>
+							<div className=" items=center">
+								<p className="text-gray-400 font-light">{shortenWallet(walletAdress)}</p>
 							</div>
 							<MdOutlineKeyboardArrowRight className="text-zinc-400 my-auto size-5" />
 						</div>
@@ -73,23 +78,20 @@ export const IndexPage: FC = () => {
 						to={"/premium"}
 					>
 						<IoDiamondOutline className="mr-2" />
-						Get Premium
+					Get Premium
 					</Link>
 				</div>
 				<div className="mt-auto mb-4">
 					<ChartHome />
 				</div>
 			</div>
-			<div className="p-5 rounded-t-3xl data bg-gray-50">
+
+			<div className="p-5 rounded-t-3xl h-full data bg-gray-50">
 				<AssetList />
+				
 				<NFTList />
-				<div className="tools">
-					<p className="font-semibold flex items-center text-xl">
-						<IoStatsChart className="mr-1" /> Tools
-					</p>
-					<LiquidityPoolCard poolName="stonfi" />
-					<LiquidityPoolCard poolName="dedust" />
-				</div>
+
+				<ProtocolsList />
 			</div>
 		</div>
 	);

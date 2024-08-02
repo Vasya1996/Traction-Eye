@@ -32,7 +32,7 @@ const NFTItemPage: FC = () => {
 	return (
 		<div className="bg-gray-50 flex flex-col p-5">
 			<img
-				className="rounded-lg shadow-lg w-full"
+				className="rounded-3xl shadow-lg w-full"
 				src={nft.image_url}
 				alt={nft.name}
 			/>
@@ -41,11 +41,11 @@ const NFTItemPage: FC = () => {
 			<ul className="gap-3 mt-5 text-base">
 				<li className="flex justify-between mb-4">
 					<div className="text-gray-400 font-semibold">Last Price</div>
-					<div className="font-semibold">$0.31</div>
+					<div className="font-semibold">$0.1</div>
 				</li>
 				<li className="flex justify-between mb-4">
 					<div className="text-gray-400 font-semibold">Collection</div>
-					<div className="font-semibold">{nft.collection_name}</div>
+					<div className="font-semibold justify-end flex text-end">{nft.collection_name}</div>
 				</li>
 				<li className="flex justify-between mb-5">
 					<div className="text-gray-400 font-semibold">Purchase Date</div>

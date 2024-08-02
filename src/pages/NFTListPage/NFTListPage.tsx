@@ -30,10 +30,10 @@ const NFTListPage: FC = () => {
 			</div>
 			<ul className="grid grid-cols-2 flex-col gap-5 mx-auto">
 				{nfts.map((nft: NFT) => (
-					<li key={nft.nft_address}>
+					<li className="w-50 h-50 bg-gray-300 rounded-xl" key={nft.nft_address}>
 						<Link to={`/nft/${nft.nft_address}`}>
 							<img
-								className="w-48 h-48 rounded-xl"
+								className=" rounded-xl"
 								src={nft.image_url}
 								alt={nft.name}
 							/>
