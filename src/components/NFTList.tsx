@@ -19,6 +19,7 @@ const NFTList: FC = () => {
 		queryKey: ["nfts", userFriendlyAddress],
 		queryFn: () => API.getNftsByWallet(userFriendlyAddress),
 		enabled: !!userFriendlyAddress,
+    staleTime: Infinity,
 	});
 
   console.log(data);
