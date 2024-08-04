@@ -9,7 +9,6 @@ import { useEffect, useState } from "react";
 import { IoIosArrowDown } from "react-icons/io";
 import { postEvent } from '@telegram-apps/sdk';
 
-
 const AssetList = () => {
 	const userFriendlyAddress = useTonAddress();
 	const { setNetWorth } = useStore();
@@ -23,7 +22,7 @@ const AssetList = () => {
 	useEffect(() => {
 		if (data && data.assets) {
 			const totalNetWorth = data.assets.reduce(
-				(acc, asset) => acc + ((asset?.amount / Math.pow(10, 9)) * asset.price_usd),
+				(acc, asset) => acc + ((asset?.name === "Tether USD" ? asset?.amount / Math.pow(10, 6) : asset?.amount / Math.pow(10, 9)) * asset.price_usd),
 				0
 			);
 			setNetWorth(totalNetWorth);
@@ -53,8 +52,8 @@ const AssetList = () => {
 
 	// Sort assets by USD value in descending order
 	const sortedAssets = [...assetsArr].sort((a, b) => {
-		const aValue = (a.amount / Math.pow(10, 9)) * a.price_usd;
-		const bValue = (b.amount / Math.pow(10, 9)) * b.price_usd;
+		const aValue = (a.name === "Tether USD" ? a.amount / Math.pow(10, 6) : a.amount / Math.pow(10, 9)) * a.price_usd;
+		const bValue = (b.name === "Tether USD" ? b.amount / Math.pow(10, 6) : b.amount / Math.pow(10, 9)) * b.price_usd;
 		return bValue - aValue;
 	});
 
@@ -63,12 +62,11 @@ const AssetList = () => {
 	// Calculate the total value of the hidden assets
 	const hiddenAssets = sortedAssets.slice(5);
 	const hiddenAssetsValue = hiddenAssets.reduce(
-		(acc, asset) => acc + ((asset.amount / Math.pow(10, 9)) * asset.price_usd),
+		(acc, asset) => acc + ((asset.name === "Tether USD" ? asset.amount / Math.pow(10, 6) : asset.amount / Math.pow(10, 9)) * asset.price_usd),
 		0
 	);
 
 	const handleCollapseClick = () => {
-		
 		setShowAllAssets(prevState => !prevState);
 		postEvent('web_app_trigger_haptic_feedback', { type: 'impact', impact_style: 'soft' });	
 	};
@@ -106,15 +104,13 @@ const AssetList = () => {
 								address={asset.address}
 								icon={asset?.image_url}
 								name={asset?.name}
-								amount={asset?.amount / Math.pow(10, 9)}
+								amount={asset?.name === "Tether USD" ? asset?.amount / Math.pow(10, 6) : asset?.amount / Math.pow(10, 9)}
 								price={asset?.price_usd}
 							/>
 						))}
 					</tbody>
 				</table>
 			</div>
-
-			
 
 			{/* Button Container */}
 			<div className="items-center mb-9 pl-2 pr-3">
@@ -139,13 +135,12 @@ const AssetList = () => {
 					<button
 						className="flex w-full items-center text-gray-500 rounded"
 						onClick={handleCollapseClick}
-					><IoIosArrowDown className=" rotate-180 bg-gray-200 p-1 rounded-full size-8 mr-4" />
-					Show less
-							
+					>
+						<IoIosArrowDown className=" rotate-180 bg-gray-200 p-1 rounded-full size-8 mr-4" />
+						Show less
 					</button>
 				)}
 			</div>
-
 		</div>
 	);
 };

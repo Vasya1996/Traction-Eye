@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 import { useTonAddress } from "@tonconnect/ui-react";
-import Logo from "./Logo.svg";
+import Logo from "../IndexPage/TELogo.svg";
 import { useTonConnectUI } from '@tonconnect/ui-react';
 import { postEvent } from '@telegram-apps/sdk';
 import { useNavigate } from "react-router-dom";
@@ -31,7 +31,7 @@ export const ConnectPage = () => {
 				<div className="text-center bg-zinc-900 rounded-xl p-4 text-gray-300 flex flex-col items-center">
 					<div className="logo-name mb-4 flex flex-col items-center">
 						<span className="w-20 h-20 rounded-full bg-black flex items-center justify-center mb-3">
-							<img className="text-yellow-300 h-8" src={Logo} alt="Logo" />
+							<img className="text-yellow-300 h-8 p-1" src={Logo} alt="Logo" />
 						</span>
 						<h2 className="font-bold text-xl sm:text-2xl">Traction Eye</h2>
 					</div>
