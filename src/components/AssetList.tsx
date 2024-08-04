@@ -12,21 +12,23 @@ import { postEvent } from '@telegram-apps/sdk';
 
 const AssetList = () => {
 	const userFriendlyAddress = useTonAddress();
-	const { setNetWorth } = useStore();
+	const { incrementNetWorth, hasFetchedAssets, setHasFetchedAssets } = useStore();
 	const [showAllAssets, setShowAllAssets] = useState(false);
 
 	const { data, isFetching } = useQuery({
 		queryKey: ["assets"],
 		queryFn: () => API.getAssetsByWallet(userFriendlyAddress),
+    staleTime: Infinity,
 	});
 
 	useEffect(() => {
-		if (data && data.assets) {
+		if (data && data.assets && !hasFetchedAssets) {
 			const totalNetWorth = data.assets.reduce(
 				(acc, asset) => acc + ((asset?.amount / Math.pow(10, 9)) * asset.price_usd),
 				0
 			);
-			setNetWorth(totalNetWorth);
+			incrementNetWorth(totalNetWorth);
+      setHasFetchedAssets(true)
 		}
 	}, [data]);
 

@@ -1,4 +1,4 @@
-import { FC } from "react";
+import { FC, useEffect } from "react";
 import { MdOutlineKeyboardArrowRight } from "react-icons/md";
 import STONLogo from "@/pages/IndexPage/stonfilogo.jpg";
 import dedustLogo from "@/pages/IndexPage/dedustlogo.png";
@@ -7,6 +7,7 @@ import { API } from "@/api/api";
 import { useTonAddress } from "@tonconnect/ui-react";
 import { Link } from "react-router-dom";
 import { postEvent } from "@telegram-apps/sdk";
+import { useStore } from "@/store/store";
 
 interface LiquidityPoolCardProps {
   poolName: "dedust" | "stonfi";
@@ -21,6 +22,7 @@ const handlePremiumClick = () => {
 
 	const LiquidityPool: FC<LiquidityPoolCardProps> = ({ poolName }) => {
 	const userFriendlyAddress = useTonAddress();
+  const { incrementNetWorth, hasFetchedDedust, hasFetchedStonfi, setHasFetchedDedust, setHasFetchedStonfi } = useStore();
 
 	const poolQueryFn =
 		poolName === "dedust" ? API.getDedustInfo : API.getStonfiInfo;
@@ -29,8 +31,20 @@ const handlePremiumClick = () => {
 	const { data } = useQuery({
 		queryFn: () => poolQueryFn(userFriendlyAddress),
 		queryKey: [poolName],
+    staleTime: Infinity,
 	});
 
+  const hasFetchedLP = poolName === "dedust" ? hasFetchedDedust : hasFetchedStonfi;
+  const setHasFetchedLP = poolName === "dedust" ? setHasFetchedDedust : setHasFetchedStonfi;
+
+  useEffect(() => {
+    if (data && !hasFetchedLP) {
+      incrementNetWorth(+data[0].usd_sum);
+      setHasFetchedLP(true);
+    }
+  }, [data])
+
+  
 	if (!data || data.length === 0) {
 		return null;
 	}

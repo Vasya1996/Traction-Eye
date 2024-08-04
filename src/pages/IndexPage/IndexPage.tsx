@@ -41,7 +41,6 @@ export const IndexPage: FC = () => {
 	};
 
 	useEffect(() => {
-    console.log("no wallet")
 		if (walletAdress) return;
 		setTimeout(() => {
 			navigate("connect");

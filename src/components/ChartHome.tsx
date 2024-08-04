@@ -15,6 +15,8 @@ export function ChartHome() {
     const { netWorth } = useStore();
     const walletAddress = useTonAddress();
 
+    console.log("rendercharthome")
+
     // Fetch main chart data
     const { data: mainChartData, isLoading: isLoadingMainChartData } = useQuery({
         queryKey: ["mainChartData"],
