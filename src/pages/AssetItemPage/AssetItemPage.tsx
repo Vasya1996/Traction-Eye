@@ -8,6 +8,7 @@ import { useTonAddress } from "@tonconnect/ui-react";
 import { AssetItemProps } from "@/components/AssetItem";
 import { MdOutlineInfo } from "react-icons/md";
 import { postEvent } from '@telegram-apps/sdk';
+import { Skeleton } from "@/components/ui/skeleton";
 
 const AssetItemPage: FC = () => {
   const [tooltip, setTooltip] = useState<null | string>(null);
@@ -33,9 +34,7 @@ const AssetItemPage: FC = () => {
     setTimeout(() => {
       setTooltip(null);
     }, 3000);
-
   };
-
 
   return (
     <div className={`h-screen bg-gray-800`}>
@@ -52,10 +51,10 @@ const AssetItemPage: FC = () => {
                 <p className="text-gray-300 text-sm font-semibold">{state.name}</p>
                 <div className="flex items-center">
                   <h1 className="text-xl flex justify-start text-white font-semibold">
-                    {state.amount.toFixed(2)}
+                    {state.amount.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
                   </h1>
                   <span className="text-gray-400 justify-center items-center flex font-light text-sm">
-                    <PiApproximateEqualsBold className="mx-1" /> ${(state.amount * state.price).toFixed(2)}
+                    <PiApproximateEqualsBold className="mx-1" /> ${(state.amount * state.price).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
                   </span>
                 </div>
               </div>
@@ -63,11 +62,11 @@ const AssetItemPage: FC = () => {
                 {jettonData?.pnl_percentage !== undefined ? (
                   jettonData.pnl_percentage >= 0 ? (
                     <span className="text-green-600 flex items-center justify-end">
-                      +{jettonData.pnl_percentage.toFixed(2)}% (${jettonData.pnl_usd.toFixed(2)})
+                      +{jettonData.pnl_percentage.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}% (${jettonData.pnl_usd.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })})
                     </span>
                   ) : (
-                    <span className="text-red-600 flex items-center justify-end">
-                      -{jettonData.pnl_percentage.toFixed(2)}% (${jettonData.pnl_usd.toFixed(2)})
+                    <span className="text-red-600 flex items-center ml justify-end">
+                      -{jettonData.pnl_percentage.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}% (${jettonData.pnl_usd.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })})
                     </span>
                   )
                 ) : (
@@ -88,7 +87,7 @@ const AssetItemPage: FC = () => {
         <ul className="gap-3 p-7 text-base">
           <li className="flex justify-between mb-5">
             <div className="text-black font-semibold">Price</div>
-            <div className="font-semibold text-gray-500">${state.price.toFixed(2)}</div>
+            <div className="font-semibold flex items-center text-gray-500">${state.price.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 }) ?? <Skeleton className="w-12 ml-1 h-4 bg-gray-200"/>}</div>
           </li>
           <li className="flex justify-between mb-5 relative">
             <div className="text-black font-semibold flex items-center">
@@ -99,7 +98,7 @@ const AssetItemPage: FC = () => {
                 </div>
               )}
             </div>
-            <div className="font-semibold text-gray-500">${jettonData?.average_price?.toFixed(2) ?? 'Loading...'}</div>
+            <div className="font-semibold flex items-center text-gray-500">${jettonData?.average_price?.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 }) ?? <Skeleton className="w-12 ml-1 h-4 bg-gray-200"/>}</div>
           </li>
           <li className="flex justify-between mb-5 relative">
             <div className="text-black font-semibold flex items-center">
@@ -110,7 +109,7 @@ const AssetItemPage: FC = () => {
                 </div>
               )}
             </div>
-            <div className="font-semibold text-gray-500">${jettonData?.commisions.toFixed(2) ?? 'Loading...'}</div>
+            <div className="font-semibold flex items-center text-gray-500">${jettonData?.commisions?.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 }) ?? <Skeleton className="w-12 ml-1 h-4 bg-gray-200"/>}</div>
           </li>
           <li className="flex justify-between mb-5 relative">
             <div className="text-black font-semibold flex items-center">
@@ -121,7 +120,7 @@ const AssetItemPage: FC = () => {
                 </div>
               )}
             </div>
-            <div className="font-semibold text-gray-500">$18.19B</div>
+            <div className="font-semibold text-gray-500">$18,2B</div>
           </li>
         </ul>
         <span className="w-full border-b"></span>
