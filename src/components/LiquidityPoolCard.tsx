@@ -39,7 +39,10 @@ const handlePremiumClick = () => {
 
   useEffect(() => {
     if (data && !hasFetchedLP) {
-      incrementNetWorth(+data[0].usd_sum);
+      const totalUsdSum = data?.reduce((accumulator, item) => {
+        return accumulator + (+item?.usd_sum || 0);
+      }, 0);  
+      incrementNetWorth(totalUsdSum);
       setHasFetchedLP(true);
     }
   }, [data])
