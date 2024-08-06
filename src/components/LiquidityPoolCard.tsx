@@ -39,9 +39,8 @@ const handlePremiumClick = () => {
 
   useEffect(() => {
     if (data && !hasFetchedLP) {
-      console.log(data);
-      const totalUsdSum = data.reduce((accumulator, item) => {
-        return accumulator + (+item.usd_sum || 0);
+      const totalUsdSum = data?.reduce((accumulator, item) => {
+        return accumulator + (+item?.usd_sum || 0);
       }, 0);  
       incrementNetWorth(totalUsdSum);
       setHasFetchedLP(true);
