@@ -145,4 +145,24 @@ export const API = {
 			throw error;
 		}
 	},
+
+  addWallet: async (
+    telegram_id: number,
+    wallet_address: string,
+  ) => {
+		try {
+      const payload = {
+				telegram_id,
+        wallet_address
+			};
+			const response = await apiClient.post(
+				endpoints.addWallet,
+				payload
+			);
+			return response.data;
+		} catch (error) {
+			console.error("Error getTotalPnl", error);
+			throw error;
+		}
+	},
 };
