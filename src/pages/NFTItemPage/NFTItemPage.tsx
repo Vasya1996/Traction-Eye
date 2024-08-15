@@ -65,7 +65,7 @@ const NFTItemPage: FC = () => {
 				<li className="flex justify-between mb-5">
 					<div className="text-gray-400 font-semibold">Purchase Date</div>
 					<div className="font-semibold">
-						{nft?.last_transaction_date}
+						{nft?.last_transaction_date || 'unknown'}
 					</div>
 				</li>
 				<li className="flex justify-between">
