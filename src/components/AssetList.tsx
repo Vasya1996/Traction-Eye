@@ -14,16 +14,19 @@ const AssetList = () => {
 	const { incrementNetWorth, hasFetchedAssets, setHasFetchedAssets } = useStore();
 	const [showAllAssets, setShowAllAssets] = useState(false);
 
+
 	const { data, isFetching } = useQuery({
 		queryKey: ["assets"],
 		queryFn: () => API.getAssetsByWallet(userFriendlyAddress),
     staleTime: Infinity,
 	});
 
+  console.log("data", data); // DECIMALS приходят в масссив
+
 	useEffect(() => {
 		if (data && data.assets && !hasFetchedAssets) {
 			const totalNetWorth = data.assets.reduce(
-				(acc, asset) => acc + ((asset?.name === "Tether USD" ? asset?.amount / Math.pow(10, 6) : asset?.amount / Math.pow(10, 9)) * asset.price_usd),
+				(acc, asset) => acc + ((asset?.name === "Tether USD" ? asset?.amount / Math.pow(10, 6) : asset?.amount / Math.pow(10, asset?.decimals)) * asset.price_usd),
 				0
 			);
 			incrementNetWorth(totalNetWorth);
