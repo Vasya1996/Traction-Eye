@@ -107,11 +107,11 @@ export const ConnectPage = () => {
             <div className="flex justify-center mb-3">
                 <span
                     onClick={() => handleIndicatorClick(0)}
-                    className={`w-2 h-2 mx-1 rounded-full cursor-pointer ${currentSlide === 0 ? 'bg-yellow-300' : 'bg-gray-600'}`}
+                    className={`w-2 h-2 mx-1 rounded-full cursor-pointer ${currentSlide === 0 ? 'bg-yellow-100' : 'bg-gray-600'}`}
                 ></span>
                 <span
                     onClick={() => handleIndicatorClick(1)}
-                    className={`w-2 h-2 mx-1 rounded-full cursor-pointer ${currentSlide === 1 ? 'bg-yellow-300' : 'bg-gray-600'}`}
+                    className={`w-2 h-2 mx-1 rounded-full cursor-pointer ${currentSlide === 1 ? 'bg-yellow-100' : 'bg-gray-600'}`}
                 ></span>
             </div>
 
