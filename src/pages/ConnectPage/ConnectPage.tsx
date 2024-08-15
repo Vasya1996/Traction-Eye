@@ -8,7 +8,7 @@ import { useMutation } from "@tanstack/react-query";
 import { API } from "@/api/api";
 import { useInitData } from "@telegram-apps/sdk-react";
 import { useSwipeable } from "react-swipeable"; 
-import ScreenshotImage from '@/pages/ConnectPage/screenshots.jpg';
+import ScreenshotImage from '@/pages/ConnectPage/screenshots.png';
 import { IoMdWallet } from "react-icons/io";
 import './ConnectPage.css'; // Импортируйте CSS файл
 
@@ -90,13 +90,13 @@ export const ConnectPage = () => {
                         </div>
                     ) : (
                         <>
-                        <h3 className="text-lg font-black sm:text-xl lg:text-2xl mb-1">
+                        <h3 className="text-lg font-black sm:text-xl lg:text-2xl text-shadow-white mb-1">
                             Analyse Profit and Loss <br /> of any kind of assets
                         </h3>
                         <div className="relative w-full max-w-xs h-auto mx-auto mb-0 mb-3 flex justify-center z-20">
                             <img className="w-full h-auto rounded-3xl object-cover" src={ScreenshotImage} alt="" />
                         </div>
-                        <h3 className="text-md font-black sm:text-md lg:text-xl mb-2">
+                        <h3 className="text-md font-black text-shadow-white sm:text-md lg:text-xl mb-2">
                             All DeFi protocols on one screen
                         </h3>
                         </>
