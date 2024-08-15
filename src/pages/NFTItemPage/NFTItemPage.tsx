@@ -53,7 +53,7 @@ const NFTItemPage: FC = () => {
 			<span className="w-full border-b"></span>
 			<ul className="gap-3 mt-5 text-base">
 				<li className="flex justify-between mb-4">
-					<div className="text-gray-400 font-semibold">Last Price</div>
+					<div className="text-gray-400 font-semibold">Floor Price</div>
 					<div className="font-semibold">${nft?.floor_price_usd}</div>
 				</li>
 				<li className="flex justify-between mb-4">
