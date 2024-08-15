@@ -54,7 +54,7 @@ export const IndexPage: FC = () => {
 	};
 
 	return (
-		<div className=" bg-gray-800">
+		<div className="py-4 bg-gray-800">
 			<div className="hero h-56 flex flex-col">
 				<div className="userdata px-4 flex justify-between items-center">
 					<Link to={"/profiles"}>
