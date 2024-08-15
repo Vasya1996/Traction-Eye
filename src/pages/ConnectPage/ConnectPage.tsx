@@ -4,17 +4,30 @@ import Logo from "../IndexPage/TELogo.svg";
 import { useTonConnectUI } from '@tonconnect/ui-react';
 import { postEvent } from '@telegram-apps/sdk';
 import { useNavigate } from "react-router-dom";
+import { useMutation } from "@tanstack/react-query";
+import { API } from "@/api/api";
+import { useInitData } from "@telegram-apps/sdk-react";
 
 export const ConnectPage = () => {
 	const userFriendlyAddress = useTonAddress();
 	const navigate = useNavigate();
-	console.log(userFriendlyAddress);
+  const initData = useInitData();
+
+  const mutation = useMutation(
+    {
+      mutationFn: (params: {telegram_id: number, wallet_address: string}) => API.addWallet(params.telegram_id, params.wallet_address),
+      mutationKey: ['add-wallet'],
+      onSuccess: () => {
+        setTimeout(() => {
+          navigate("/");
+        }, 1000);
+      }
+    }
+  );
 
 	useEffect(() => {
 		if (!userFriendlyAddress) return;
-		setTimeout(() => {
-			navigate("/");
-		});
+		mutation.mutate({telegram_id: initData?.user?.id ? initData?.user?.id : 0, wallet_address: userFriendlyAddress })
 	}, [userFriendlyAddress]);
 
 	const [tonConnectUI] = useTonConnectUI();

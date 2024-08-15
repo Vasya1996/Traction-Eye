@@ -1,7 +1,6 @@
-import { Asset, ChartResponse, JettonInfo, LPResponse  } from "@/types";
+import { Asset, ChartResponse, JettonInfo, LPResponse } from "@/types";
 import apiClient from "./apiClient";
 import endpoints from "./endpoints";
-
 
 export const API = {
 	getAssetsByWallet: async (wallet: string): Promise<{ assets: Asset[] }> => {
@@ -57,7 +56,7 @@ export const API = {
 	getChart: async (
 		wallet: string,
 		assetWallet: string,
-    period_s = 0,
+		period_s = 0
 	): Promise<ChartResponse> => {
 		try {
 			const payload = {
@@ -76,7 +75,7 @@ export const API = {
 	getJettonInfo: async (
 		wallet: string,
 		assetWallet: string,
-    period_s = 0,
+		period_s = 0
 	): Promise<JettonInfo> => {
 		try {
 			const payload = {
@@ -91,7 +90,7 @@ export const API = {
 			throw error;
 		}
 	},
-	
+
 	login: async (initData: string) => {
 		try {
 			const payload = {
@@ -105,13 +104,65 @@ export const API = {
 		}
 	},
 
-	getTotalPnl: async (wallet_address: string, start_s: number): Promise<{pnl_usd: number, pnl_percentage: number}> => {
+	getTotalPnl: async (
+		wallet_address: string,
+		start_s: number
+	): Promise<{ pnl_usd: number; pnl_percentage: number }> => {
 		try {
-			const response = await apiClient.get(endpoints.getAssetsPnl(wallet_address, start_s));
+			const response = await apiClient.get(
+				endpoints.getAssetsPnl(wallet_address, start_s)
+			);
 			return response.data;
 		} catch (error) {
 			console.error("Error getTotalPnl", error);
 			throw error;
 		}
-	}
+	},
+
+	getAdditionalNftInfo: async (
+		nft_address: string
+	): Promise<{
+		nft_address: string;
+		name: string;
+		collection_name: string;
+		collection_address: string;
+		floor_price_ton: string;
+		floor_price_usd: string;
+		last_transaction_timestamp: number;
+		last_transaction_date: string;
+	}> => {
+		try {
+      const payload = {
+				nft_address,
+			};
+			const response = await apiClient.post(
+				endpoints.getAdditionalNftInfo,
+				payload
+			);
+			return response.data;
+		} catch (error) {
+			console.error("Error getTotalPnl", error);
+			throw error;
+		}
+	},
+
+  addWallet: async (
+    telegram_id: number,
+    wallet_address: string,
+  ) => {
+		try {
+      const payload = {
+				telegram_id,
+        wallet_address
+			};
+			const response = await apiClient.post(
+				endpoints.addWallet,
+				payload
+			);
+			return response.data;
+		} catch (error) {
+			console.error("Error getTotalPnl", error);
+			throw error;
+		}
+	},
 };

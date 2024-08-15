@@ -7,7 +7,9 @@ const endpoints = {
   getJettonInfo: '/jetton_extended_info/',
   getMarketCap: '/market_capital',
   login: '/telegram_login/',
+  getAdditionalNftInfo: '/additional_nft_info/',
   getAssetsPnl: (wallet_address: string, start_s = 60) => `/assets_total_pnl/${wallet_address}/${start_s}`,
+  addWallet: '/add_wallet/',
 };
 
 export default endpoints;
