@@ -44,7 +44,7 @@ export const IndexPage: FC = () => {
 		if (walletAdress) return;
 		setTimeout(() => {
 			navigate("/connect");
-		}, 300);
+		}, 10);
 	}, [walletAdress]);
 
 	const shortenWallet = (wallet: string, startLength: number = 4, endLength: number = 4): string => {
