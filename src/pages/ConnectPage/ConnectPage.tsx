@@ -84,8 +84,8 @@ export const ConnectPage = () => {
                             <span className="rounded-full bg-black flex items-center justify-center mb-2">
                                 <img className="w-32 h-32" src={Logo} alt="Logo" />
                             </span>
-                            <h2 className="text-2xl sm:text-3xl font-black text-transparent bg-clip-text bg-gradient-to-r from-yellow-200 via-yellow-500 to-yellow-600 mb-6">
-                                Welcome to real web3 vision of investing
+                            <h2 className="text-2xl sm:text-3xl font-black text-transparent bg-clip-text bg-gradient-to-r from-yellow-200 via-yellow-500 to-yellow-600 mb-6 text-shadow-white">
+                                Welcome to real Web3 vision of investing
                             </h2>
                         </div>
                     ) : (

@@ -1,5 +1,8 @@
 @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap');
 
+.text-shadow-white {
+    text-shadow: 0 1px 10px rgba(255, 255, 255, 0.303);
+}
 
 .connect-page {
     position: relative;
