@@ -49,27 +49,33 @@ export const App: FC = () => {
   useEffect(() => {
     switch (true) {
         case location.pathname === '/connect':
-            miniApp.setHeaderColor('#000000');
+            postEvent('web_app_setup_back_button', { is_visible: false });
+			miniApp.setHeaderColor('#000000');
             miniApp.setBgColor('#000000');
             break;
         case location.pathname === '/':
+            postEvent('web_app_setup_back_button', { is_visible: false });
             miniApp.setHeaderColor('#1F2937');
             miniApp.setBgColor('#f9fafb');
             break;
         case location.pathname === '/profiles':
+            postEvent('web_app_setup_back_button', { is_visible: true });
             miniApp.setHeaderColor('#f9fafb');
             miniApp.setBgColor('#f9fafb');
             break;
         case location.pathname === '/nfts':
         case location.pathname.startsWith('/nft'):
+            postEvent('web_app_setup_back_button', { is_visible: true });
             miniApp.setHeaderColor('#f9fafb');
             miniApp.setBgColor('#f9fafb');
             break;
 		case location.pathname.startsWith('/asset'):
+            postEvent('web_app_setup_back_button', { is_visible: true });
 			miniApp.setHeaderColor('#1F2937');
 			miniApp.setBgColor('#f9fafb');
 			break;
 		case location.pathname === '/premium':
+            postEvent('web_app_setup_back_button', { is_visible: true });
 				miniApp.setHeaderColor('#000000');
 				miniApp.setBgColor('#000000');
 			break;
