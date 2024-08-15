@@ -42,9 +42,7 @@ export const IndexPage: FC = () => {
 
 	useEffect(() => {
 		if (walletAdress) return;
-		setTimeout(() => {
-			navigate("connect");
-		}, 100);
+			navigate("/connect");
 	}, [walletAdress]);
 
 	const shortenWallet = (wallet: string, startLength: number = 4, endLength: number = 4): string => {
