@@ -43,7 +43,7 @@ export const IndexPage: FC = () => {
 	useEffect(() => {
 		if (walletAdress) return;
 		setTimeout(() => {
-			navigate("connect");
+			navigate("/connect");
 		}, 300);
 	}, [walletAdress]);
 
