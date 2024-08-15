@@ -18,9 +18,7 @@ export const ConnectPage = () => {
       mutationFn: (params: {telegram_id: number, wallet_address: string}) => API.addWallet(params.telegram_id, params.wallet_address),
       mutationKey: ['add-wallet'],
       onSuccess: () => {
-        setTimeout(() => {
-          navigate("/");
-        }, 1000);
+		navigate("/");
       }
     }
   );
