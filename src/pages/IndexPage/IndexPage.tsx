@@ -44,7 +44,7 @@ export const IndexPage: FC = () => {
 		if (walletAdress) return;
 		setTimeout(() => {
 			navigate("/connect");
-		}, 10);
+		}, 300);
 	}, [walletAdress]);
 
 	const shortenWallet = (wallet: string, startLength: number = 4, endLength: number = 4): string => {
@@ -54,7 +54,7 @@ export const IndexPage: FC = () => {
 	};
 
 	return (
-		<div className="py-4 bg-gray-800">
+		<div className="bg-gray-800">
 			<div className="hero h-56 flex flex-col">
 				<div className="userdata px-4 flex justify-between items-center">
 					<Link to={"/profiles"}>
