@@ -8,7 +8,7 @@ import { useMutation } from "@tanstack/react-query";
 import { API } from "@/api/api";
 import { useInitData } from "@telegram-apps/sdk-react";
 import { useSwipeable } from "react-swipeable"; 
-import ScreenshotImage from '@/pages/ConnectPage/screenshots.png';
+import ScreenshotImage from '@/pages/ConnectPage/screenshots.jpg';
 import { IoMdWallet } from "react-icons/io";
 
 export const ConnectPage = () => {
