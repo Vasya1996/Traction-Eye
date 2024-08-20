@@ -1,4 +1,4 @@
-import { FC, useState } from "react";
+import { FC, useState, useEffect } from "react";
 import { useLocation, useParams } from "react-router-dom";
 import { PiApproximateEqualsBold } from "react-icons/pi";
 import Chart from "@/components/Chart";
@@ -16,6 +16,11 @@ const AssetItemPage: FC = () => {
   const walletAddress = useTonAddress();
   const location = useLocation();
   const state = location.state as AssetItemProps;
+
+  // Scroll to the top of the page when the component mounts
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
 
   const { data: chartData } = useQuery({
     queryKey: ['chartData', params.id],
@@ -38,7 +43,7 @@ const AssetItemPage: FC = () => {
 
   return (
     <div className={`h-screen bg-gray-800`}>
-      <div className="h-56">
+      <div className="h-72">
         <div className="hero px-3 sticky top-0 py-2 bg-opacity-90 rounded-b-2xl backdrop-blur-sm">
           <div className="userdata">
             <div className="flex items-center justify-start">
@@ -78,7 +83,7 @@ const AssetItemPage: FC = () => {
             </div>
           </div>
         </div>
-        <div className="max-w-full mt-10">
+        <div className="max-w-full mt-28">
           {chartData?.worth_chart ? <Chart worth_chart={chartData.worth_chart} /> : null}
         </div>
       </div>
