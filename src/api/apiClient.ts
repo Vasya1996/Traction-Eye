@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 const apiClient = axios.create({
-  baseURL: 'https://facegame.tw1.ru',
+  baseURL: 'https://tractionyey2.tw1.ru',
   headers: {
     'Content-Type': 'application/json',
   },
