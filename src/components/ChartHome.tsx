@@ -52,14 +52,17 @@ export function ChartHome() {
     }
 
     return (
-        <div className="pb-4">
-            <div className="px-4">
-                <p className="text-gray-400 font-light">NetWorth</p>
-                <h2 className="mb-1 text-white font-bold text-3xl">${netWorth.toFixed(2)}</h2>
-                <div className="flex">
-                    <div className="text-green-400">+{pnlData.pnl_percentage}%</div>
-                    <div className="text-green-400 ml-2">(${pnlData.pnl_usd})</div>
+        <div className="mb-28">
+            <div className="px-5 mb-16">
+                <p className="text-gray-400 mt-2 font-light">NetWorth</p>
+                <div className="flex items-center justify-between">
+                    <h2 className="mb-1 text-white font-bold text-2xl">${netWorth.toFixed(2)}</h2>
+                    <div className="flex">
+                        <div className="text-green-400 text-base">+{pnlData.pnl_percentage}%</div>
+                        <div className="text-green-400 ml-2 text-base">(${pnlData.pnl_usd})</div>
+                    </div>
                 </div>
+                
             </div>
             <Chart worth_chart={mainChartData.worth_chart} />
         </div>
