@@ -57,17 +57,19 @@ const AssetList = () => {
 
 	// Sort assets by USD value in descending order
 	const sortedAssets = [...assetsArr].sort((a, b) => {
-		const aValue = (a.name === "Tether USD" ? a.amount / Math.pow(10, 6) : a.amount / Math.pow(10, 9)) * a.price_usd;
-		const bValue = (b.name === "Tether USD" ? b.amount / Math.pow(10, 6) : b.amount / Math.pow(10, 9)) * b.price_usd;
+		const aValue = (a.name === "Tether USD" ? a.amount / Math.pow(10, a.decimals) : a.amount / Math.pow(10, a.decimals)) * a.price_usd;
+		const bValue = (b.name === "Tether USD" ? b.amount / Math.pow(10, b.decimals) : b.amount / Math.pow(10, b.decimals)) * b.price_usd;
 		return bValue - aValue;
 	});
+
+  console.log(sortedAssets);
 
 	const visibleAssets = showAllAssets ? sortedAssets : sortedAssets.slice(0, 5);
 
 	// Calculate the total value of the hidden assets
 	const hiddenAssets = sortedAssets.slice(5);
 	const hiddenAssetsValue = hiddenAssets.reduce(
-		(acc, asset) => acc + ((asset.name === "Tether USD" ? asset.amount / Math.pow(10, 6) : asset.amount / Math.pow(10, 9)) * asset.price_usd),
+		(acc, asset) => acc + ((asset.name === "Tether USD" ? asset.amount / Math.pow(10, asset.decimals) : asset.amount / Math.pow(10, asset.decimals)) * asset.price_usd),
 		0
 	);
 
@@ -109,7 +111,7 @@ const AssetList = () => {
 								address={asset.address}
 								icon={asset?.image_url}
 								name={asset?.name}
-								amount={asset?.name === "Tether USD" ? asset?.amount / Math.pow(10, 6) : asset?.amount / Math.pow(10, 9)}
+								amount={asset?.name === "Tether USD" ? asset?.amount / Math.pow(10, asset.decimals) : asset?.amount / Math.pow(10, asset.decimals)}
 								price={asset?.price_usd}
 							/>
 						))}

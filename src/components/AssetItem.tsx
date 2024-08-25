@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import { postEvent } from '@telegram-apps/sdk';
 
 export interface AssetItemProps {
-    id: number; // Используйте уникальный идентификатор
+    id: number;
     icon: string;
     address: string;
     name: string;
@@ -43,7 +43,7 @@ const AssetItem: FC<AssetItemProps> = ({
             </td>
             <td className="py-2 px-3 text-base">
                 <Link to={`/asset/${address}`} onClick={handleAssetClick} state={{ name, icon, amount, price }}>
-                    ${price.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
+                    ${price.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 4 })}
                 </Link>
             </td>
             <td className="py-2 px-3 text-end text-base">
