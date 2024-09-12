@@ -68,9 +68,9 @@ const handlePremiumClick = () => {
 			LP analytics <MdOutlineKeyboardArrowRight />
 			</Link> */}
 		</div>
-		<div className="p-4 bg-white rounded-lg shadow-md">
+		<div className="p-4 bg-white rounded-2xl shadow-md">
 			{data.map((lp, index) => (
-			<div key={index} className="mb-8">
+			<div key={index} className="mb-2">
 				<div className="flex justify-between items-center">
 				<p className="text-blue-500 bg-blue-100 rounded-full px-4 py-1 h-8">
 					Liquidity Pool
@@ -87,7 +87,7 @@ const handlePremiumClick = () => {
 					<p className="py-2 px-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
 					AMOUNT
 					</p>
-					<p className="py-2 px-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider text-right">
+					<p className="py-2 px-3 text-xs font-medium text-gray-500 uppercase tracking-wider text-right">
 					USD VALUE
 					</p>
 				</div>
@@ -125,7 +125,7 @@ const handlePremiumClick = () => {
 					<p className="py-2 px-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
 						AMOUNT
 					</p>
-					<p className="py-2 px-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider text-right">
+					<p className="py-2 px-3 text-xs font-medium text-gray-500 uppercase tracking-wider text-right">
 						USD VALUE
 					</p>
 					</div>
