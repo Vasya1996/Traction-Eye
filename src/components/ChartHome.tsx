@@ -3,6 +3,7 @@ import Chart from "./Chart";
 import { useTonAddress } from "@tonconnect/ui-react";
 import { API } from "@/api/api";
 import { useStore } from "@/store/store";
+import { getDateAndTime, formatNumber, formatIntNumber } from "@/utils";
 import { Skeleton } from "./ui/skeleton";
 
 // Update this interface to match the actual shape of the data returned by your API
@@ -56,10 +57,10 @@ export function ChartHome() {
             <div className="px-5 mb-16">
                 <p className="text-gray-400 mt-2 font-light">NetWorth</p>
                 <div className="flex items-center justify-between">
-                    <h2 className="mb-1 text-white font-bold text-2xl">${netWorth.toFixed(2)}</h2>
-                    <div className="flex">
-                        <div className="text-green-400 text-base">+{pnlData.pnl_percentage}%</div>
-                        <div className="text-green-400 ml-2 text-base">(${pnlData.pnl_usd})</div>
+                    <h2 className="mb-1 text-white font-bold text-2xl">${formatIntNumber(Math.round(netWorth))}</h2>
+                    <div className="flex flex-col">
+                        <span className="text-green-400 flex justify-end text-base">+{formatNumber(pnlData.pnl_percentage, false)}% (${formatNumber(pnlData.pnl_usd, false)})</span>
+                        <span className="text-gray-400 flex justify-end text-xs leading-extra-tight">{getDateAndTime()}</span>
                     </div>
                 </div>
                 

@@ -18,7 +18,7 @@ import { ChartHome } from "@/components/ChartHome";
 
 export const IndexPage: FC = () => {
 	const navigate = useNavigate();
-	const walletAdress = useTonAddress();
+	const walletAddress = useTonAddress();
 	const { initDataRaw } = retrieveLaunchParams();
 
 	const { data } = useQuery({
@@ -27,6 +27,7 @@ export const IndexPage: FC = () => {
 		enabled: !!initDataRaw,
 	});
 
+  console.log('---localStorage',data);
 	useEffect(() => {
     if (data?.token) {
         localStorage.setItem('token', data?.token);
@@ -41,11 +42,11 @@ export const IndexPage: FC = () => {
 	};
 
 	useEffect(() => {
-		if (walletAdress) return;
+		if (walletAddress) return;
 		setTimeout(() => {
 			navigate("/connect");
 		}, 300);
-	}, [walletAdress]);
+	}, [walletAddress]);
 
 	const shortenWallet = (wallet: string, startLength: number = 4, endLength: number = 4): string => {
 		const start = wallet.substring(0, startLength);
@@ -65,20 +66,20 @@ export const IndexPage: FC = () => {
 								alt=""
 							/>
 							<div className=" items=center">
-								<p className="text-gray-400 font-light">{shortenWallet(walletAdress)}</p>
+								<p className="text-gray-400 font-light">{shortenWallet(walletAddress)}</p>
 							</div>
 							<MdOutlineKeyboardArrowRight className="text-zinc-400 my-auto size-5" />
 						</div>
 					</Link>
 
-					<Link
+					{/* <Link
 						onClick={handlePremiumClick}
 						className="flex text-sm items-center text-yellow-300 shadow-md shadow-yellow-500/40 mr-1 px-3 bg-black border rounded-xl h-9"
 						to={"/premium"}
 					>
 						<IoDiamondOutline className="mr-2" />
 					Get Premium
-					</Link>
+					</Link> */}
 				</div>
 				<div className="mt-auto mb-4">
 					<ChartHome />
