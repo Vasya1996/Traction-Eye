@@ -21,7 +21,7 @@ const AssetList = () => {
     staleTime: Infinity,
 	});
 
-  console.log("data----", data); // DECIMALS приходят в масссив
+  console.log("data", data); // DECIMALS приходят в масссив
 
 	useEffect(() => {
 		if (data && data.assets && !hasFetchedAssets) {
@@ -106,11 +106,11 @@ const AssetList = () => {
 					<tbody>
 						{visibleAssets.map((asset, index) => (
 							<AssetItem
-								key={asset.symbol}
+								key={asset.name}
 								id={index}
 								address={asset.address}
 								icon={asset?.image_url}
-								name={asset?.symbol}
+								name={asset?.name}
 								amount={asset?.name === "Tether USD" ? asset?.amount / Math.pow(10, asset.decimals) : asset?.amount / Math.pow(10, asset.decimals)}
 								price={asset?.price_usd}
 							/>

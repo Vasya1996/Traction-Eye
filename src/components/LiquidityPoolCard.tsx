@@ -8,7 +8,6 @@ import { useTonAddress } from "@tonconnect/ui-react";
 import { Link } from "react-router-dom";
 import { postEvent } from "@telegram-apps/sdk";
 import { useStore } from "@/store/store";
-import { formatNumber } from "@/utils";
 
 interface LiquidityPoolCardProps {
   poolName: "dedust" | "stonfi";
@@ -60,13 +59,13 @@ const handlePremiumClick = () => {
 			<img src={icon} alt={poolName} className="rounded-lg h-8 w-8 mr-2" />
 			<p className="font-semibold text-xl capitalize">{poolName}</p>
 			</div>
-			{/* <Link
+			<Link
 			to={'premium'}
 			onClick={handlePremiumClick}
 			className="text-blue-800 px-3 py-1 bg-gray-200 rounded-lg flex items-center"
 			>
 			LP analytics <MdOutlineKeyboardArrowRight />
-			</Link> */}
+			</Link>
 		</div>
 		<div className="p-4 bg-white rounded-2xl shadow-md">
 			{data.map((lp, index) => (
@@ -76,7 +75,7 @@ const handlePremiumClick = () => {
 					Liquidity Pool
 				</p>
 				<p className="text-2xl font-bold mt-2">
-					{formatNumber(parseFloat(lp.usd_sum), false)}$
+					${parseFloat(lp.usd_sum).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
 				</p>
 				</div>
 				<div className="mt-4">
@@ -113,7 +112,7 @@ const handlePremiumClick = () => {
 						).toFixed(2)}
 						</p>
 						<p className="w-1/3 text-right text-black">
-						{formatNumber(parseFloat(token.usd_value))}$
+						${parseFloat(token.usd_value).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
 						</p>
 					</div>
 					))}
@@ -151,7 +150,7 @@ const handlePremiumClick = () => {
 							).toFixed(2)}
 						</p>
 						<p className="w-1/3 text-right text-black">
-							{formatNumber(parseFloat(token.usd_value))}$
+							${parseFloat(token.usd_value).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
 						</p>
 						</div>
 					))}

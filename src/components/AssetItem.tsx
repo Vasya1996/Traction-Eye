@@ -1,7 +1,6 @@
 import { FC } from "react";
 import { Link } from "react-router-dom";
 import { postEvent } from '@telegram-apps/sdk';
-import { formatNumber } from "@/utils";
 
 export interface AssetItemProps {
     id: number;
@@ -37,19 +36,19 @@ const AssetItem: FC<AssetItemProps> = ({
                 >
                     <img src={icon} alt={name} className="w-12 h-12 mr-2 rounded-full" />
                     <div className="grid">
-                        <span className="text-base">{formatNumber(amount)}</span>
+                        <span className="text-base">{amount.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</span>
                         <span className="text-gray-400 font-semibold text-xs">{name}</span>
                     </div>
                 </Link>
             </td>
             <td className="py-2 px-3 text-base">
                 <Link to={`/asset/${address}`} onClick={handleAssetClick} state={{ name, icon, amount, price }}>
-                    {formatNumber(price)}$
+                    ${price.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 4 })}
                 </Link>
             </td>
             <td className="py-2 px-3 text-end text-base">
                 <Link to={`/asset/${address}`} onClick={handleAssetClick} state={{ name, icon, amount, price }}>
-                    {formatNumber(usdValue, false)}$
+                    ${usdValue.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
                 </Link>
             </td>
         </tr>
