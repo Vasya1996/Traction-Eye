@@ -1,36 +1,54 @@
+import { useState, useEffect } from "react";
 import { useQuery } from "@tanstack/react-query";
 import Chart from "./Chart";
 import { useTonAddress } from "@tonconnect/ui-react";
 import { API } from "@/api/api";
 import { useStore } from "@/store/store";
-import { getDateAndTime, formatNumber, formatIntNumber } from "@/utils";
 import { Skeleton } from "./ui/skeleton";
+import { formatIntNumber, formatNumber, getDateAndTime } from "@/utils";
 
-// Update this interface to match the actual shape of the data returned by your API
 interface PnlData {
     pnl_percentage: number;
-    pnl_usd: number; // Assuming pnl_usd is a number, update if it's a string
+    pnl_usd: number;
+}
+
+interface ChartMouseEvent {
+    activeTooltipIndex?: number;
+    activeLabel?: string | number;
+    activeCoordinate?: { x: number; y: number };
 }
 
 export function ChartHome() {
     const { netWorth } = useStore();
     const walletAddress = useTonAddress();
 
-    console.log("rendercharthome")
+    const [selectedPoint, setSelectedPoint] = useState<{ netWorth: number, pnlData: PnlData } | null>(null);
+    const [isMouseDown, setIsMouseDown] = useState(false);
+    const [highlightedIndex, setHighlightedIndex] = useState<number | undefined>(undefined);
 
-    // Fetch main chart data
     const { data: mainChartData, isLoading: isLoadingMainChartData } = useQuery({
         queryKey: ["mainChartData"],
         queryFn: () => API.getChart(walletAddress, "native"),
     });
 
-    // Fetch PnL data
     const { data: pnlData, isLoading: isLoadingPnlData } = useQuery<PnlData>({
         queryKey: ["pnlData"],
         queryFn: () => API.getTotalPnl(walletAddress, 60),
     });
 
     const isLoading = isLoadingMainChartData || isLoadingPnlData;
+
+    useEffect(() => {
+        if (isMouseDown) {
+            document.body.classList.add("no-scroll");
+        } else {
+            document.body.classList.remove("no-scroll");
+        }
+
+        return () => {
+            document.body.classList.remove("no-scroll");
+        };
+    }, [isMouseDown]);
 
     if (isLoading) {
         return (
@@ -44,7 +62,6 @@ export function ChartHome() {
         );
     }
 
-    // Check if data is present before rendering
     const hasMainChartData = mainChartData?.worth_chart !== undefined;
     const hasPnlData = pnlData !== undefined;
 
@@ -52,20 +69,57 @@ export function ChartHome() {
         return null;
     }
 
+    const handleChartMouseMove = (data: ChartMouseEvent) => {
+        if (data && data.activeLabel !== undefined) {
+            const index = data.activeTooltipIndex;
+            if (index !== undefined && mainChartData && mainChartData.worth_chart) {
+                const chartData = mainChartData.worth_chart[index];
+                const updatedNetWorth = chartData[1];
+                const updatedPnlData = pnlData;
+
+                setHighlightedIndex(index);
+                if (isMouseDown) {
+                    setSelectedPoint({
+                        netWorth: updatedNetWorth,
+                        pnlData: updatedPnlData,
+                    });
+                }
+            }
+        }
+    };
+
+    const handleMouseDown = () => {
+        setIsMouseDown(true);
+    };
+
+    const handleMouseUp = () => {
+        setIsMouseDown(false);
+        setHighlightedIndex(undefined);
+        setSelectedPoint(null);
+    };
+
+    const currentNetWorth = selectedPoint ? selectedPoint.netWorth : netWorth;
+    const currentPnlData = selectedPoint ? selectedPoint.pnlData : pnlData;
+
     return (
-        <div className="mb-28">
-            <div className="px-5 mb-16">
+        <>
+            <div className="px-5">
                 <p className="text-gray-400 mt-2 font-light">NetWorth</p>
                 <div className="flex items-center justify-between">
-                    <h2 className="mb-1 text-white font-bold text-2xl">${formatIntNumber(Math.round(netWorth))}</h2>
+                    <h2 className="mb-1 text-white font-bold text-2xl">${formatIntNumber(Math.round(currentNetWorth))}</h2>
                     <div className="flex flex-col">
-                        <span className="text-green-400 flex justify-end text-base">+{formatNumber(pnlData.pnl_percentage, false)}% (${formatNumber(pnlData.pnl_usd, false)})</span>
+                        <span className="text-green-400 flex justify-end text-base">+{formatNumber(currentPnlData.pnl_percentage, false)}% (${formatNumber(currentPnlData.pnl_usd, false)})</span>
                         <span className="text-gray-400 flex justify-end text-xs leading-extra-tight">{getDateAndTime()}</span>
                     </div>
                 </div>
-                
             </div>
-            <Chart worth_chart={mainChartData.worth_chart} />
-        </div>
+            <Chart
+                worth_chart={mainChartData.worth_chart}
+                onMouseMove={handleChartMouseMove}
+                onMouseDown={handleMouseDown}
+                onMouseUp={handleMouseUp}
+                highlightedIndex={highlightedIndex}
+            />
+        </>
     );
 }
