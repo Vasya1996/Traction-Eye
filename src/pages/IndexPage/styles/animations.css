@@ -1,0 +1,14 @@
+/* styles.css или глобальные стили */
+.expandable-content {
+    overflow: hidden;
+    transition: height 0.3s ease;
+  }
+  
+  .collapsed {
+    height: 0;
+  }
+  
+  .expanded {
+    height: auto;
+  }
+  

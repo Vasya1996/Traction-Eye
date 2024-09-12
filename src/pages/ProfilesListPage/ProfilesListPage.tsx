@@ -6,20 +6,25 @@ import { useNavigate } from 'react-router-dom';
 import { postEvent } from '@telegram-apps/sdk';
 import { useTonAddress } from "@tonconnect/ui-react";
 import { useTonConnectUI } from '@tonconnect/ui-react';
+import { useStore } from "@/store/store";
+
 
 const profiles = [
   { username: "WhalePanda", wallet: "EQBVZB9x5FbLZaFYlDddnP_qZQwgjYuRMv5Ly_fMHtks43PV", balance: 1533 },
   // { username: "CryptoBag", wallet: "EQBmW-ZO76IcA-uVo4Zug1tU_TJ6qLZjAZ1PgULY9QYvZ8LX", balance:495 }
 ];
 
-const totalBalance = profiles.reduce((acc, profile) => acc + profile.balance, 0);
-
 const ProfilesListPage: FC = () => {
+  const { netWorth } = useStore();
   const walletAddress = useTonAddress();
   const [tonConnectUI] = useTonConnectUI();
   const navigate = useNavigate();  // Use useNavigate inside the component
 
   const [isManaged, setIsManaged] = useState(false);
+
+  
+  const totalBalance: number = netWorth;
+
 
   useEffect(() => {
     if (walletAddress) return;
@@ -118,7 +123,11 @@ const ProfilesListPage: FC = () => {
 
       {/* Total Balance */}
       <div className='flex flex-col mx-auto justify-center'>
-        <h3 className='text-center font-semibold'>$ {totalBalance}</h3>
+      <h3 className='text-center font-semibold'>
+        ${ totalBalance % 1 === 0 ?  totalBalance.toFixed(0) : totalBalance.toFixed(2) }
+      </h3>
+
+
         <span className='text-sm'>Total Balance of all profiles</span>
       </div>
     </div>

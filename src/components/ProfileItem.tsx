@@ -2,6 +2,7 @@ import type { FC } from 'react';
 import ProfileAvatar from '@/pages/IndexPage/TELogo.svg'; 
 import { postEvent } from '@telegram-apps/sdk';
 import { useTonConnectUI } from '@tonconnect/ui-react';
+import { useStore } from "@/store/store";
 
 // icons
 import { MdDeleteOutline } from "react-icons/md";
@@ -17,8 +18,12 @@ const shortenWallet = (wallet: string, startLength: number = 6, endLength: numbe
 };
 
 // ProfileItem component
-export const ProfileItem: FC<ProfileItemProps> = ({ wallet, balance, managed }) => {
+export const ProfileItem: FC<ProfileItemProps> = ({ wallet, managed }) => {
   const [tonConnectUI] = useTonConnectUI();
+  const { netWorth } = useStore();
+
+
+  const totalBalance: number = netWorth;
 
   const handleRemoveClick = () => {
     // Display confirmation dialog
@@ -52,7 +57,7 @@ export const ProfileItem: FC<ProfileItemProps> = ({ wallet, balance, managed }) 
           <MdDeleteOutline className='size-10 bg-red-300 rounded-lg p-2' />
         </button>
       ) : (
-        <span className='font-light'>${balance}</span>
+        <span className='font-light'>${ totalBalance % 1 === 0 ?  totalBalance.toFixed(0) : totalBalance.toFixed(2) }</span>
       )}
       <span className='absolute bottom-0 left-1/2 transform font-light flex w-full rounded-b-full justify-center mt-12 -translate-x-1/2 text-yellow-500 text-sm font-semibold'></span>
     </li>

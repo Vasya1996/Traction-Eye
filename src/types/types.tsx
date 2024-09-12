@@ -18,5 +18,3 @@ export interface ProfileItemProps {
     balance: number;
     managed: boolean;
 }
-
-

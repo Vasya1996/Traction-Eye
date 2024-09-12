@@ -3,6 +3,7 @@ export interface Asset {
 	name: string;
   address: string,
 	amount: number;
+  decimals: number;
 	price_usd: number;
 	symbol: string;
 }
