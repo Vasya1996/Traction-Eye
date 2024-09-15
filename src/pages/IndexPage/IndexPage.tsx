@@ -12,6 +12,8 @@ import { retrieveLaunchParams } from "@telegram-apps/sdk-react";
 import { API } from "@/api/api";
 import { useQuery } from "@tanstack/react-query";
 import { ChartHome } from "@/components/ChartHome";
+import { TimelineToolbar } from "@/components/TImelineToolbar";
+import { TimelineKeys } from "@/constants";
 
 export const IndexPage: FC = () => {
     const navigate = useNavigate();
@@ -51,17 +53,11 @@ export const IndexPage: FC = () => {
     };
 
     // State for selected timeline
-    const [selectedTimeline, setSelectedTimeline] = useState<string>("MAX");
+    const [selectedTimeline, setSelectedTimeline] = useState<string>(TimelineKeys.MAX);
 
     const handleTimelineSelect = (timeline: string) => {
         setSelectedTimeline(timeline);
-        // Call postEvent to setup swipe behavior
-        postEvent('web_app_trigger_haptic_feedback', { type: 'impact', impact_style: 'rigid' });
-
     };
-
-    // Array of timeline options
-    const timelines = ["1H", "D", "W", "M", "1Y", "MAX"];
 
     return (
         <div className="bg-gray-800 min-h-screen select-none">
@@ -91,27 +87,8 @@ export const IndexPage: FC = () => {
                     </Link> */}
                 </div>
                 <div className="mt-auto mb-4">
-                    <ChartHome />
-
-                    {/* Timeline select */}
-
-                    {walletAddress ?
-                                        <div className="mt-3 flex justify-center text-sm">
-                                        <ul className="flex gap-1 bg-black py-1 px-1 rounded-xl">
-                                            {timelines.map((timeline) => (
-                                                <li
-                                                    key={timeline}
-                                                    onClick={() => handleTimelineSelect(timeline)}
-                                                    className={`flex items-center justify-center cursor-pointer w-12 rounded-lg py-1 text-gray-500 transition-colors duration-300 ${selectedTimeline === timeline ? "bg-gray-600 text-white" : " text-gray-300"}`}
-                                                >
-                                                    {timeline}
-                                                </li>
-                                            ))}
-                                        </ul>
-                                    </div>
-                    : ''} 
-
-
+                    <ChartHome timeline={selectedTimeline}/>
+                    <TimelineToolbar onTimelineSelect={handleTimelineSelect}/>
                 </div>
             </div>
 

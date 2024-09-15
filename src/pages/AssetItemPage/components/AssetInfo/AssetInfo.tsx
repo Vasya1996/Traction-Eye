@@ -1,7 +1,9 @@
+import { MutableRefObject } from 'react';
 import { PiApproximateEqualsBold } from "react-icons/pi";
-import { getDateAndTime, formatNumber } from "@/utils";
+import { getDateAndTime, formatNumber, downgradeFontSize } from "@/utils";
 import { MdOutlineKeyboardArrowLeft } from "react-icons/md";
 import { useNavigate } from "react-router-dom";
+import { useElementIntersection } from "@/hooks";
 
 interface AssetInfoProps {
     icon: string;
@@ -21,6 +23,7 @@ export const AssetInfo = ({
     price
 }: AssetInfoProps) => {
     const navigate = useNavigate();
+    const { element1Ref, element2Ref, fontSizeCounter } = useElementIntersection();
 
     return (
         <div className="hero px-0.5 sticky top-0 py-3.5 bg-opacity-90 rounded-b-2xl backdrop-blur-sm">
@@ -44,31 +47,31 @@ export const AssetInfo = ({
                     </div>
                     <div className="items-start w-full pr-5">
                         <div className="flex flex-col items-start">
-                            <div className="flex justify-between items-center w-full">
-                                <h1 className="flex justify-start text-lg text-white font-semibold leading-extra-tight">
-                                    {formatNumber(10001231231.3321)}
+                            <div ref={element1Ref as MutableRefObject<HTMLDivElement | null>} className="flex justify-between items-center w-full">
+                                <h1 className={`${downgradeFontSize("text-lg", fontSizeCounter)} whitespace-nowrap flex justify-start text-white font-semibold leading-extra-tight`}>
+                                    {formatNumber(amount)}
                                 </h1>
                                 {(pnl_percentage !== undefined && pnl_usd !== undefined) ? (
                                     pnl_percentage >= 0 ? (
-                                        <span className="text-green-600 flex items-center justify-end leading-extra-tight">
+                                        <span className={`${downgradeFontSize("text-base", fontSizeCounter)} whitespace-nowrap text-green-600 flex items-center justify-end leading-extra-tight`}>
                                             +{formatNumber(pnl_percentage, false)}% (${formatNumber(pnl_usd, false)})
                                         </span>
                                     ) : (
-                                        <span className="text-red-600 flex items-center ml justify-end leading-extra-tight text-sm">
+                                        <span className={`${downgradeFontSize("text-sm", fontSizeCounter)} whitespace-nowrap text-red-600 flex items-center ml justify-end leading-extra-tight`}>
                                             -{formatNumber(pnl_percentage, false)}% (${formatNumber(pnl_usd, false)})
                                         </span>
                                     )
                                 ) : (
-                                    <span className="text-gray-400 flex items-center justify-end text-sm">
+                                    <span className={`${downgradeFontSize("text-sm", fontSizeCounter)} text-gray-400 flex items-center justify-end`}>
                                         Loading...
                                     </span>
                                 )}
                             </div>
-                            <div className="flex justify-between items-center w-full">
-                                <span className="text-gray-400 justify-center items-center flex text-base font-semibold leading-extra-tight">
+                            <div ref={element2Ref as MutableRefObject<HTMLDivElement | null>} className="flex justify-between items-center w-full">
+                                <span className={`${downgradeFontSize("text-base", fontSizeCounter)} whitespace-nowrap text-gray-400 justify-center items-center flex font-semibold leading-extra-tight`}>
                                     <PiApproximateEqualsBold className="mr-1" /> {formatNumber(amount * price, false)}$
                                 </span>
-                                <span className="text-gray-400 flex justify-end text-sm leading-extra-tight">{getDateAndTime()}</span>
+                                <span className={`${downgradeFontSize("text-sm", fontSizeCounter)} whitespace-nowrap text-gray-400 flex justify-end leading-extra-tight`}>{getDateAndTime()}</span>
                             </div>
                             <p className="text-gray-300 text-xs font-extralight mt-1">{name}</p>
                         </div>

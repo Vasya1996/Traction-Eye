@@ -35,6 +35,9 @@ module.exports = {
             padding: {
                 0.5: "0.5rem",
             },
+            fontSize: {
+                "2xs": "0.6rem",
+            },
         },
     },
     plugins: [require("tailwindcss-animate")],

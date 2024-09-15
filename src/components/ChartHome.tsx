@@ -1,11 +1,16 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useLayoutEffect, MutableRefObject } from "react";
 import { useQuery } from "@tanstack/react-query";
 import Chart from "./Chart";
 import { useTonAddress } from "@tonconnect/ui-react";
 import { API } from "@/api/api";
 import { useStore } from "@/store/store";
+import { useElementIntersection } from "@/hooks";
 import { Skeleton } from "./ui/skeleton";
-import { formatIntNumber, formatNumber, getDateAndTime } from "@/utils";
+import { formatIntNumber, formatNumber, getDateAndTime, downgradeFontSize } from "@/utils";
+
+interface ChartHomeProps {
+    timeline: string;
+}
 
 interface PnlData {
     pnl_percentage: number;
@@ -18,11 +23,13 @@ interface ChartMouseEvent {
     activeCoordinate?: { x: number; y: number };
 }
 
-export function ChartHome() {
+export function ChartHome({timeline}: ChartHomeProps) {
     const { netWorth } = useStore();
     const walletAddress = useTonAddress();
+    const { fontSizeCounter, element1Ref, element2Ref, checkIntersection } = useElementIntersection();
 
-    const [selectedPoint, setSelectedPoint] = useState<{ netWorth: number, pnlData: PnlData } | null>(null);
+    console.log('--timeline',timeline);
+    const [selectedPoint, setSelectedPoint] = useState<{ netWorth: number, pnlData: PnlData, timestamp: number } | null>(null);
     const [isMouseDown, setIsMouseDown] = useState(false);
     const [highlightedIndex, setHighlightedIndex] = useState<number | undefined>(undefined);
 
@@ -37,6 +44,9 @@ export function ChartHome() {
     });
 
     const isLoading = isLoadingMainChartData || isLoadingPnlData;
+    const currentNetWorth = selectedPoint ? selectedPoint.netWorth : netWorth;
+    const currentPnlData = selectedPoint ? selectedPoint.pnlData : pnlData;
+    const currentTimestamp = selectedPoint ? selectedPoint.timestamp : null;
 
     useEffect(() => {
         if (isMouseDown) {
@@ -49,6 +59,10 @@ export function ChartHome() {
             document.body.classList.remove("no-scroll");
         };
     }, [isMouseDown]);
+
+    useLayoutEffect(() => {
+        checkIntersection();
+    },[currentNetWorth, currentPnlData, currentTimestamp]);
 
     if (isLoading) {
         return (
@@ -74,16 +88,20 @@ export function ChartHome() {
             const index = data.activeTooltipIndex;
             if (index !== undefined && mainChartData && mainChartData.worth_chart) {
                 const chartData = mainChartData.worth_chart[index];
+                const pointTimestamp = chartData[0];
                 const updatedNetWorth = chartData[1];
-                const updatedPnlData = pnlData;
+                const updatedPnlData = {
+                    pnl_percentage: 20,
+                    pnl_usd: 1000
+                };
 
                 setHighlightedIndex(index);
-                if (isMouseDown) {
-                    setSelectedPoint({
-                        netWorth: updatedNetWorth,
-                        pnlData: updatedPnlData,
-                    });
-                }
+
+                setSelectedPoint({
+                    netWorth: updatedNetWorth,
+                    pnlData: updatedPnlData,
+                    timestamp: pointTimestamp,
+                });
             }
         }
     };
@@ -94,22 +112,17 @@ export function ChartHome() {
 
     const handleMouseUp = () => {
         setIsMouseDown(false);
-        setHighlightedIndex(undefined);
-        setSelectedPoint(null);
     };
-
-    const currentNetWorth = selectedPoint ? selectedPoint.netWorth : netWorth;
-    const currentPnlData = selectedPoint ? selectedPoint.pnlData : pnlData;
 
     return (
         <>
             <div className="px-5">
                 <p className="text-gray-400 mt-2 font-light">NetWorth</p>
                 <div className="flex items-center justify-between">
-                    <h2 className="mb-1 text-white font-bold text-2xl">${formatIntNumber(Math.round(currentNetWorth))}</h2>
-                    <div className="flex flex-col">
-                        <span className="text-green-400 flex justify-end text-base">+{formatNumber(currentPnlData.pnl_percentage, false)}% (${formatNumber(currentPnlData.pnl_usd, false)})</span>
-                        <span className="text-gray-400 flex justify-end text-xs leading-extra-tight">{getDateAndTime()}</span>
+                    <h2 ref={element1Ref as MutableRefObject<HTMLHeadingElement | null>} className={`${downgradeFontSize("text-2xl", fontSizeCounter)} mb-1 text-white font-bold whitespace-nowrap`}>${formatIntNumber(Math.round(currentNetWorth))}</h2>
+                    <div ref={element2Ref as MutableRefObject<HTMLDivElement | null>} className="flex flex-col">
+                        {currentPnlData && <span className={`${downgradeFontSize("text-base",fontSizeCounter)} text-green-400 flex justify-end whitespace-nowrap`}>+{formatNumber(currentPnlData.pnl_percentage, false)}% (${formatNumber(currentPnlData.pnl_usd, false)})</span>}
+                        <span className={`${downgradeFontSize("text-xs",fontSizeCounter)} text-gray-400 flex justify-end leading-extra-tight whitespace-nowrap`}>{getDateAndTime(currentTimestamp)}</span>
                     </div>
                 </div>
             </div>

@@ -1,4 +1,4 @@
-export const getDateAndTime = (timestamp?: string): string => {
+export const getDateAndTime = (timestamp?: string | number | null): string => {
     const date = timestamp ? new Date(timestamp) : new Date();  // Use your specific date if necessary
 
     const formattedDate = date.toLocaleDateString('en-US', {

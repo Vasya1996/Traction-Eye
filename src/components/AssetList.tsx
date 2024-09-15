@@ -21,8 +21,6 @@ const AssetList = () => {
     staleTime: Infinity,
 	});
 
-  console.log("data----", data); // DECIMALS приходят в масссив
-
 	useEffect(() => {
 		if (data && data.assets && !hasFetchedAssets) {
 			const totalNetWorth = data.assets.reduce(
