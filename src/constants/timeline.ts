@@ -14,7 +14,7 @@ export enum TIMELINES_PERIOD_SECONDS {
     "1W" = 604800,
     "1M" = 2592000,
     "1Y" = 31536000,
-    "MAX" = 31536000 * 5
+    "MAX" = 0
 }
 
 export  const TIMELINES_INTERVALS_SECONDS = {
@@ -23,5 +23,5 @@ export  const TIMELINES_INTERVALS_SECONDS = {
     "1W": 1800,
     "1M": 7200,
     "1Y": 86400,
-    "MAX": 86400
+    "MAX": 0
 }

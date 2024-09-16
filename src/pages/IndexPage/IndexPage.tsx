@@ -13,7 +13,7 @@ import { API } from "@/api/api";
 import { useQuery } from "@tanstack/react-query";
 import { ChartHome } from "@/components/ChartHome";
 import { TimelineToolbar } from "@/components/TImelineToolbar";
-import { TimelineKeys } from "@/constants";
+import { TimelineKeys, TIMELINES_INTERVALS_SECONDS } from "@/constants";
 
 export const IndexPage: FC = () => {
     const navigate = useNavigate();
@@ -53,9 +53,9 @@ export const IndexPage: FC = () => {
     };
 
     // State for selected timeline
-    const [selectedTimeline, setSelectedTimeline] = useState<string>(TimelineKeys.MAX);
+    const [selectedTimeline, setSelectedTimeline] = useState<keyof typeof TIMELINES_INTERVALS_SECONDS>(TimelineKeys.MAX);
 
-    const handleTimelineSelect = (timeline: string) => {
+    const handleTimelineSelect = (timeline: keyof typeof TIMELINES_INTERVALS_SECONDS) => {
         setSelectedTimeline(timeline);
     };
 

@@ -1,4 +1,4 @@
-import { FC, useState, useEffect } from "react";
+import { FC, useState, useEffect, useMemo } from "react";
 import { useLocation, useParams } from "react-router-dom";
 import Chart, { SelectedPoint } from "@/components/Chart";
 import { useQuery } from "@tanstack/react-query";
@@ -7,8 +7,9 @@ import { useTonAddress } from "@tonconnect/ui-react";
 import { AssetItemProps } from "@/components/AssetItem";
 import { MdOutlineInfo } from "react-icons/md";
 import { postEvent } from '@telegram-apps/sdk';
+import { retrieveLaunchParams } from "@telegram-apps/sdk-react";
 import { Skeleton } from "@/components/ui/skeleton";
-import { formatNumber } from "@/utils";
+import { formatNumber, getTimelinePeriodAndIntervalKey, parseQueryString } from "@/utils";
 import { AssetInfo } from "./components";
 import { TimelineKeys, TIMELINES_INTERVALS_SECONDS } from "@/constants";
 import { TimelineToolbar } from "@/components/TImelineToolbar";
@@ -21,12 +22,19 @@ const AssetItemPage: FC = () => {
   const location = useLocation();
   const state = location.state as AssetItemProps;
 // State for selected timeline
-const [selectedPoint, setSelectedPoint] = useState<SelectedPoint | null>(null);
-const [selectedTimeline, setSelectedTimeline] = useState<keyof typeof TIMELINES_INTERVALS_SECONDS>(TimelineKeys.MAX);
-const handleTimelineSelect = (timeline: keyof typeof TIMELINES_INTERVALS_SECONDS) => {
-  setSelectedTimeline(timeline);
-};
+  const [selectedPoint, setSelectedPoint] = useState<SelectedPoint | null>(null);
+  const [selectedTimeline, setSelectedTimeline] = useState<keyof typeof TIMELINES_INTERVALS_SECONDS>(TimelineKeys.MAX);
+  const handleTimelineSelect = (timeline: keyof typeof TIMELINES_INTERVALS_SECONDS) => {
+    setSelectedTimeline(timeline);
+  };
 
+  const { initDataRaw } = retrieveLaunchParams();
+
+  const initData = useMemo(() => parseQueryString(initDataRaw),[initDataRaw]);
+
+  const timelineKey = useMemo(() => getTimelinePeriodAndIntervalKey((initData as {auth_date: number}).auth_date, selectedTimeline), [initData, selectedTimeline]);
+
+  console.log('---timelineKey',timelineKey);
   // Scroll to the top of the page when the component mounts
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -45,6 +53,7 @@ const handleTimelineSelect = (timeline: keyof typeof TIMELINES_INTERVALS_SECONDS
   const { data: tokenPnl } = useQuery({
     queryKey: ['tokenPnl', params.id],
     queryFn: () => PNL_API.getTokenPnlByAddress({wallet_address: walletAddress, token_address: params.id!, interval: selectedTimeline}),
+    retry: false
   });
   console.log('--token_address', state, '---tokenPnl',tokenPnl);
 

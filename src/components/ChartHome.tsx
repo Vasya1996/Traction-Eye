@@ -1,15 +1,17 @@
-import { useState, useLayoutEffect, MutableRefObject } from "react";
+import { useState, useLayoutEffect, MutableRefObject, useMemo } from "react";
 import { useQuery } from "@tanstack/react-query";
 import Chart, { SelectedPoint } from "./Chart";
 import { useTonAddress } from "@tonconnect/ui-react";
+import { retrieveLaunchParams } from "@telegram-apps/sdk-react";
 import { API } from "@/api/api";
 import { useStore } from "@/store/store";
 import { useElementIntersection } from "@/hooks";
 import { Skeleton } from "./ui/skeleton";
-import { formatIntNumber, formatNumber, getDateAndTime, downgradeFontSize } from "@/utils";
+import { formatIntNumber, formatNumber, getDateAndTime, downgradeFontSize, getTimelinePeriodAndIntervalKey, parseQueryString } from "@/utils";
+import { TIMELINES_INTERVALS_SECONDS } from "@/constants";
 
 interface ChartHomeProps {
-    timeline: string;
+    timeline: keyof typeof TIMELINES_INTERVALS_SECONDS;
 }
 
 interface PnlData {
@@ -21,8 +23,12 @@ export function ChartHome({timeline}: ChartHomeProps) {
     const { netWorth } = useStore();
     const walletAddress = useTonAddress();
     const { fontSizeCounter, element1Ref, element2Ref, checkIntersection } = useElementIntersection();
+    const { initDataRaw } = retrieveLaunchParams();
 
-    console.log('--timeline',timeline);
+    const initData = useMemo(() => parseQueryString(initDataRaw),[initDataRaw]);
+    const timelineKey = useMemo(() => getTimelinePeriodAndIntervalKey((initData as {auth_date: number}).auth_date, timeline), [initData, timeline]);
+
+    console.log('---timelineKey',timelineKey);
     const [selectedPoint, setSelectedPoint] = useState<SelectedPoint | null>(null);
 
     const { data: mainChartData, isLoading: isLoadingMainChartData } = useQuery({
