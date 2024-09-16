@@ -1,4 +1,4 @@
-import { MutableRefObject } from 'react';
+import { MutableRefObject, useMemo } from 'react';
 import { PiApproximateEqualsBold } from "react-icons/pi";
 import { getDateAndTime, formatNumber, downgradeFontSize } from "@/utils";
 import { MdOutlineKeyboardArrowLeft } from "react-icons/md";
@@ -12,6 +12,7 @@ interface AssetInfoProps {
     price: number;
     pnl_percentage?: number;
     pnl_usd?: number;
+    timestamp: number | null;
 }
 
 export const AssetInfo = ({
@@ -20,10 +21,20 @@ export const AssetInfo = ({
     amount,
     pnl_percentage,
     pnl_usd,
-    price
+    price,
+    timestamp
 }: AssetInfoProps) => {
     const navigate = useNavigate();
     const { element1Ref, element2Ref, fontSizeCounter } = useElementIntersection();
+    const { element1Ref: element3Ref, element2Ref: element4Ref, fontSizeCounter: bottomFontSizeCounter } = useElementIntersection();
+
+    const pnl =  useMemo(() => {
+        if(pnl_percentage === undefined || pnl_usd === undefined) {
+            return null;
+        }
+
+        return `${pnl_percentage >= 0 ? "+" : "-"}${formatNumber(pnl_percentage, false)}% $(${formatNumber(pnl_usd, false)})`;
+    },[pnl_percentage, pnl_usd])
 
     return (
         <div className="hero px-0.5 sticky top-0 py-3.5 bg-opacity-90 rounded-b-2xl backdrop-blur-sm">
@@ -47,33 +58,27 @@ export const AssetInfo = ({
                     </div>
                     <div className="items-start w-full pr-5">
                         <div className="flex flex-col items-start">
-                            <div ref={element1Ref as MutableRefObject<HTMLDivElement | null>} className="flex justify-between items-center w-full">
-                                <h1 className={`${downgradeFontSize("text-lg", fontSizeCounter)} whitespace-nowrap flex justify-start text-white font-semibold leading-extra-tight`}>
+                            <div className="flex justify-between items-center w-full">
+                                <h1 ref={element1Ref as MutableRefObject<HTMLHeadingElement | null>} className={`${downgradeFontSize("text-lg", fontSizeCounter)} whitespace-nowrap flex justify-start text-white font-semibold leading-extra-tight`}>
                                     {formatNumber(amount)}
                                 </h1>
                                 {(pnl_percentage !== undefined && pnl_usd !== undefined) ? (
-                                    pnl_percentage >= 0 ? (
-                                        <span className={`${downgradeFontSize("text-base", fontSizeCounter)} whitespace-nowrap text-green-600 flex items-center justify-end leading-extra-tight`}>
-                                            +{formatNumber(pnl_percentage, false)}% (${formatNumber(pnl_usd, false)})
-                                        </span>
-                                    ) : (
-                                        <span className={`${downgradeFontSize("text-sm", fontSizeCounter)} whitespace-nowrap text-red-600 flex items-center ml justify-end leading-extra-tight`}>
-                                            -{formatNumber(pnl_percentage, false)}% (${formatNumber(pnl_usd, false)})
-                                        </span>
-                                    )
+                                    <span ref={element2Ref as MutableRefObject<HTMLHeadingElement | null>} className={`${downgradeFontSize("text-base", fontSizeCounter)} whitespace-nowrap text-${pnl_percentage >= 0 ? "green" : "red"}-600 flex items-center justify-end leading-extra-tight`}>
+                                        {pnl}
+                                    </span>
                                 ) : (
                                     <span className={`${downgradeFontSize("text-sm", fontSizeCounter)} text-gray-400 flex items-center justify-end`}>
                                         Loading...
                                     </span>
                                 )}
                             </div>
-                            <div ref={element2Ref as MutableRefObject<HTMLDivElement | null>} className="flex justify-between items-center w-full">
-                                <span className={`${downgradeFontSize("text-base", fontSizeCounter)} whitespace-nowrap text-gray-400 justify-center items-center flex font-semibold leading-extra-tight`}>
+                            <div  className="flex justify-between items-center w-full">
+                                <span ref={element3Ref} className={`${downgradeFontSize("text-base", bottomFontSizeCounter)} whitespace-nowrap text-gray-400 justify-center items-center flex font-semibold leading-extra-tight`}>
                                     <PiApproximateEqualsBold className="mr-1" /> {formatNumber(amount * price, false)}$
                                 </span>
-                                <span className={`${downgradeFontSize("text-sm", fontSizeCounter)} whitespace-nowrap text-gray-400 flex justify-end leading-extra-tight`}>{getDateAndTime()}</span>
+                                <span className={`${downgradeFontSize("text-sm", bottomFontSizeCounter)} whitespace-nowrap text-gray-400 flex justify-end leading-extra-tight`}>{getDateAndTime(timestamp)}</span>
                             </div>
-                            <p className="text-gray-300 text-xs font-extralight mt-1">{name}</p>
+                            <p ref={element4Ref as MutableRefObject<HTMLParagraphElement | null>} className="text-gray-300 text-xs font-extralight mt-1">{name}</p>
                         </div>
                     </div>
                 </div>

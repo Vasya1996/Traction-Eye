@@ -1,18 +1,18 @@
 import { useState } from "react";
 import { postEvent } from "@telegram-apps/sdk";
 import { useTonAddress } from "@tonconnect/ui-react";
-import { TIMELINES } from "@/constants";
+import { TimelineKeys, TIMELINES, TIMELINES_INTERVALS_SECONDS } from "@/constants";
 
 interface TimelineToolbarProps {
-    onTimelineSelect: (timeline: string) => void;
+    onTimelineSelect: (timeline: keyof typeof TIMELINES_INTERVALS_SECONDS) => void;
 }
 
 export const TimelineToolbar = ({onTimelineSelect}: TimelineToolbarProps) => {
     const walletAddress = useTonAddress();
     // State for selected timeline
-    const [selectedTimeline, setSelectedTimeline] = useState<string>("MAX");
+    const [selectedTimeline, setSelectedTimeline] = useState<keyof typeof TIMELINES_INTERVALS_SECONDS>(TimelineKeys.MAX);
 
-    const handleTimelineSelect = (timeline: string) => {
+    const handleTimelineSelect = (timeline: keyof typeof TIMELINES_INTERVALS_SECONDS) => {
         setSelectedTimeline(timeline);
         onTimelineSelect(timeline);
         // Call postEvent to setup swipe behavior

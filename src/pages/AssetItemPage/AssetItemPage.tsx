@@ -1,6 +1,6 @@
 import { FC, useState, useEffect } from "react";
 import { useLocation, useParams } from "react-router-dom";
-import Chart from "@/components/Chart";
+import Chart, { SelectedPoint } from "@/components/Chart";
 import { useQuery } from "@tanstack/react-query";
 import { API } from "@/api/api";
 import { useTonAddress } from "@tonconnect/ui-react";
@@ -10,6 +10,9 @@ import { postEvent } from '@telegram-apps/sdk';
 import { Skeleton } from "@/components/ui/skeleton";
 import { formatNumber } from "@/utils";
 import { AssetInfo } from "./components";
+import { TimelineKeys, TIMELINES_INTERVALS_SECONDS } from "@/constants";
+import { TimelineToolbar } from "@/components/TImelineToolbar";
+import { PNL_API } from "@/api/pnl";
 
 const AssetItemPage: FC = () => {
   const [tooltip, setTooltip] = useState<null | string>(null);
@@ -17,6 +20,12 @@ const AssetItemPage: FC = () => {
   const walletAddress = useTonAddress();
   const location = useLocation();
   const state = location.state as AssetItemProps;
+// State for selected timeline
+const [selectedPoint, setSelectedPoint] = useState<SelectedPoint | null>(null);
+const [selectedTimeline, setSelectedTimeline] = useState<keyof typeof TIMELINES_INTERVALS_SECONDS>(TimelineKeys.MAX);
+const handleTimelineSelect = (timeline: keyof typeof TIMELINES_INTERVALS_SECONDS) => {
+  setSelectedTimeline(timeline);
+};
 
   // Scroll to the top of the page when the component mounts
   useEffect(() => {
@@ -33,6 +42,12 @@ const AssetItemPage: FC = () => {
     queryFn: () => API.getJettonInfo(walletAddress, params.id!),
   });
 
+  const { data: tokenPnl } = useQuery({
+    queryKey: ['tokenPnl', params.id],
+    queryFn: () => PNL_API.getTokenPnlByAddress({wallet_address: walletAddress, token_address: params.id!, interval: selectedTimeline}),
+  });
+  console.log('--token_address', state, '---tokenPnl',tokenPnl);
+
   const toggleTooltip = (key: string) => {
     postEvent('web_app_trigger_haptic_feedback', { type: 'impact', impact_style: 'light' });
 
@@ -42,12 +57,26 @@ const AssetItemPage: FC = () => {
     }, 3000);
   };
 
+  const handleSelectPoint = (data: SelectedPoint) => {
+    setSelectedPoint(data)
+  }
+
+const currentPnlData = selectedPoint ? selectedPoint.pnlData : jettonData;
+const currentTimestamp = selectedPoint ? selectedPoint.timestamp : null;
+
   return (
     <div className={`h-screen bg-gray-800`}>
-      <div className="h-72">
-        <AssetInfo icon={state.icon} name={state.name} amount={state.amount} price={state.price} pnl_usd={jettonData?.pnl_usd} pnl_percentage={jettonData?.pnl_percentage} />
-        <div className="max-w-full mt-28">
-          {chartData?.worth_chart ? <Chart worth_chart={chartData.worth_chart} /> : null}
+      <div className="flex flex-col h-72">
+        <AssetInfo icon={state.icon} name={state.name} amount={state.amount} price={state.price} pnl_usd={currentPnlData?.pnl_usd} pnl_percentage={currentPnlData?.pnl_percentage} timestamp={currentTimestamp} />
+        <div className="max-w-full mt-auto">
+          {chartData?.worth_chart ? (
+              <>
+                <Chart onSelectPoint={handleSelectPoint} worth_chart={chartData.worth_chart} />
+                <TimelineToolbar onTimelineSelect={handleTimelineSelect} />
+              </>
+            )
+              : null
+          }
         </div>
       </div>
 
@@ -55,7 +84,7 @@ const AssetItemPage: FC = () => {
         <ul className="gap-3 p-7 text-base">
           <li className="flex justify-between mb-5">
             <div className="text-black font-semibold">Price</div>
-            <div className="font-semibold flex items-center text-gray-500">{formatNumber(state.price, false) ?? <Skeleton className="w-12 ml-1 h-4 bg-gray-200"/>}$</div>
+            <div className="font-semibold flex items-center text-gray-500">{formatNumber(state.price, false) ?? <Skeleton className="w-12 ml-1 h-4 bg-gray-200" />}$</div>
           </li>
           <li className="flex justify-between mb-5 relative">
             <div className="text-black font-semibold flex items-center">
@@ -66,7 +95,7 @@ const AssetItemPage: FC = () => {
                 </div>
               )}
             </div>
-            <div className="font-semibold flex items-center text-gray-500">{jettonData?.average_price ?formatNumber(jettonData?.average_price, false) : <Skeleton className="w-12 ml-1 h-4 bg-gray-200"/>}$</div>
+            <div className="font-semibold flex items-center text-gray-500">{jettonData?.average_price ? formatNumber(jettonData?.average_price, false) : <Skeleton className="w-12 ml-1 h-4 bg-gray-200" />}$</div>
           </li>
           <li className="flex justify-between mb-5 relative">
             <div className="text-black font-semibold flex items-center">
@@ -77,7 +106,7 @@ const AssetItemPage: FC = () => {
                 </div>
               )}
             </div>
-            <div className="font-semibold flex items-center text-gray-500">{jettonData?.commisions ? formatNumber(jettonData?.commisions, false) : <Skeleton className="w-12 ml-1 h-4 bg-gray-200"/>}$</div>
+            <div className="font-semibold flex items-center text-gray-500">{jettonData?.commisions ? formatNumber(jettonData?.commisions, false) : <Skeleton className="w-12 ml-1 h-4 bg-gray-200" />}$</div>
           </li>
           <li className="flex justify-between mb-5 relative">
             <div className="text-black font-semibold flex items-center">

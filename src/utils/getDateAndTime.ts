@@ -1,5 +1,5 @@
 export const getDateAndTime = (timestamp?: string | number | null): string => {
-    const date = timestamp ? new Date(timestamp) : new Date();  // Use your specific date if necessary
+    const date = timestamp ? new Date(Number(timestamp) * 1000) : new Date();
 
     const formattedDate = date.toLocaleDateString('en-US', {
     year: 'numeric',

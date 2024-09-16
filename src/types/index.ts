@@ -1,3 +1,5 @@
+export * from "./apiTypes";
+
 export interface Asset {
 	image_url: string;
 	name: string;
