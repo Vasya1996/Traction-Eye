@@ -10,7 +10,7 @@ export enum TimelineKeys {
 
 export enum TIMELINES_PERIOD_SECONDS {
     "1H" = 3600,
-    "1D" = 123,
+    "1D" = 86400,
     "1W" = 604800,
     "1M" = 2592000,
     "1Y" = 31536000,

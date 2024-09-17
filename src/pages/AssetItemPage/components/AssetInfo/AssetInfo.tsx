@@ -1,4 +1,4 @@
-import { MutableRefObject, useMemo } from 'react';
+import { MutableRefObject, useMemo, useEffect } from 'react';
 import { PiApproximateEqualsBold } from "react-icons/pi";
 import { getDateAndTime, formatNumber, downgradeFontSize } from "@/utils";
 import { MdOutlineKeyboardArrowLeft } from "react-icons/md";
@@ -8,8 +8,8 @@ import { useElementIntersection } from "@/hooks";
 interface AssetInfoProps {
     icon: string;
     name: string;
-    amount: number;
-    price: number;
+    amount?: number;
+    price?: number;
     pnl_percentage?: number;
     pnl_usd?: number;
     timestamp: number | null;
@@ -25,15 +25,21 @@ export const AssetInfo = ({
     timestamp
 }: AssetInfoProps) => {
     const navigate = useNavigate();
-    const { element1Ref, element2Ref, fontSizeCounter } = useElementIntersection();
+    const { element1Ref, element2Ref, fontSizeCounter, checkIntersection } = useElementIntersection();
     const { element1Ref: element3Ref, element2Ref: element4Ref, fontSizeCounter: bottomFontSizeCounter } = useElementIntersection();
+
+    useEffect(() => {
+        if(amount || pnl_percentage || pnl_usd || price) {
+            checkIntersection();
+        }
+    },[amount, pnl_percentage, pnl_usd, price]);
 
     const pnl =  useMemo(() => {
         if(pnl_percentage === undefined || pnl_usd === undefined) {
-            return null;
+            return `0.00% $(0.00)`;
         }
 
-        return `${pnl_percentage >= 0 ? "+" : "-"}${formatNumber(pnl_percentage, false)}% $(${formatNumber(pnl_usd, false)})`;
+        return `${pnl_percentage >= 0 ? "+" : ""}${formatNumber(pnl_percentage, false)}% $(${formatNumber(pnl_usd, false)})`;
     },[pnl_percentage, pnl_usd])
 
     return (
@@ -62,19 +68,13 @@ export const AssetInfo = ({
                                 <h1 ref={element1Ref as MutableRefObject<HTMLHeadingElement | null>} className={`${downgradeFontSize("text-lg", fontSizeCounter)} whitespace-nowrap flex justify-start text-white font-semibold leading-extra-tight`}>
                                     {formatNumber(amount)}
                                 </h1>
-                                {(pnl_percentage !== undefined && pnl_usd !== undefined) ? (
-                                    <span ref={element2Ref as MutableRefObject<HTMLHeadingElement | null>} className={`${downgradeFontSize("text-base", fontSizeCounter)} whitespace-nowrap text-${pnl_percentage >= 0 ? "green" : "red"}-600 flex items-center justify-end leading-extra-tight`}>
-                                        {pnl}
-                                    </span>
-                                ) : (
-                                    <span className={`${downgradeFontSize("text-sm", fontSizeCounter)} text-gray-400 flex items-center justify-end`}>
-                                        Loading...
-                                    </span>
-                                )}
+                                <span ref={element2Ref as MutableRefObject<HTMLHeadingElement | null>} className={`${downgradeFontSize("text-base", fontSizeCounter)} whitespace-nowrap ${(Number(pnl_percentage) >= 0 || !pnl_percentage) ? "text-green-600" : "text-red-600"} flex items-center justify-end leading-extra-tight`}>
+                                    {pnl}
+                                </span>
                             </div>
                             <div  className="flex justify-between items-center w-full">
                                 <span ref={element3Ref} className={`${downgradeFontSize("text-base", bottomFontSizeCounter)} whitespace-nowrap text-gray-400 justify-center items-center flex font-semibold leading-extra-tight`}>
-                                    <PiApproximateEqualsBold className="mr-1" /> {formatNumber(amount * price, false)}$
+                                    <PiApproximateEqualsBold className="mr-1" /> {formatNumber(price, false)}$
                                 </span>
                                 <span className={`${downgradeFontSize("text-sm", bottomFontSizeCounter)} whitespace-nowrap text-gray-400 flex justify-end leading-extra-tight`}>{getDateAndTime(timestamp)}</span>
                             </div>

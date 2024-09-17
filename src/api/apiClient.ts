@@ -21,5 +21,26 @@ apiClient.interceptors.request.use(
   }
 );
 
+// export const devClient = axios.create({
+//   baseURL: 'http://185.224.134.85:8470/',
+//   headers: {
+//     'Content-Type': 'application/json',
+//   },
+// });
+
+// pnlClient.interceptors.request.use(
+//   (config) => {
+//     const token = localStorage.getItem('token');
+//     if (token) {
+//       config.headers.Authorization = `Bearer ${token}`;
+//     }
+//     return config;
+//   },
+//   (error) => {
+//     console.error('Request error:', error);
+//     return Promise.reject(error);
+//   }
+// );
+
 
 export default apiClient;

@@ -1,4 +1,5 @@
 export * from "./apiTypes";
+export * from "./chart";
 
 export interface Asset {
 	image_url: string;

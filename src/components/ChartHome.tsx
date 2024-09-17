@@ -1,22 +1,18 @@
-import { useState, useLayoutEffect, MutableRefObject, useMemo } from "react";
+import { useState, useLayoutEffect, MutableRefObject, useMemo, useEffect } from "react";
 import { useQuery } from "@tanstack/react-query";
 import Chart, { SelectedPoint } from "./Chart";
 import { useTonAddress } from "@tonconnect/ui-react";
 import { retrieveLaunchParams } from "@telegram-apps/sdk-react";
-import { API } from "@/api/api";
 import { useStore } from "@/store/store";
 import { useElementIntersection } from "@/hooks";
 import { Skeleton } from "./ui/skeleton";
 import { formatIntNumber, formatNumber, getDateAndTime, downgradeFontSize, getTimelinePeriodAndIntervalKey, parseQueryString } from "@/utils";
 import { TIMELINES_INTERVALS_SECONDS } from "@/constants";
+import { PNL_API } from "@/api/pnl";
+import { ChartData } from "@/types";
 
 interface ChartHomeProps {
     timeline: keyof typeof TIMELINES_INTERVALS_SECONDS;
-}
-
-interface PnlData {
-    pnl_percentage: number;
-    pnl_usd: number;
 }
 
 export function ChartHome({timeline}: ChartHomeProps) {
@@ -28,29 +24,30 @@ export function ChartHome({timeline}: ChartHomeProps) {
     const initData = useMemo(() => parseQueryString(initDataRaw),[initDataRaw]);
     const timelineKey = useMemo(() => getTimelinePeriodAndIntervalKey((initData as {auth_date: number}).auth_date, timeline), [initData, timeline]);
 
-    console.log('---timelineKey',timelineKey);
     const [selectedPoint, setSelectedPoint] = useState<SelectedPoint | null>(null);
 
-    const { data: mainChartData, isLoading: isLoadingMainChartData } = useQuery({
+    const { data: mainChartData, isLoading: isLoadingMainChartData, refetch: refetchMainChartData } = useQuery<ChartData[]>({
         queryKey: ["mainChartData"],
-        queryFn: () => API.getChart(walletAddress, "native"),
+        queryFn: () => PNL_API.getPnlByAddress({wallet_address: walletAddress, interval: timelineKey}),
+        enabled: !!walletAddress && !!timelineKey,
+        refetchOnWindowFocus: false
     });
 
-    const { data: pnlData, isLoading: isLoadingPnlData } = useQuery<PnlData>({
-        queryKey: ["pnlData"],
-        queryFn: () => API.getTotalPnl(walletAddress, 60),
-    });
+    useEffect(() => {
+        if (timelineKey && walletAddress) {
+            refetchMainChartData();
+        }
+    }, [timelineKey, walletAddress]);
 
-    const isLoading = isLoadingMainChartData || isLoadingPnlData;
     const currentNetWorth = selectedPoint ? selectedPoint.netWorth : netWorth;
-    const currentPnlData = selectedPoint ? selectedPoint.pnlData : pnlData;
+    const currentPnlData = selectedPoint ? selectedPoint.pnlData : null;
     const currentTimestamp = selectedPoint ? selectedPoint.timestamp : null;
 
     useLayoutEffect(() => {
         checkIntersection();
     },[currentNetWorth, currentPnlData, currentTimestamp]);
 
-    if (isLoading) {
+    if (isLoadingMainChartData) {
         return (
             <div className="pb-4 mb-14">
                 <div className="px-4">
@@ -62,14 +59,13 @@ export function ChartHome({timeline}: ChartHomeProps) {
         );
     }
 
-    const hasMainChartData = mainChartData?.worth_chart !== undefined;
-    const hasPnlData = pnlData !== undefined;
+    const hasMainChartData = mainChartData && mainChartData?.length > 0;
 
     const handleSelectPoint = (data: SelectedPoint) => {
         setSelectedPoint(data)
       }
 
-    if (!hasMainChartData || !hasPnlData) {
+    if (!hasMainChartData) {
         return null;
     }
 
@@ -80,13 +76,13 @@ export function ChartHome({timeline}: ChartHomeProps) {
                 <div className="flex items-center justify-between">
                     <h2 ref={element1Ref as MutableRefObject<HTMLHeadingElement | null>} className={`${downgradeFontSize("text-2xl", fontSizeCounter)} mb-1 text-white font-bold whitespace-nowrap`}>${formatIntNumber(Math.round(currentNetWorth))}</h2>
                     <div ref={element2Ref as MutableRefObject<HTMLDivElement | null>} className="flex flex-col">
-                        {currentPnlData && <span className={`${downgradeFontSize("text-base",fontSizeCounter)} text-green-400 flex justify-end whitespace-nowrap`}>+{formatNumber(currentPnlData.pnl_percentage, false)}% (${formatNumber(currentPnlData.pnl_usd, false)})</span>}
-                        <span className={`${downgradeFontSize("text-xs",fontSizeCounter)} text-gray-400 flex justify-end leading-extra-tight whitespace-nowrap`}>{getDateAndTime(currentTimestamp)}</span>
+                        {currentPnlData && <span className={`${downgradeFontSize("text-base",fontSizeCounter)} ${(currentPnlData.pnl_percentage >= 0 || !currentPnlData.pnl_percentage) ? "text-green-600" : "text-red-600"} flex justify-end whitespace-nowrap`}>{currentPnlData.pnl_percentage > 0 ? "+" : ""}{formatNumber(currentPnlData.pnl_percentage, false)}% (${formatNumber(currentPnlData.pnl_usd, false)})</span>}
+                        {currentTimestamp && <span className={`${downgradeFontSize("text-xs",fontSizeCounter)} text-gray-400 flex justify-end leading-extra-tight whitespace-nowrap`}>{getDateAndTime(currentTimestamp)}</span>}
                     </div>
                 </div>
             </div>
             <Chart
-                worth_chart={mainChartData.worth_chart}
+                worth_chart={mainChartData}
                 onSelectPoint={handleSelectPoint}
             />
         </>

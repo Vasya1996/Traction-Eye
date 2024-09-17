@@ -6,7 +6,7 @@ import { MdOutlineKeyboardArrowRight } from "react-icons/md";
 import NFTList from "@/components/NFTList";
 import ProtocolsList from "@/components/ProtocolsList";
 // import { IoDiamondOutline } from "react-icons/io5";
-import { postEvent } from "@telegram-apps/sdk";
+// import { postEvent } from "@telegram-apps/sdk";
 import { useTonAddress } from "@tonconnect/ui-react";
 import { retrieveLaunchParams } from "@telegram-apps/sdk-react";
 import { API } from "@/api/api";

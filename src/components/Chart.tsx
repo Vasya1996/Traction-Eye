@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { LineChart, Line, ResponsiveContainer, Tooltip, ReferenceLine, XAxis, YAxis} from "recharts";
+import { ChartData } from "@/types";
 
 interface ChartMouseEvent {
     activeTooltipIndex?: number;
@@ -17,14 +18,15 @@ export interface SelectedPoint {
     netWorth: number;
     pnlData: PnlData;
     timestamp: number;
+    totalPrice?: number;
 }
 
 export interface ChartProps {
-    worth_chart: Array<[number, number]>;
+    worth_chart: Array<ChartData>;
     onMouseMove?: (data: ChartMouseEvent) => void;
     onMouseDown?: () => void;
     onMouseUp?: () => void;
-    onSelectPoint: (point: { netWorth: number, pnlData: PnlData, timestamp: number }) => void;
+    onSelectPoint: (point: SelectedPoint) => void;
 }
 
 export default function Chart({ worth_chart, onMouseMove, onMouseDown, onMouseUp, onSelectPoint }: ChartProps) {
@@ -34,9 +36,12 @@ export default function Chart({ worth_chart, onMouseMove, onMouseDown, onMouseUp
     const [activeY, setActiveY] = useState<number | null>(null);
 
     const transformed_chart = worth_chart.map((item, index) => ({
-        timestamp: item[0],
-        price: item[1],
+        timestamp: item.timestamp,
+        price: item.balance ?? item.net_worth,
         isHighlighted: index === highlightedIndex,
+        pnlUsd: item.pnl_usd,
+        pnl_percentage: item.pnl_percentage,
+        totalPrice: item.total_price
     }));
 
     useEffect(() => {
@@ -57,11 +62,11 @@ export default function Chart({ worth_chart, onMouseMove, onMouseDown, onMouseUp
             if (index !== undefined && worth_chart) {
 
                 const chartData = worth_chart[index];
-                const pointTimestamp = chartData[0];
-                const updatedNetWorth = chartData[1];
+                const pointTimestamp = chartData.timestamp;
+                const updatedNetWorth = chartData.balance ?? chartData.net_worth ?? 0;
                 const updatedPnlData = {
-                    pnl_percentage: 20,
-                    pnl_usd: 1000
+                    pnl_percentage: chartData.pnl_percentage,
+                    pnl_usd: chartData.pnl_usd
                 };
 
                 setHighlightedIndex(index);
@@ -70,6 +75,7 @@ export default function Chart({ worth_chart, onMouseMove, onMouseDown, onMouseUp
                 setActiveY(updatedNetWorth);
 
                 onSelectPoint({
+                    totalPrice: chartData.total_price,
                     netWorth: updatedNetWorth,
                     pnlData: updatedPnlData,
                     timestamp: pointTimestamp,
