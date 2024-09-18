@@ -8,3 +8,14 @@
     }
   }
   
+
+.no-scroll {
+  overflow: hidden;
+}
+
+/* Ensure the chart container doesn't affect the layout */
+.chart-container {
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
