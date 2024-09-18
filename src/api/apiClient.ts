@@ -25,7 +25,11 @@ export const devClient = axios.create({
   baseURL: 'http://185.224.134.85:8470/',
   headers: {
     'Content-Type': 'application/json',
+    get: {
+      "Access-Control-Allow-Origin": "*"
+    }
   },
+  withCredentials: false
 });
 
 devClient.interceptors.request.use(
