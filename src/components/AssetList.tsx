@@ -60,8 +60,6 @@ const AssetList = () => {
 		return bValue - aValue;
 	});
 
-  console.log(sortedAssets);
-
 	const visibleAssets = showAllAssets ? sortedAssets : sortedAssets.slice(0, 5);
 
 	// Calculate the total value of the hidden assets
