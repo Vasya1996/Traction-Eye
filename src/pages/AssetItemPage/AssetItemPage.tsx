@@ -2,7 +2,7 @@ import { FC, useState, useEffect, useMemo } from "react";
 import { useLocation, useParams } from "react-router-dom";
 import Chart, { SelectedPoint } from "@/components/Chart";
 import { useQuery } from "@tanstack/react-query";
-import { API } from "@/api/api";
+// import { API } from "@/api/api";
 import { useTonAddress } from "@tonconnect/ui-react";
 import { AssetItemProps } from "@/components/AssetItem";
 import { MdOutlineInfo } from "react-icons/md";
@@ -53,10 +53,10 @@ const AssetItemPage: FC = () => {
       }
   }, [timelineKey, walletAddress, params.id]);
 
-  const { data: jettonData } = useQuery({
-    queryKey: ['jettonData', params.id],
-    queryFn: () => API.getJettonInfo(walletAddress, params.id!),
-  });
+  // const { data: jettonData } = useQuery({
+  //   queryKey: ['jettonData', params.id],
+  //   queryFn: () => API.getJettonInfo(walletAddress, params.id!),
+  // });
 
   const toggleTooltip = (key: string) => {
     postEvent('web_app_trigger_haptic_feedback', { type: 'impact', impact_style: 'light' });
