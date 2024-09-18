@@ -8,7 +8,6 @@ import { useTonAddress } from "@tonconnect/ui-react";
 // import { Link } from "react-router-dom";
 // import { postEvent } from "@telegram-apps/sdk";
 import { useStore } from "@/store/store";
-import { formatNumber } from "@/utils";
 
 interface LiquidityPoolCardProps {
   poolName: "dedust" | "stonfi";
@@ -60,23 +59,23 @@ interface LiquidityPoolCardProps {
 			<img src={icon} alt={poolName} className="rounded-lg h-8 w-8 mr-2" />
 			<p className="font-semibold text-xl capitalize">{poolName}</p>
 			</div>
-			{/* <Link
+			<Link
 			to={'premium'}
 			onClick={handlePremiumClick}
 			className="text-blue-800 px-3 py-1 bg-gray-200 rounded-lg flex items-center"
 			>
 			LP analytics <MdOutlineKeyboardArrowRight />
-			</Link> */}
+			</Link>
 		</div>
-		<div className="p-4 bg-white rounded-2xl shadow-md">
+		<div className="p-4 bg-white rounded-lg shadow-md">
 			{data.map((lp, index) => (
-			<div key={index} className="mb-2">
+			<div key={index} className="mb-8">
 				<div className="flex justify-between items-center">
 				<p className="text-blue-500 bg-blue-100 rounded-full px-4 py-1 h-8">
 					Liquidity Pool
 				</p>
 				<p className="text-2xl font-bold mt-2">
-					{formatNumber(parseFloat(lp.usd_sum), false)}$
+					${parseFloat(lp.usd_sum).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
 				</p>
 				</div>
 				<div className="mt-4">
@@ -87,7 +86,7 @@ interface LiquidityPoolCardProps {
 					<p className="py-2 px-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
 					AMOUNT
 					</p>
-					<p className="py-2 px-3 text-xs font-medium text-gray-500 uppercase tracking-wider text-right">
+					<p className="py-2 px-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider text-right">
 					USD VALUE
 					</p>
 				</div>
@@ -113,7 +112,7 @@ interface LiquidityPoolCardProps {
 						).toFixed(2)}
 						</p>
 						<p className="w-1/3 text-right text-black">
-						{formatNumber(parseFloat(token.usd_value))}$
+						${parseFloat(token.usd_value).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
 						</p>
 					</div>
 					))}
@@ -125,7 +124,7 @@ interface LiquidityPoolCardProps {
 					<p className="py-2 px-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
 						AMOUNT
 					</p>
-					<p className="py-2 px-3 text-xs font-medium text-gray-500 uppercase tracking-wider text-right">
+					<p className="py-2 px-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider text-right">
 						USD VALUE
 					</p>
 					</div>
@@ -151,7 +150,7 @@ interface LiquidityPoolCardProps {
 							).toFixed(2)}
 						</p>
 						<p className="w-1/3 text-right text-black">
-							{formatNumber(parseFloat(token.usd_value))}$
+							${parseFloat(token.usd_value).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
 						</p>
 						</div>
 					))}
