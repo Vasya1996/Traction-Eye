@@ -59,7 +59,7 @@ export const ProfileItem: FC<ProfileItemProps> = ({ wallet, managed }) => {
       ) : (
         <span className='font-light'>${ totalBalance % 1 === 0 ?  totalBalance.toFixed(0) : totalBalance.toFixed(2) }</span>
       )}
-      <span className='absolute bottom-0 left-1/2 transform flex w-full rounded-b-full justify-center mt-12 -translate-x-1/2 text-yellow-500 text-sm font-semibold'></span>
+      <span className='absolute bottom-0 left-1/2 transform font-light flex w-full rounded-b-full justify-center mt-12 -translate-x-1/2 text-yellow-500 text-sm font-semibold'></span>
     </li>
   );
 };
