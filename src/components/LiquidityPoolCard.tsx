@@ -1,24 +1,24 @@
 import { FC, useEffect } from "react";
-import { MdOutlineKeyboardArrowRight } from "react-icons/md";
+// import { MdOutlineKeyboardArrowRight } from "react-icons/md";
 import STONLogo from "@/pages/IndexPage/stonfilogo.jpg";
 import dedustLogo from "@/pages/IndexPage/dedustlogo.png";
 import { useQuery } from "@tanstack/react-query";
 import { API } from "@/api/api";
 import { useTonAddress } from "@tonconnect/ui-react";
-import { Link } from "react-router-dom";
-import { postEvent } from "@telegram-apps/sdk";
+// import { Link } from "react-router-dom";
+// import { postEvent } from "@telegram-apps/sdk";
 import { useStore } from "@/store/store";
 
 interface LiquidityPoolCardProps {
   poolName: "dedust" | "stonfi";
 }
 
-const handlePremiumClick = () => {
-	postEvent("web_app_trigger_haptic_feedback", {
-		type: "impact",
-		impact_style: "medium",
-	});
-	};
+// const handlePremiumClick = () => {
+// 	postEvent("web_app_trigger_haptic_feedback", {
+// 		type: "impact",
+// 		impact_style: "medium",
+// 	});
+// 	};
 
 	const LiquidityPool: FC<LiquidityPoolCardProps> = ({ poolName }) => {
 	const userFriendlyAddress = useTonAddress();
