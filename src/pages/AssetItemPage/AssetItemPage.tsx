@@ -129,7 +129,8 @@ const AssetItemPage: FC = () => {
                 </div>
               )}
             </div>
-            <div className="font-semibold text-gray-500">$18,2B</div>
+            <div className="font-semibold text-gray-500">{"\u2014"} $</div>
+            {/* <div className="font-semibold text-gray-500">$18,2B</div> */}
           </li>
         </ul>
         <span className="w-full border-b"></span>
