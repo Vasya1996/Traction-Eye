@@ -1,6 +1,3 @@
-import { TIMELINES_PERIOD_SECONDS, TIMELINES_INTERVALS_SECONDS } from "@/constants";
-import { getPnlByAddressPayload, getTokenPnlByAddressPayload } from "@/types";
-
 const endpoints = {
   getAssetsByWallet: '/assets_by_wallet',
   gethNFTsByWallet: '/nfts_by_wallet',
@@ -13,8 +10,6 @@ const endpoints = {
   getAdditionalNftInfo: '/additional_nft_info/',
   getAssetsPnl: (wallet_address: string, start_s = 60) => `/assets_total_pnl/${wallet_address}/${start_s}`,
   addWallet: '/add_wallet/',
-  getPnlByAddress: ({ wallet_address, interval }: getPnlByAddressPayload) => `/pnl/${wallet_address}?period=${TIMELINES_PERIOD_SECONDS[interval]}&interval=${TIMELINES_INTERVALS_SECONDS[interval]}`,
-  getTokenPnlByAddress: ({ wallet_address, token_address, interval }: getTokenPnlByAddressPayload ) => `/pnl/${wallet_address}/${token_address}?period=${TIMELINES_PERIOD_SECONDS[interval]}&interval=${TIMELINES_INTERVALS_SECONDS[interval]}`
 };
 
 export default endpoints;
