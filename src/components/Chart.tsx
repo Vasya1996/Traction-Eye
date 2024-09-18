@@ -1,4 +1,6 @@
-import { LineChart, Line, ResponsiveContainer, Tooltip } from "recharts";
+import { useState, useEffect } from "react";
+import { LineChart, Line, ResponsiveContainer, Tooltip, ReferenceLine, XAxis, YAxis} from "recharts";
+import { ChartData } from "@/types";
 
 interface ChartMouseEvent {
     activeTooltipIndex?: number;
@@ -7,36 +9,119 @@ interface ChartMouseEvent {
     // Add other properties you expect
 }
 
+interface PnlData {
+    pnl_percentage: number;
+    pnl_usd: number;
+}
+
+export interface SelectedPoint { 
+    netWorth: number;
+    pnlData: PnlData;
+    timestamp: number;
+    totalPrice?: number;
+}
+
 export interface ChartProps {
-    worth_chart: Array<[number, number]>;
+    worth_chart: Array<ChartData>;
     onMouseMove?: (data: ChartMouseEvent) => void;
     onMouseDown?: () => void;
     onMouseUp?: () => void;
-    highlightedIndex?: number;
+    onSelectPoint: (point: SelectedPoint) => void;
 }
 
-export default function Chart(props: ChartProps) {
-    const transformed_chart = props.worth_chart.map((item, index) => ({
-        price: item[1],
-        isHighlighted: index === props.highlightedIndex, // Add a flag to indicate if the point is highlighted
+export default function Chart({ worth_chart, onMouseMove, onMouseDown, onMouseUp, onSelectPoint }: ChartProps) {
+    const [isMouseDown, setIsMouseDown] = useState(false);
+    const [highlightedIndex, setHighlightedIndex] = useState<number | undefined>(undefined);
+    const [activeX, setActiveX] = useState<number | null>(null);
+    const [activeY, setActiveY] = useState<number | null>(null);
+
+    const transformed_chart = worth_chart.map((item, index) => ({
+        timestamp: item.timestamp,
+        price: item.balance ?? item.net_worth,
+        isHighlighted: index === highlightedIndex,
+        pnlUsd: item.pnl_usd,
+        pnl_percentage: item.pnl_percentage,
+        totalPrice: item.total_price
     }));
+
+    useEffect(() => {
+        if (isMouseDown) {
+            document.body.classList.add("no-scroll");
+        } else {
+            document.body.classList.remove("no-scroll");
+        }
+
+        return () => {
+            document.body.classList.remove("no-scroll");
+        };
+    }, [isMouseDown]);
+
+    const handleChartMouseMove = (data: ChartMouseEvent) => {
+        if (data && data.activeLabel !== undefined) {
+            const index = data.activeTooltipIndex;
+            if (index !== undefined && worth_chart) {
+
+                const chartData = worth_chart[index];
+                const pointTimestamp = chartData.timestamp;
+                const updatedNetWorth = chartData.balance ?? chartData.net_worth ?? 0;
+                const updatedPnlData = {
+                    pnl_percentage: chartData.pnl_percentage,
+                    pnl_usd: chartData.pnl_usd
+                };
+
+                setHighlightedIndex(index);
+
+                setActiveX(pointTimestamp);
+                setActiveY(updatedNetWorth);
+
+                onSelectPoint({
+                    totalPrice: chartData.total_price,
+                    netWorth: updatedNetWorth,
+                    pnlData: updatedPnlData,
+                    timestamp: pointTimestamp,
+                });
+
+                onMouseMove && onMouseMove(data);
+            }
+        }
+    };
+
+    const handleMouseDown = () => {
+        setIsMouseDown(true);
+        onMouseDown && onMouseDown();
+    };
+
+    const handleMouseUp = () => {
+        setIsMouseDown(false);
+        onMouseUp && onMouseUp();
+    };
 
     return (
         <ResponsiveContainer width="100%" height={120}>
             <LineChart
                 data={transformed_chart}
-                onMouseMove={props.onMouseMove}
-                onMouseDown={props.onMouseDown}
-                onMouseUp={props.onMouseUp}
+                onMouseMove={handleChartMouseMove}
+                onMouseDown={handleMouseDown}
+                onMouseUp={handleMouseUp}
             >
                 <Line
                     type="monotone"
                     dataKey="price"
                     dot={false}
                     stroke="#82ca9d"
-                    strokeOpacity={props.highlightedIndex !== undefined ? 0.7 : 1} // Example: Dim the line if a point is highlighted
+                    strokeOpacity={highlightedIndex !== undefined ? 0.7 : 1} // Example: Dim the line if a point is highlighted
                 />
-                <Tooltip content={<div></div>} />
+
+                <XAxis hide dataKey="timestamp" domain={['dataMin', 'dataMax']} />
+                <YAxis hide dataKey="price" domain={['auto', 'auto']} />
+
+                {activeX !== null && (
+                    <ReferenceLine x={activeX} stroke="#82ca9d" strokeDasharray="3 3" />
+                )}
+                {activeY !== null && (
+                    <ReferenceLine y={activeY} stroke="#82ca9d" strokeDasharray="3 3" />
+                )}
+                <Tooltip cursor={false} content={<div></div>} />
             </LineChart>
         </ResponsiveContainer>
     );

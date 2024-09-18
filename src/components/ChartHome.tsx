@@ -1,55 +1,53 @@
-import { useState, useEffect } from "react";
+import { useState, useLayoutEffect, MutableRefObject, useMemo, useEffect } from "react";
 import { useQuery } from "@tanstack/react-query";
-import Chart from "./Chart";
+import Chart, { SelectedPoint } from "./Chart";
 import { useTonAddress } from "@tonconnect/ui-react";
-import { API } from "@/api/api";
+import { retrieveLaunchParams } from "@telegram-apps/sdk-react";
 import { useStore } from "@/store/store";
+import { useElementIntersection } from "@/hooks";
 import { Skeleton } from "./ui/skeleton";
+import { formatIntNumber, formatNumber, getDateAndTime, downgradeFontSize, getTimelinePeriodAndIntervalKey, parseQueryString } from "@/utils";
+import { TIMELINES_INTERVALS_SECONDS } from "@/constants";
+import { PNL_API } from "@/api/pnl";
+import { ChartData } from "@/types";
 
-interface PnlData {
-    pnl_percentage: number;
-    pnl_usd: number;
+interface ChartHomeProps {
+    timeline: keyof typeof TIMELINES_INTERVALS_SECONDS;
 }
 
-interface ChartMouseEvent {
-    activeTooltipIndex?: number;
-    activeLabel?: string | number;
-    activeCoordinate?: { x: number; y: number };
-}
-
-export function ChartHome() {
+export function ChartHome({timeline}: ChartHomeProps) {
     const { netWorth } = useStore();
     const walletAddress = useTonAddress();
+    const { fontSizeCounter, element1Ref, element2Ref, checkIntersection } = useElementIntersection();
+    const { initDataRaw } = retrieveLaunchParams();
 
-    const [selectedPoint, setSelectedPoint] = useState<{ netWorth: number, pnlData: PnlData } | null>(null);
-    const [isMouseDown, setIsMouseDown] = useState(false);
-    const [highlightedIndex, setHighlightedIndex] = useState<number | undefined>(undefined);
+    const initData = useMemo(() => parseQueryString(initDataRaw),[initDataRaw]);
+    const timelineKey = useMemo(() => getTimelinePeriodAndIntervalKey((initData as {auth_date: number}).auth_date, timeline), [initData, timeline]);
 
-    const { data: mainChartData, isLoading: isLoadingMainChartData } = useQuery({
+    const [selectedPoint, setSelectedPoint] = useState<SelectedPoint | null>(null);
+
+    const { data: mainChartData, isLoading: isLoadingMainChartData, refetch: refetchMainChartData } = useQuery<ChartData[]>({
         queryKey: ["mainChartData"],
-        queryFn: () => API.getChart(walletAddress, "native"),
+        queryFn: () => PNL_API.getPnlByAddress({wallet_address: walletAddress, interval: timelineKey}),
+        enabled: !!walletAddress && !!timelineKey,
+        refetchOnWindowFocus: false
     });
-
-    const { data: pnlData, isLoading: isLoadingPnlData } = useQuery<PnlData>({
-        queryKey: ["pnlData"],
-        queryFn: () => API.getTotalPnl(walletAddress, 60),
-    });
-
-    const isLoading = isLoadingMainChartData || isLoadingPnlData;
 
     useEffect(() => {
-        if (isMouseDown) {
-            document.body.classList.add("no-scroll");
-        } else {
-            document.body.classList.remove("no-scroll");
+        if (timelineKey && walletAddress) {
+            refetchMainChartData();
         }
+    }, [timelineKey, walletAddress]);
 
-        return () => {
-            document.body.classList.remove("no-scroll");
-        };
-    }, [isMouseDown]);
+    const currentNetWorth = selectedPoint ? selectedPoint.netWorth : netWorth;
+    const currentPnlData = selectedPoint ? selectedPoint.pnlData : null;
+    const currentTimestamp = selectedPoint ? selectedPoint.timestamp : null;
 
-    if (isLoading) {
+    useLayoutEffect(() => {
+        checkIntersection();
+    },[currentNetWorth, currentPnlData, currentTimestamp]);
+
+    if (isLoadingMainChartData) {
         return (
             <div className="pb-4 mb-14">
                 <div className="px-4">
@@ -61,63 +59,31 @@ export function ChartHome() {
         );
     }
 
-    const hasMainChartData = mainChartData?.worth_chart !== undefined;
-    const hasPnlData = pnlData !== undefined;
+    const hasMainChartData = mainChartData && mainChartData?.length > 0;
 
-    if (!hasMainChartData || !hasPnlData) {
+    const handleSelectPoint = (data: SelectedPoint) => {
+        setSelectedPoint(data)
+      }
+
+    if (!hasMainChartData) {
         return null;
     }
-
-    const handleChartMouseMove = (data: ChartMouseEvent) => {
-        if (data && data.activeLabel !== undefined) {
-            const index = data.activeTooltipIndex;
-            if (index !== undefined && mainChartData && mainChartData.worth_chart) {
-                const chartData = mainChartData.worth_chart[index];
-                const updatedNetWorth = chartData[1];
-                const updatedPnlData = pnlData;
-
-                setHighlightedIndex(index);
-                if (isMouseDown) {
-                    setSelectedPoint({
-                        netWorth: updatedNetWorth,
-                        pnlData: updatedPnlData,
-                    });
-                }
-            }
-        }
-    };
-
-    const handleMouseDown = () => {
-        setIsMouseDown(true);
-    };
-
-    const handleMouseUp = () => {
-        setIsMouseDown(false);
-        setHighlightedIndex(undefined);
-        setSelectedPoint(null);
-    };
-
-    const currentNetWorth = selectedPoint ? selectedPoint.netWorth : netWorth;
-    const currentPnlData = selectedPoint ? selectedPoint.pnlData : pnlData;
 
     return (
         <>
             <div className="px-5">
                 <p className="text-gray-400 mt-2 font-light">NetWorth</p>
                 <div className="flex items-center justify-between">
-                    <h2 className="mb-1 text-white font-bold text-2xl">${currentNetWorth.toFixed(2)}</h2>
-                    <div className="flex">
-                        <div className="text-green-400 text-base">+{currentPnlData.pnl_percentage}%</div>
-                        <div className="text-green-400 ml-2 text-base">(${currentPnlData.pnl_usd})</div>
+                    <h2 ref={element1Ref as MutableRefObject<HTMLHeadingElement | null>} className={`${downgradeFontSize("text-2xl", fontSizeCounter)} mb-1 text-white font-bold whitespace-nowrap`}>${formatIntNumber(Math.round(currentNetWorth))}</h2>
+                    <div ref={element2Ref as MutableRefObject<HTMLDivElement | null>} className="flex flex-col">
+                        {currentPnlData && <span className={`${downgradeFontSize("text-base",fontSizeCounter)} ${(currentPnlData.pnl_percentage >= 0 || !currentPnlData.pnl_percentage) ? "text-green-600" : "text-red-600"} flex justify-end whitespace-nowrap`}>{currentPnlData.pnl_percentage > 0 ? "+" : ""}{formatNumber(currentPnlData.pnl_percentage, false)}% (${formatNumber(currentPnlData.pnl_usd, false)})</span>}
+                        {currentTimestamp && <span className={`${downgradeFontSize("text-xs",fontSizeCounter)} text-gray-400 flex justify-end leading-extra-tight whitespace-nowrap`}>{getDateAndTime(currentTimestamp)}</span>}
                     </div>
                 </div>
             </div>
             <Chart
-                worth_chart={mainChartData.worth_chart}
-                onMouseMove={handleChartMouseMove}
-                onMouseDown={handleMouseDown}
-                onMouseUp={handleMouseUp}
-                highlightedIndex={highlightedIndex}
+                worth_chart={mainChartData}
+                onSelectPoint={handleSelectPoint}
             />
         </>
     );
