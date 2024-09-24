@@ -1,12 +1,12 @@
 import { getPnlByAddressPayload, getTokenPnlByAddressPayload, ChartData } from "@/types";
-import { devClient } from "./apiClient";
+import { newApiClient } from "./apiClient";
 import endpoints from "./endpoints";
 
 export const PNL_API = {
-	getPnlByAddress: async ({ wallet_address, interval }: getPnlByAddressPayload): Promise<ChartData[]> => {
+	getPnlByAddress: async ({ wallet_address, interval, period }: getPnlByAddressPayload): Promise<ChartData[]> => {
 		try {
-            const response = await devClient.get(
-				endpoints.getPnlByAddress({wallet_address, interval})
+            const response = await newApiClient.get(
+				endpoints.getPnlByAddress({wallet_address, interval, period})
 			);
 			return response.data;
 		} catch (error) { 
@@ -14,10 +14,10 @@ export const PNL_API = {
 			throw error;
 		}
 	},
-    getTokenPnlByAddress: async ({ wallet_address, token_address, interval }: getTokenPnlByAddressPayload): Promise<ChartData[]> => {
+    getTokenPnlByAddress: async ({ wallet_address, token_address, interval, period }: getTokenPnlByAddressPayload): Promise<ChartData[]> => {
         try {
-            const response = await devClient.get(
-				endpoints.getTokenPnlByAddress({wallet_address, token_address, interval})
+            const response = await newApiClient.get(
+				endpoints.getTokenPnlByAddress({wallet_address, token_address, interval, period})
 			);
 			return response.data;
 		} catch (error) {

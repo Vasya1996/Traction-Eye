@@ -7,14 +7,14 @@ import { useTonAddress } from "@tonconnect/ui-react";
 import { AssetItemProps } from "@/components/AssetItem";
 import { MdOutlineInfo } from "react-icons/md";
 import { postEvent } from '@telegram-apps/sdk';
-import { retrieveLaunchParams } from "@telegram-apps/sdk-react";
 import { Skeleton } from "@/components/ui/skeleton";
-import { formatNumber, getTimelinePeriodAndIntervalKey, parseQueryString } from "@/utils";
+import { formatNumber, getTimelinePeriodAndIntervalKey } from "@/utils";
 import { AssetInfo } from "./components";
-import { TimelineKeys, TIMELINES_INTERVALS_SECONDS } from "@/constants";
+import { TimelineKeys, TIMELINES_INTERVALS_SECONDS, CACHE_OPTIONS } from "@/constants";
 import { TimelineToolbar } from "@/components/TImelineToolbar";
 import { PNL_API } from "@/api/pnl";
 import { ChartData } from "@/types";
+import { TON_CENTER_API } from "@/api/tonCenter";
 // import { API } from "@/api/api";
 
 const AssetItemPage: FC = () => {
@@ -25,16 +25,18 @@ const AssetItemPage: FC = () => {
   const state = location.state as AssetItemProps;
 // State for selected timeline
   const [selectedPoint, setSelectedPoint] = useState<SelectedPoint | null>(null);
-  const [selectedTimeline, setSelectedTimeline] = useState<keyof typeof TIMELINES_INTERVALS_SECONDS>(TimelineKeys.MAX);
+  const [selectedTimeline, setSelectedTimeline] = useState<keyof typeof TIMELINES_INTERVALS_SECONDS>(TimelineKeys.Month);
   const handleTimelineSelect = (timeline: keyof typeof TIMELINES_INTERVALS_SECONDS) => {
     setSelectedTimeline(timeline);
   };
+  const { data: userWalletCreationDate } = useQuery({
+    queryKey: ["userWalletCreationDate", walletAddress], // Ensure the same queryKey is used in all components
+    queryFn: () => TON_CENTER_API.getUserWalletCreationDate(walletAddress!),
+    enabled: !!walletAddress,
+    staleTime: Infinity
+});
 
-  const { initDataRaw } = retrieveLaunchParams();
-
-  const initData = useMemo(() => parseQueryString(initDataRaw),[initDataRaw]);
-
-  const timelineKey = useMemo(() => getTimelinePeriodAndIntervalKey((initData as {auth_date: number}).auth_date, selectedTimeline), [initData, selectedTimeline]);
+  const timelineData = useMemo(() => getTimelinePeriodAndIntervalKey(Number(userWalletCreationDate), selectedTimeline), [userWalletCreationDate, selectedTimeline]);
 
   // Scroll to the top of the page when the component mounts
   useEffect(() => {
@@ -42,17 +44,18 @@ const AssetItemPage: FC = () => {
   }, []);
 
   const { data: assetChartData, refetch: refetchAssetChartData } = useQuery<ChartData[]>({
-    queryKey: ["assetChartData"],
-    queryFn: () => PNL_API.getTokenPnlByAddress({wallet_address: walletAddress, token_address: params.id as string, interval: timelineKey}),
-    enabled: !!walletAddress && !!timelineKey && !!params.id,
-    refetchOnWindowFocus: false
+    queryKey: ["assetChartData", timelineData?.period, timelineData?.interval, params.id],
+    queryFn: () => PNL_API.getTokenPnlByAddress({wallet_address: walletAddress, token_address: params.id as string, interval: timelineData!.interval, period: timelineData!.period}),
+    enabled: !!walletAddress && !!timelineData?.period && !!timelineData?.interval && !!params.id,
+    refetchOnWindowFocus: false,
+    ...CACHE_OPTIONS
   });
 
   useEffect(() => {
-      if (timelineKey && walletAddress && params.id) {
-        refetchAssetChartData();
-      }
-  }, [timelineKey, walletAddress, params.id]);
+    if (timelineData?.interval && timelineData?.period && walletAddress) {
+      refetchAssetChartData();
+    }
+}, [timelineData?.interval, timelineData?.period, walletAddress, params.id]);
 
   // const { data: jettonData } = useQuery({
   //   queryKey: ['jettonData', params.id],
@@ -71,23 +74,25 @@ const AssetItemPage: FC = () => {
   const handleSelectPoint = (data: SelectedPoint) => {
     setSelectedPoint(data)
   }
+  const lastChartData = useMemo(() => assetChartData?.[assetChartData?.length - 1], [assetChartData]);
 
-  const currentPnlData = selectedPoint ? selectedPoint.pnlData : null;
-  const currentTimestamp = selectedPoint ? selectedPoint.timestamp : null;
+  const currentPnlData = selectedPoint ? selectedPoint.pnlData : {
+    pnl_percentage: lastChartData?.pnl_percentage,
+    pnl_usd: lastChartData?.pnl_usd
+};
+  const currentTimestamp = selectedPoint ? selectedPoint.timestamp : lastChartData?.timestamp;
 
   return (
     <div className={`h-screen bg-gray-800`}>
       <div className="flex flex-col h-72">
-        <AssetInfo icon={state.icon} name={state.name} amount={selectedPoint?.netWorth} price={selectedPoint?.totalPrice} pnl_usd={currentPnlData?.pnl_usd} pnl_percentage={currentPnlData?.pnl_percentage} timestamp={currentTimestamp} />
+        <AssetInfo icon={state.icon} name={state.name} amount={selectedPoint?.balance ?? lastChartData?.balance} price={selectedPoint?.totalPrice ?? lastChartData?.total_price} pnl_usd={currentPnlData?.pnl_usd} pnl_percentage={currentPnlData?.pnl_percentage} timestamp={currentTimestamp} />
         <div className="max-w-full mt-auto">
           {assetChartData ? (
-              <>
                 <Chart onSelectPoint={handleSelectPoint} worth_chart={assetChartData} />
-                <TimelineToolbar onTimelineSelect={handleTimelineSelect} />
-              </>
             )
               : null
           }
+           <TimelineToolbar onTimelineSelect={handleTimelineSelect} />
         </div>
       </div>
 
