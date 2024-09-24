@@ -2,14 +2,14 @@ import { useState, useLayoutEffect, MutableRefObject, useMemo, useEffect } from 
 import { useQuery } from "@tanstack/react-query";
 import Chart, { SelectedPoint } from "./Chart";
 import { useTonAddress } from "@tonconnect/ui-react";
-import { retrieveLaunchParams } from "@telegram-apps/sdk-react";
 import { useStore } from "@/store/store";
 import { useElementIntersection } from "@/hooks";
 import { Skeleton } from "./ui/skeleton";
-import { formatIntNumber, formatNumber, getDateAndTime, downgradeFontSize, getTimelinePeriodAndIntervalKey, parseQueryString } from "@/utils";
-import { TIMELINES_INTERVALS_SECONDS } from "@/constants";
+import { formatIntNumber, formatNumber, getDateAndTime, downgradeFontSize, getTimelinePeriodAndIntervalKey } from "@/utils";
+import { TIMELINES_INTERVALS_SECONDS, CACHE_OPTIONS } from "@/constants";
 import { PNL_API } from "@/api/pnl";
 import { ChartData } from "@/types";
+import { TON_CENTER_API } from "@/api/tonCenter";
 
 interface ChartHomeProps {
     timeline: keyof typeof TIMELINES_INTERVALS_SECONDS;
@@ -19,29 +19,38 @@ export function ChartHome({timeline}: ChartHomeProps) {
     const { netWorth } = useStore();
     const walletAddress = useTonAddress();
     const { fontSizeCounter, element1Ref, element2Ref, checkIntersection } = useElementIntersection();
-    const { initDataRaw } = retrieveLaunchParams();
+    const { data: userWalletCreationDate } = useQuery({
+        queryKey: ["userWalletCreationDate", walletAddress], // Ensure the same queryKey is used in all components
+        queryFn: () => TON_CENTER_API.getUserWalletCreationDate(walletAddress!),
+        enabled: !!walletAddress,
+        staleTime: Infinity
+    });
 
-    const initData = useMemo(() => parseQueryString(initDataRaw),[initDataRaw]);
-    const timelineKey = useMemo(() => getTimelinePeriodAndIntervalKey((initData as {auth_date: number}).auth_date, timeline), [initData, timeline]);
+    const timelineData = useMemo(() => getTimelinePeriodAndIntervalKey(Number(userWalletCreationDate), timeline), [userWalletCreationDate, timeline]);
 
     const [selectedPoint, setSelectedPoint] = useState<SelectedPoint | null>(null);
 
     const { data: mainChartData, isLoading: isLoadingMainChartData, refetch: refetchMainChartData } = useQuery<ChartData[]>({
-        queryKey: ["mainChartData"],
-        queryFn: () => PNL_API.getPnlByAddress({wallet_address: walletAddress, interval: timelineKey}),
-        enabled: !!walletAddress && !!timelineKey,
-        refetchOnWindowFocus: false
+        queryKey: ["mainChartData", timelineData?.period, timelineData?.interval],
+        queryFn: () => PNL_API.getPnlByAddress({wallet_address: walletAddress, interval: timelineData!.interval, period: timelineData!.period }),
+        enabled: !!walletAddress && !!timelineData?.period && !!timelineData?.interval,
+        refetchOnWindowFocus: false,
+        ...CACHE_OPTIONS
     });
+    const lastChartData = useMemo(() => mainChartData?.[mainChartData?.length - 1], [mainChartData]);
 
     useEffect(() => {
-        if (timelineKey && walletAddress) {
+        if (timelineData?.interval && timelineData?.period && walletAddress) {
             refetchMainChartData();
         }
-    }, [timelineKey, walletAddress]);
+    }, [timelineData?.interval, timelineData?.period, walletAddress]);
 
     const currentNetWorth = selectedPoint ? selectedPoint.netWorth : netWorth;
-    const currentPnlData = selectedPoint ? selectedPoint.pnlData : null;
-    const currentTimestamp = selectedPoint ? selectedPoint.timestamp : null;
+    const currentPnlData = selectedPoint ? selectedPoint.pnlData : {
+        pnl_percentage: lastChartData?.pnl_percentage,
+        pnl_usd: lastChartData?.pnl_usd
+    };
+    const currentTimestamp = selectedPoint ? selectedPoint.timestamp : lastChartData?.timestamp;
 
     useLayoutEffect(() => {
         checkIntersection();
@@ -76,7 +85,7 @@ export function ChartHome({timeline}: ChartHomeProps) {
                 <div className="flex items-center justify-between">
                     <h2 ref={element1Ref as MutableRefObject<HTMLHeadingElement | null>} className={`${downgradeFontSize("text-2xl", fontSizeCounter)} mb-1 text-white font-bold whitespace-nowrap`}>${formatIntNumber(Math.round(currentNetWorth))}</h2>
                     <div ref={element2Ref as MutableRefObject<HTMLDivElement | null>} className="flex flex-col">
-                        {currentPnlData && <span className={`${downgradeFontSize("text-base",fontSizeCounter)} ${(currentPnlData.pnl_percentage >= 0 || !currentPnlData.pnl_percentage) ? "text-green-600" : "text-red-600"} flex justify-end whitespace-nowrap`}>{currentPnlData.pnl_percentage > 0 ? "+" : ""}{formatNumber(currentPnlData.pnl_percentage, false)}% (${formatNumber(currentPnlData.pnl_usd, false)})</span>}
+                        {currentPnlData && <span className={`${downgradeFontSize("text-base",fontSizeCounter)} ${(Number(currentPnlData?.pnl_percentage) >= 0 || !currentPnlData.pnl_percentage) ? "text-green-600" : "text-red-600"} flex justify-end whitespace-nowrap`}>{Number(currentPnlData?.pnl_percentage) > 0 ? "+" : ""}{formatNumber(currentPnlData.pnl_percentage, false)}% (${formatNumber(currentPnlData.pnl_usd, false)})</span>}
                         {currentTimestamp && <span className={`${downgradeFontSize("text-xs",fontSizeCounter)} text-gray-400 flex justify-end leading-extra-tight whitespace-nowrap`}>{getDateAndTime(currentTimestamp)}</span>}
                     </div>
                 </div>

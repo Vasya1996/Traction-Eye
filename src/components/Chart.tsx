@@ -15,6 +15,7 @@ interface PnlData {
 }
 
 export interface SelectedPoint { 
+    balance?: number;
     netWorth: number;
     pnlData: PnlData;
     timestamp: number;
@@ -37,7 +38,7 @@ export default function Chart({ worth_chart, onMouseMove, onMouseDown, onMouseUp
 
     const transformed_chart = worth_chart.map((item, index) => ({
         timestamp: item.timestamp,
-        price: item.balance ?? item.net_worth,
+        price: item.total_price ?? item.net_worth,
         isHighlighted: index === highlightedIndex,
         pnlUsd: item.pnl_usd,
         pnl_percentage: item.pnl_percentage,
@@ -63,7 +64,7 @@ export default function Chart({ worth_chart, onMouseMove, onMouseDown, onMouseUp
 
                 const chartData = worth_chart[index];
                 const pointTimestamp = chartData.timestamp;
-                const updatedNetWorth = chartData.balance ?? chartData.net_worth ?? 0;
+                const updatedNetWorth = chartData.total_price ?? chartData.net_worth ?? 0;
                 const updatedPnlData = {
                     pnl_percentage: chartData.pnl_percentage,
                     pnl_usd: chartData.pnl_usd
@@ -75,6 +76,7 @@ export default function Chart({ worth_chart, onMouseMove, onMouseDown, onMouseUp
                 setActiveY(updatedNetWorth);
 
                 onSelectPoint({
+                    balance: chartData.balance,
                     totalPrice: chartData.total_price,
                     netWorth: updatedNetWorth,
                     pnlData: updatedPnlData,
