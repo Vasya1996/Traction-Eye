@@ -13,8 +13,8 @@ const endpoints = {
   getAdditionalNftInfo: '/additional_nft_info/',
   getAssetsPnl: (wallet_address: string, start_s = 60) => `/assets_total_pnl/${wallet_address}/${start_s}`,
   addWallet: '/add_wallet/',
-  getPnlByAddress: ({ wallet_address, interval }: getPnlByAddressPayload) => `/pnl/${wallet_address}?period=${TIMELINES_PERIOD_SECONDS[interval]}&interval=${TIMELINES_INTERVALS_SECONDS[interval]}`,
-  getTokenPnlByAddress: ({ wallet_address, token_address, interval }: getTokenPnlByAddressPayload ) => `/pnl/${wallet_address}/${token_address}?period=${TIMELINES_PERIOD_SECONDS[interval]}&interval=${TIMELINES_INTERVALS_SECONDS[interval]}`
+  getPnlByAddress: ({ wallet_address, interval }: getPnlByAddressPayload) => `wallet_parser/pnl/${wallet_address}?period=${TIMELINES_PERIOD_SECONDS[interval]}&interval=${TIMELINES_INTERVALS_SECONDS[interval]}`,
+  getTokenPnlByAddress: ({ wallet_address, token_address, interval }: getTokenPnlByAddressPayload ) => `wallet_parser/pnl/${wallet_address}/${token_address}?period=${TIMELINES_PERIOD_SECONDS[interval]}&interval=${TIMELINES_INTERVALS_SECONDS[interval]}`
 };
 
 export default endpoints;
