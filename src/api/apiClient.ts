@@ -22,7 +22,7 @@ apiClient.interceptors.request.use(
 );
 
 export const devClient = axios.create({
-  baseURL: 'https://jackbotestname.info/',
+  baseURL: 'https://tractioneye.ru/',
   headers: {
     'Content-Type': 'application/json',
   },
