@@ -21,14 +21,14 @@ apiClient.interceptors.request.use(
   }
 );
 
-export const devClient = axios.create({
+export const newApiClient = axios.create({
   baseURL: 'https://tractioneye.ru/',
   headers: {
     'Content-Type': 'application/json',
   },
 });
 
-devClient.interceptors.request.use(
+newApiClient.interceptors.request.use(
   (config) => {
     const token = localStorage.getItem('token');
     if (token) {
@@ -42,5 +42,11 @@ devClient.interceptors.request.use(
   }
 );
 
+export const tonCenterApi = axios.create({
+  baseURL: 'https://toncenter.com/api/v3/',
+  headers: {
+    'Content-Type': 'application/json',
+  },
+});
 
 export default apiClient;

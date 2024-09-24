@@ -12,7 +12,7 @@ interface AssetInfoProps {
     price?: number;
     pnl_percentage?: number;
     pnl_usd?: number;
-    timestamp: number | null;
+    timestamp?: number | null;
 }
 
 export const AssetInfo = ({
