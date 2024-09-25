@@ -2,7 +2,6 @@ import { useState, useLayoutEffect, MutableRefObject, useMemo, useEffect } from 
 import { useQuery } from "@tanstack/react-query";
 import Chart, { SelectedPoint } from "./Chart";
 import { useTonAddress } from "@tonconnect/ui-react";
-import { useStore } from "@/store/store";
 import { useElementIntersection } from "@/hooks";
 import { Skeleton } from "./ui/skeleton";
 import { formatIntNumber, formatNumber, getDateAndTime, downgradeFontSize, getTimelinePeriodAndIntervalKey } from "@/utils";
@@ -16,7 +15,6 @@ interface ChartHomeProps {
 }
 
 export function ChartHome({timeline}: ChartHomeProps) {
-    const { netWorth } = useStore();
     const walletAddress = useTonAddress();
     const { fontSizeCounter, element1Ref, element2Ref, checkIntersection } = useElementIntersection();
     const { data: userWalletCreationDate } = useQuery({
@@ -45,7 +43,7 @@ export function ChartHome({timeline}: ChartHomeProps) {
         }
     }, [timelineData?.interval, timelineData?.period, walletAddress]);
 
-    const currentNetWorth = selectedPoint ? selectedPoint.netWorth : netWorth;
+    const currentNetWorth = selectedPoint ? selectedPoint.netWorth : lastChartData?.net_worth;
     const currentPnlData = selectedPoint ? selectedPoint.pnlData : {
         pnl_percentage: lastChartData?.pnl_percentage,
         pnl_usd: lastChartData?.pnl_usd
@@ -83,7 +81,7 @@ export function ChartHome({timeline}: ChartHomeProps) {
             <div className="px-5">
                 <p className="text-gray-400 mt-2 font-light">NetWorth</p>
                 <div className="flex items-center justify-between">
-                    <h2 ref={element1Ref as MutableRefObject<HTMLHeadingElement | null>} className={`${downgradeFontSize("text-2xl", fontSizeCounter)} mb-1 text-white font-bold whitespace-nowrap`}>${formatIntNumber(Math.round(currentNetWorth))}</h2>
+                    <h2 ref={element1Ref as MutableRefObject<HTMLHeadingElement | null>} className={`${downgradeFontSize("text-2xl", fontSizeCounter)} mb-1 text-white font-bold whitespace-nowrap`}>${formatIntNumber(Math.round(currentNetWorth ?? 0))}</h2>
                     <div ref={element2Ref as MutableRefObject<HTMLDivElement | null>} className="flex flex-col">
                         {currentPnlData && <span className={`${downgradeFontSize("text-base",fontSizeCounter)} ${(Number(currentPnlData?.pnl_percentage) >= 0 || !currentPnlData.pnl_percentage) ? "text-green-600" : "text-red-600"} flex justify-end whitespace-nowrap`}>{Number(currentPnlData?.pnl_percentage) > 0 ? "+" : ""}{formatNumber(currentPnlData.pnl_percentage, false)}% (${formatNumber(currentPnlData.pnl_usd, false)})</span>}
                         {currentTimestamp && <span className={`${downgradeFontSize("text-xs",fontSizeCounter)} text-gray-400 flex justify-end leading-extra-tight whitespace-nowrap`}>{getDateAndTime(currentTimestamp)}</span>}
