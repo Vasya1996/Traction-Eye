@@ -40,6 +40,7 @@ export function ChartHome({timeline}: ChartHomeProps) {
     useEffect(() => {
         if (timelineData?.interval && timelineData?.period && walletAddress) {
             refetchMainChartData();
+            setSelectedPoint(null);
         }
     }, [timelineData?.interval, timelineData?.period, walletAddress]);
 

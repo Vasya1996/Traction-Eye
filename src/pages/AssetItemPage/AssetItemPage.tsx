@@ -54,6 +54,7 @@ const AssetItemPage: FC = () => {
   useEffect(() => {
     if (timelineData?.interval && timelineData?.period && walletAddress) {
       refetchAssetChartData();
+      setSelectedPoint(null);
     }
 }, [timelineData?.interval, timelineData?.period, walletAddress, params.id]);
 
