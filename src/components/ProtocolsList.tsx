@@ -1,6 +1,6 @@
 import { FC } from "react";
 import LiquidityPoolCard from "./LiquidityPoolCard";
-import { IoMdGitNetwork } from "react-icons/io";
+import { IoMdGitNetwork } from "@/components/icons";
 
 const ProtocolsList: FC = () => {
     

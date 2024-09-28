@@ -1,8 +1,7 @@
 import { FC, useEffect } from "react";
 import { Link } from "react-router-dom";
 import NFTCard from "@/components/NFTCard";
-import { PiImages } from "react-icons/pi";
-import { FaArrowRight } from "react-icons/fa6";
+import { PiImages, FaArrowRight } from "@/components/icons";
 import { NFT } from "@/types/index";
 import { useQuery } from "@tanstack/react-query";
 import { useTonAddress } from "@tonconnect/ui-react";

@@ -1,9 +1,9 @@
 import { MutableRefObject, useMemo, useEffect } from 'react';
-import { PiApproximateEqualsBold } from "react-icons/pi";
 import { getDateAndTime, formatNumber, downgradeFontSize } from "@/utils";
-import { MdOutlineKeyboardArrowLeft } from "react-icons/md";
+import { MdOutlineKeyboardArrowLeft, PiApproximateEqualsBold } from "@/components/icons";
 import { useNavigate } from "react-router-dom";
 import { useElementIntersection } from "@/hooks";
+import { Colors } from '@/constants';
 
 interface AssetInfoProps {
     icon: string;
@@ -54,7 +54,7 @@ export const AssetInfo = ({
                             }}
                         >
 
-                            <MdOutlineKeyboardArrowLeft size={8} className="text-zinc-400 my-auto w-8 h-8" />
+                            <MdOutlineKeyboardArrowLeft fill={Colors.zincLight} size={8} className="my-auto w-8 h-8" />
                         </button>
                         <img
                             className="h-13 w-13 mr-2 rounded-full"
