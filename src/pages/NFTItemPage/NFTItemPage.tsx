@@ -1,11 +1,12 @@
 import { FC } from "react";
 import copy from "clipboard-copy";
 import { postEvent } from "@telegram-apps/sdk";
-import { FaRegCopy } from "react-icons/fa6";
+import { FaRegCopy } from "@/components/icons";
 import { useParams } from "react-router-dom";
 import { API } from "@/api/api";
 import { useQuery } from "@tanstack/react-query";
 import { useStore } from "@/store/store";
+import { Colors } from "@/constants";
 
 const NFTItemPage: FC = () => {
 	const { id } = useParams();
@@ -76,7 +77,7 @@ const NFTItemPage: FC = () => {
 							copyToClipboard(nft?.nft_address ? nft?.nft_address : "")
 						}
 					>
-						<FaRegCopy className="mr-2 text-gray-700" />{" "}
+						<FaRegCopy size={16} color={Colors.gray} className="mr-2" />{" "}
 						{shortenAddress(nft?.nft_address ? nft.nft_address : "")}
 					</div>
 				</li>

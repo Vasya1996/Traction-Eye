@@ -9,7 +9,7 @@ import { API } from "@/api/api";
 import { useInitData } from "@telegram-apps/sdk-react";
 import { useSwipeable } from "react-swipeable"; 
 import ScreenshotImage from '@/pages/ConnectPage/screenshots.png';
-import { IoMdWallet } from "react-icons/io";
+import { IoMdWallet } from "@/components/icons";
 import './ConnectPage.css'; // Импортируйте CSS файл
 
 export const ConnectPage = () => {
@@ -120,7 +120,7 @@ export const ConnectPage = () => {
                     onClick={handleNextSlide}
                     className="bg-yellow-400 py-3 px-6 rounded-2xl w-full sm:w-3/4 md:w-1/2 lg:w-1/3 flex justify-center items-center text-base sm:text-lg"
                 >
-                    {currentSlide === 0 ? "Continue" : <span className="flex items-center">Connect Wallet<IoMdWallet className="text-lg ml-2"/></span>}
+                    {currentSlide === 0 ? "Continue" : <span className="flex items-center">Connect Wallet<IoMdWallet size={18} className="text-lg ml-2"/></span>}
                 </button>
             </div>
         </div>

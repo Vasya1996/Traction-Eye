@@ -5,7 +5,7 @@ import { useTonConnectUI } from '@tonconnect/ui-react';
 import { useStore } from "@/store/store";
 
 // icons
-import { MdDeleteOutline } from "react-icons/md";
+import { MdDeleteOutline } from "@/components/icons";
 
 // interfaces
 import { ProfileItemProps } from '../types/types';

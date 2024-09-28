@@ -2,10 +2,10 @@ import { FC, useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import AssetList from "@/components/AssetList";
 import TELogo from "@/pages/IndexPage/TELogo.svg";
-import { MdOutlineKeyboardArrowRight } from "react-icons/md";
+import { MdOutlineKeyboardArrowRight } from "@/components/icons";
 import NFTList from "@/components/NFTList";
 import ProtocolsList from "@/components/ProtocolsList";
-// import { IoDiamondOutline } from "react-icons/io5";
+// import { IoDiamondOutline } from "@/components/icons";
 // import { postEvent } from "@telegram-apps/sdk";
 import { useTonAddress } from "@tonconnect/ui-react";
 import { retrieveLaunchParams } from "@telegram-apps/sdk-react";
@@ -13,7 +13,7 @@ import { API } from "@/api/api";
 import { useQuery } from "@tanstack/react-query";
 import { ChartHome } from "@/components/ChartHome";
 import { TimelineToolbar } from "@/components/TImelineToolbar";
-import { TimelineKeys, TIMELINES_INTERVALS_SECONDS } from "@/constants";
+import { Colors, TimelineKeys, TIMELINES_INTERVALS_SECONDS } from "@/constants";
 
 export const IndexPage: FC = () => {
     const navigate = useNavigate();
@@ -24,6 +24,7 @@ export const IndexPage: FC = () => {
         queryKey: ["login"],
         queryFn: () => API.login(initDataRaw!),
         enabled: !!initDataRaw,
+        retry: false,
     });
 
     useEffect(() => {
@@ -73,7 +74,7 @@ export const IndexPage: FC = () => {
                             <div className="items-center">
                                 <p className="text-gray-400 font-light">{shortenWallet(walletAddress)}</p>
                             </div>
-                            <MdOutlineKeyboardArrowRight className="text-zinc-400 my-auto text-2xl" />
+                            <MdOutlineKeyboardArrowRight color={Colors.zincLight} className="my-auto text-2xl" />
                         </div>
                     </Link>
 
@@ -82,7 +83,7 @@ export const IndexPage: FC = () => {
                         className="flex text-sm items-center text-yellow-300 shadow-md shadow-yellow-500/40 mr-1 px-3 bg-black border rounded-xl h-9"
                         to={"/premium"}
                     >
-                        <IoDiamondOutline className="mr-2" />
+                        <IoDiamondOutline size={14} className="mr-2" />
                         Get Premium
                     </Link> */}
                 </div>

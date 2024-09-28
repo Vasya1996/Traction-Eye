@@ -1,6 +1,5 @@
-import { PiImages } from 'react-icons/pi'
-import { Skeleton } from '../ui/skeleton'
-import { FaArrowRight } from 'react-icons/fa6'
+import { PiImages, FaArrowRight } from '@/components/icons';
+import { Skeleton } from '../ui/skeleton';
 
 const NFTSkeletons = () => {
   return (
