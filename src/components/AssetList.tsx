@@ -2,11 +2,10 @@ import AssetItem from "./AssetItem";
 import { useQuery } from "@tanstack/react-query";
 import { API } from "@/api/api";
 import { Skeleton } from "@/components/ui/skeleton";
-import { TbCircleDotted } from "react-icons/tb";
+import { TbCircleDotted, IoIosArrowDown } from "@/components/icons";
 import { useTonAddress } from "@tonconnect/ui-react";
 import { useStore } from "@/store/store";
 import { useEffect, useState } from "react";
-import { IoIosArrowDown } from "react-icons/io";
 import { postEvent } from '@telegram-apps/sdk';
 
 const AssetList = () => {
@@ -18,7 +17,7 @@ const AssetList = () => {
 	const { data, isFetching } = useQuery({
 		queryKey: ["assets"],
 		queryFn: () => API.getAssetsByWallet(userFriendlyAddress),
-    staleTime: Infinity,
+		staleTime: Infinity,
 	});
 
 	useEffect(() => {

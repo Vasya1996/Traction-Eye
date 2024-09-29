@@ -1,7 +1,7 @@
 import { FC, useState, useEffect } from 'react';
 import { ProfileItem } from '@/components/ProfileItem';
 import AddWallet from "@/pages/ProfilesListPage/AddWallet.svg";
-import { RxExit } from "react-icons/rx";
+import { RxExit } from "@/components/icons";
 import { useNavigate } from 'react-router-dom';
 import { postEvent } from '@telegram-apps/sdk';
 import { useTonAddress } from "@tonconnect/ui-react";

@@ -1,15 +1,10 @@
 // components/PremiumBuyPage.tsx
 import { FC, useState, useEffect } from "react";
 import { postEvent } from '@telegram-apps/sdk';
-import { IoSwapVertical } from "react-icons/io5";
-import { GiFlame } from "react-icons/gi";
-import { FaSeedling } from "react-icons/fa";
-import { IoDiamondOutline } from "react-icons/io5";
-import { BiStats } from "react-icons/bi";
+import { GiFlame, FaSeedling, IoDiamondOutline, IoSwapVertical, BiStats, BsFillCollectionFill } from "@/components/icons";
 import { motion, AnimatePresence } from "framer-motion";
 
 import IconLogo from '@/pages/ProfilesListPage/AddWallet.svg';
-import { BsFillCollectionFill } from "react-icons/bs";
 import IconMoreFeatures from './Icon_more_features.png';
 import FirstScreenShot from './1.png';
 
@@ -21,10 +16,10 @@ interface Item {
 }
 
 const items: Item[] = [
-    { id: 1, title: "Impermanent loss", subtitle: "Some subtitle text", icon: <GiFlame className="text-4xl text-gray-700 mb-2" /> },
-    { id: 2, title: "Farm Rewards", subtitle: "Some subtitle text", icon: <FaSeedling className="text-4xl text-gray-700 mb-2" /> },
-    { id: 3, title: "Profit from swap fees", subtitle: "Some subtitle text", icon: <IoSwapVertical className="text-4xl text-gray-700 mb-2" /> },
-    { id: 4, title: "Analytics within a period of time", subtitle: "Some subtitle text", icon: <IoSwapVertical className="text-4xl text-gray-700 mb-2" /> }
+    { id: 1, title: "Impermanent loss", subtitle: "Some subtitle text", icon: <GiFlame size={36} className="text-4xl text-gray-700 mb-2" /> },
+    { id: 2, title: "Farm Rewards", subtitle: "Some subtitle text", icon: <FaSeedling size={36} className="text-4xl text-gray-700 mb-2" /> },
+    { id: 3, title: "Profit from swap fees", subtitle: "Some subtitle text", icon: <IoSwapVertical size={36} className="text-4xl text-gray-700 mb-2" /> },
+    { id: 4, title: "Analytics within a period of time", subtitle: "Some subtitle text", icon: <IoSwapVertical size={36} className="text-4xl text-gray-700 mb-2" /> }
 ];
 
 const PremiumBuyPage: FC = () => {
@@ -51,7 +46,7 @@ const PremiumBuyPage: FC = () => {
                     ))}
                     <div className="shadow-2xl p-2 rounded-full shadow-gray-500 mb-5">
                         <div className="justify-center text-center">
-                            <BiStats className="justify-center flex text-yellow-400 text-7xl" />
+                            <BiStats size={72} className="justify-center flex text-yellow-400 text-7xl" />
                         </div>
                     </div>
                     <p className="text-white text-xl">Traction Eye <span className="text-yellow-400">Premium</span></p>

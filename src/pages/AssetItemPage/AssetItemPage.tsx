@@ -5,10 +5,10 @@ import { useQuery } from "@tanstack/react-query";
 // import { API } from "@/api/api";
 import { useTonAddress } from "@tonconnect/ui-react";
 import { AssetItemProps } from "@/components/AssetItem";
-import { MdOutlineInfo } from "react-icons/md";
+import { MdOutlineInfo } from "@/components/icons";
 import { postEvent } from '@telegram-apps/sdk';
 import { Skeleton } from "@/components/ui/skeleton";
-import { formatNumber, getTimelinePeriodAndIntervalKey } from "@/utils";
+import { formatNumber, getTimelinePeriodAndIntervalKey, updateAssetChartPnlData } from "@/utils";
 import { AssetInfo } from "./components";
 import { TimelineKeys, TIMELINES_INTERVALS_SECONDS, CACHE_OPTIONS } from "@/constants";
 import { TimelineToolbar } from "@/components/TImelineToolbar";
@@ -51,6 +51,11 @@ const AssetItemPage: FC = () => {
     ...CACHE_OPTIONS
   });
 
+
+  const updatedChartData = useMemo(() => {
+    return updateAssetChartPnlData(assetChartData);
+},[assetChartData])
+
   useEffect(() => {
     if (timelineData?.interval && timelineData?.period && walletAddress) {
       refetchAssetChartData();
@@ -75,7 +80,7 @@ const AssetItemPage: FC = () => {
   const handleSelectPoint = (data: SelectedPoint) => {
     setSelectedPoint(data)
   }
-  const lastChartData = useMemo(() => assetChartData?.[assetChartData?.length - 1], [assetChartData]);
+  const lastChartData = useMemo(() => updatedChartData?.[updatedChartData?.length - 1], [updatedChartData]);
 
   const currentPnlData = selectedPoint ? selectedPoint.pnlData : {
     pnl_percentage: lastChartData?.pnl_percentage,
@@ -88,8 +93,8 @@ const AssetItemPage: FC = () => {
       <div className="flex flex-col h-72">
         <AssetInfo icon={state.icon} name={state.name} amount={selectedPoint?.balance ?? lastChartData?.balance} price={selectedPoint?.totalPrice ?? lastChartData?.total_price} pnl_usd={currentPnlData?.pnl_usd} pnl_percentage={currentPnlData?.pnl_percentage} timestamp={currentTimestamp} />
         <div className="max-w-full mt-auto">
-          {assetChartData ? (
-                <Chart onSelectPoint={handleSelectPoint} worth_chart={assetChartData} />
+          {updatedChartData ? (
+                <Chart onSelectPoint={handleSelectPoint} worth_chart={updatedChartData} />
             )
               : null
           }

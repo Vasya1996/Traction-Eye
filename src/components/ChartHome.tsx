@@ -4,7 +4,7 @@ import Chart, { SelectedPoint } from "./Chart";
 import { useTonAddress } from "@tonconnect/ui-react";
 import { useElementIntersection } from "@/hooks";
 import { Skeleton } from "./ui/skeleton";
-import { formatIntNumber, formatNumber, getDateAndTime, downgradeFontSize, getTimelinePeriodAndIntervalKey } from "@/utils";
+import { formatIntNumber, formatNumber, getDateAndTime, downgradeFontSize, getTimelinePeriodAndIntervalKey, updateChartPnlData } from "@/utils";
 import { TIMELINES_INTERVALS_SECONDS, CACHE_OPTIONS } from "@/constants";
 import { PNL_API } from "@/api/pnl";
 import { ChartData } from "@/types";
@@ -37,6 +37,10 @@ export function ChartHome({timeline}: ChartHomeProps) {
     });
     const lastChartData = useMemo(() => mainChartData?.[mainChartData?.length - 1], [mainChartData]);
 
+    const updatedChartData = useMemo(() => {
+        return updateChartPnlData(mainChartData);
+    },[mainChartData])
+
     useEffect(() => {
         if (timelineData?.interval && timelineData?.period && walletAddress) {
             refetchMainChartData();
@@ -67,7 +71,7 @@ export function ChartHome({timeline}: ChartHomeProps) {
         );
     }
 
-    const hasMainChartData = mainChartData && mainChartData?.length > 0;
+    const hasMainChartData = updatedChartData && updatedChartData?.length > 0;
 
     const handleSelectPoint = (data: SelectedPoint) => {
         setSelectedPoint(data)
@@ -90,7 +94,7 @@ export function ChartHome({timeline}: ChartHomeProps) {
                 </div>
             </div>
             <Chart
-                worth_chart={mainChartData}
+                worth_chart={updatedChartData}
                 onSelectPoint={handleSelectPoint}
             />
         </>

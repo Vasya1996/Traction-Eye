@@ -1,5 +1,5 @@
 import { FC, useEffect } from "react";
-// import { MdOutlineKeyboardArrowRight } from "react-icons/md";
+// import { MdOutlineKeyboardArrowRight } from "@/components/icons"; 
 import STONLogo from "@/pages/IndexPage/stonfilogo.jpg";
 import dedustLogo from "@/pages/IndexPage/dedustlogo.png";
 import { useQuery } from "@tanstack/react-query";
@@ -65,7 +65,7 @@ interface LiquidityPoolCardProps {
 			onClick={handlePremiumClick}
 			className="text-blue-800 px-3 py-1 bg-gray-200 rounded-lg flex items-center"
 			>
-			LP analytics <MdOutlineKeyboardArrowRight />
+			LP analytics <MdOutlineKeyboardArrowRight size={16} />
 			</Link> */}
 		</div>
 		<div className="p-4 bg-white rounded-2xl shadow-md">
