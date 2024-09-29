@@ -5,7 +5,7 @@ interface PiImagesProps extends React.SVGProps<SVGSVGElement> {
   color?: string; // Optional color prop
 }
 
-export const PiImages: React.FC<PiImagesProps> = ({ size = 24, color = "currentColor", ...props }) => (
+export const PiImages: React.FC<PiImagesProps> = ({ size = 16, color = "currentColor", ...props }) => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
     stroke={color}
