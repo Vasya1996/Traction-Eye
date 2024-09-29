@@ -2,20 +2,22 @@ import React from 'react';
 
 interface PiImagesProps extends React.SVGProps<SVGSVGElement> {
   size?: number; // Optional size prop
+  color?: string; // Optional color prop
 }
 
-export const PiImages: React.FC<PiImagesProps> = ({ size = 24, ...props }) => (
+export const PiImages: React.FC<PiImagesProps> = ({ size = 24, color = "currentColor", ...props }) => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
+    stroke={color}
+    fill={color}
+    strokeWidth="0"
     viewBox="0 0 256 256"
-    fill="currentColor"
-    width={size}
     height={size}
+    width={size}
     {...props}
   >
-    <rect width="256" height="256" fill="none"/>
-    <path d="M224,40H80A16,16,0,0,0,64,56V184H48V72A16,16,0,0,0,32,56H224a16,16,0,0,0,16-16V184a16,16,0,0,0-16-16H80V56H224A16,16,0,0,0,240,40Z"/>
-    <path d="M104,208a24,24,0,1,1-24-24A24,24,0,0,1,104,208ZM40,232H200a8,8,0,0,0,8-8v-8H40v8A8,8,0,0,0,40,232Z"/>
-    <path d="M184,136h48a16,16,0,0,1,16,16v80a16,16,0,0,1-16,16H184a16,16,0,0,1-16-16V152A16,16,0,0,1,184,136Z"/>
+    <path d="M216,40H72A16,16,0,0,0,56,56V72H40A16,16,0,0,0,24,88V200a16,16,0,0,0,16,16H184a16,16,0,0,0,16-16V184h16a16,16,0,0,0,16-16V56A16,16,0,0,0,216,40ZM72,56H216v62.75l-10.07-10.06a16,16,0,0,0-22.63,0l-20,20-44-44a16,16,0,0,0-22.62,0L72,109.37ZM184,200H40V88H56v80a16,16,0,0,0,16,16H184Zm32-32H72V132l36-36,49.66,49.66a8,8,0,0,0,11.31,0L194.63,120,216,141.38V168ZM160,84a12,12,0,1,1,12,12A12,12,0,0,1,160,84Z"></path>
   </svg>
 );
+
+export default PiImages;

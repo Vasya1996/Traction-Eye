@@ -11,13 +11,13 @@ export const updateChartPnlData = (chartData?: ChartData[]): ChartData[] => {
         if(index === 0) {
             return data;
         }
-        const pnl_usd = data.net_worth! - firstPointNetWorth;
-        const pnl_percentage = pnl_usd / firstPointNetWorth  * 100;
+        const pnl_usd = firstPointNetWorth ? data.net_worth! - firstPointNetWorth : data.net_worth;
+        const pnl_percentage = (firstPointNetWorth && pnl_usd) ? pnl_usd / firstPointNetWorth  * 100 : (pnl_usd ? 100 : 0);
 
         return {
             ...data,
             pnl_percentage,
-            pnl_usd,
+            pnl_usd: pnl_usd ?? 0,
         }
     });
 }
