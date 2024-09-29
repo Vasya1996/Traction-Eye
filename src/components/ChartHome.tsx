@@ -35,11 +35,16 @@ export function ChartHome({timeline}: ChartHomeProps) {
         refetchOnWindowFocus: false,
         ...CACHE_OPTIONS
     });
-    const lastChartData = useMemo(() => mainChartData?.[mainChartData?.length - 1], [mainChartData]);
 
     const updatedChartData = useMemo(() => {
+        if(!mainChartData) {
+            return [];
+        }
+        
         return updateChartPnlData(mainChartData);
     },[mainChartData])
+
+    const lastChartData = useMemo(() => updatedChartData?.[updatedChartData?.length - 1], [updatedChartData]);
 
     useEffect(() => {
         if (timelineData?.interval && timelineData?.period && walletAddress) {
