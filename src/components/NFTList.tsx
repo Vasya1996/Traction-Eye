@@ -45,7 +45,7 @@ const NFTList: FC = () => {
 		<div className="nfts mb-4">
 			<div className="bg-white shadow-sm h-36 rounded-lg p-3">
 				<p className="font-semibold text-xl items-center flex">
-					<PiImages className="mr-1" /> NFTs{" "}
+					<PiImages size={16} className="mr-1" /> NFTs{" "}
 					<span className="ml-1 text-gray-400 text-base">({nfts.length})</span>
 				</p>
 				<div className="nft-preview py-5">
@@ -60,7 +60,7 @@ const NFTList: FC = () => {
 						:
 						<Link to={"/nfts"}>
 							<span className="h-16 shadow-md w-16 items-center flex justify-center bg-gray-200 rounded-xl">
-								<FaArrowRight className="text-gray-700" />
+								<FaArrowRight size={16} className="text-gray-700" />
 							</span>
 						</Link>
 						}
