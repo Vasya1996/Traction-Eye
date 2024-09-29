@@ -53,6 +53,10 @@ const AssetItemPage: FC = () => {
 
 
   const updatedChartData = useMemo(() => {
+    if(!assetChartData) {
+      return [];
+    }
+    
     return updateAssetChartPnlData(assetChartData);
 },[assetChartData])
 
