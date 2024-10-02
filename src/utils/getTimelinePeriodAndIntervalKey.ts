@@ -22,8 +22,9 @@ export const getTimelinePeriodAndIntervalKey = (auth_date: number, timeline: key
     let periodAndIntervalKey: keyof typeof TIMELINES_INTERVALS_SECONDS = timeline;
     if(timeline === TimelineKeys.MAX) {
 
-    
         if (differenceInDays > 365) {
+            periodAndIntervalKey = TimelineKeys.TwoYear;
+        } else if (differenceInDays > 90) {
             periodAndIntervalKey = TimelineKeys.Year;
         } else if (differenceInDays > 30) {
             periodAndIntervalKey = TimelineKeys.Month;
@@ -35,7 +36,6 @@ export const getTimelinePeriodAndIntervalKey = (auth_date: number, timeline: key
             periodAndIntervalKey = TimelineKeys.Hour;
         }
     }
-
 
     return {
         period: timeline === TimelineKeys.MAX ? Math.round(differenceInSeconds) : TIMELINES_PERIOD_SECONDS[periodAndIntervalKey],
