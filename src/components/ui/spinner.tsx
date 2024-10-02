@@ -2,7 +2,7 @@ import React from 'react';
 import { motion } from 'framer-motion';
 
 interface SpinnerProps {
-  color?: string;
+  size?: string;
 }
 
 export const Spinner: React.FC<SpinnerProps> = ({ size = 6 }) => {
