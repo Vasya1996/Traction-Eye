@@ -7,22 +7,25 @@ import { useNavigate } from "react-router-dom";
 import { useMutation } from "@tanstack/react-query";
 import { API } from "@/api/api";
 import { useInitData } from "@telegram-apps/sdk-react";
-import { useSwipeable } from "react-swipeable"; 
-import ScreenshotImage from '@/pages/ConnectPage/screenshots.png';
+import { useSwipeable } from "react-swipeable";
+import ScreenshotImage from "@/pages/ConnectPage/screenshots.png";
 import { IoMdWallet } from "@/components/icons";
-import './ConnectPage.css'; // Импортируйте CSS файл
+import "./ConnectPage.css"; // Импортируйте CSS файл
+import { Spinner } from "@/components/ui/spinner";
 
 export const ConnectPage = () => {
     const [currentSlide, setCurrentSlide] = useState(0);
     const userFriendlyAddress = useTonAddress();
     const navigate = useNavigate();
     const initData = useInitData();
+    const walletAddress = localStorage.getItem("wallet_address");
 
     const mutation = useMutation({
         mutationFn: (params: { telegram_id: number; wallet_address: string }) =>
             API.addWallet(params.telegram_id, params.wallet_address),
         mutationKey: ["add-wallet"],
         onSettled: () => {
+            localStorage.setItem("wallet_address", userFriendlyAddress);
             navigate("/");
         },
     });
@@ -71,7 +74,7 @@ export const ConnectPage = () => {
     const handlers = useSwipeable({
         onSwipedLeft: () => handleNextSlide(),
         onSwipedRight: () => handlePreviousSlide(),
-        preventScrollOnSwipe: true, 
+        preventScrollOnSwipe: true,
         trackMouse: true,
     });
 
@@ -90,37 +93,58 @@ export const ConnectPage = () => {
                         </div>
                     ) : (
                         <>
-                        <h3 className="text-lg font-black sm:text-xl lg:text-2xl text-shadow-white mb-1">
-                            Analyse Profit and Loss <br /> of any kind of assets
-                        </h3>
-                        <div className="relative w-full max-w-xs h-auto mx-auto mb-0 mb-3 flex justify-center z-20">
-                            <img className="w-full h-auto rounded-3xl object-cover" src={ScreenshotImage} alt="" />
-                        </div>
-                        <h3 className="text-md font-black text-shadow-white sm:text-md lg:text-xl mb-2">
-                            All DeFi protocols on one screen
-                        </h3>
+                            <h3 className="text-lg font-black sm:text-xl lg:text-2xl text-shadow-white mb-1">
+                                Analyse Profit and Loss <br /> of any kind of assets
+                            </h3>
+                            <div className="relative w-full max-w-xs h-auto mx-auto mb-0 mb-3 flex justify-center z-20">
+                                <img className="w-full h-auto rounded-3xl object-cover" src={ScreenshotImage} alt="" />
+                            </div>
+                            <h3 className="text-md font-black text-shadow-white sm:text-md lg:text-xl mb-2">
+                                All DeFi protocols on one screen
+                            </h3>
                         </>
                     )}
                 </div>
             </div>
-
             <div className="flex justify-center mb-3">
-                <span
+                <button
+                    disabled={!!walletAddress}
                     onClick={() => handleIndicatorClick(0)}
-                    className={`w-2 h-2 mx-1 rounded-full cursor-pointer ${currentSlide === 0 ? 'bg-yellow-100' : 'bg-gray-600'}`}
-                ></span>
-                <span
+                    className={`w-2 h-2 mx-1 rounded-full cursor-pointer ${
+                        currentSlide === 0 ? "bg-yellow-100" : "bg-gray-600"
+                    }`}
+                ></button>
+                <button
+                    disabled={!!walletAddress}
                     onClick={() => handleIndicatorClick(1)}
-                    className={`w-2 h-2 mx-1 rounded-full cursor-pointer ${currentSlide === 1 ? 'bg-yellow-100' : 'bg-gray-600'}`}
-                ></span>
+                    className={`w-2 h-2 mx-1 rounded-full cursor-pointer ${
+                        currentSlide === 1 ? "bg-yellow-100" : "bg-gray-600"
+                    }`}
+                ></button>
             </div>
 
             <div className="flex-none flex justify-center pb-10 w-full">
                 <button
+                    disabled={!!walletAddress}
                     onClick={handleNextSlide}
-                    className="bg-yellow-400 py-3 px-6 rounded-2xl w-full sm:w-3/4 md:w-1/2 lg:w-1/3 flex justify-center items-center text-base sm:text-lg"
+                    className={`${
+                        walletAddress ? "bg-yellow-500 cursor-not-allowed" : "bg-yellow-400"
+                    } py-3 px-6 rounded-2xl w-full sm:w-3/4 md:w-1/2 lg:w-1/3 flex justify-center items-center text-base sm:text-lg`}
                 >
-                    {currentSlide === 0 ? "Continue" : <span className="flex items-center">Connect Wallet<IoMdWallet size={18} className="text-lg ml-2"/></span>}
+                    {walletAddress ? (
+                        <Spinner />
+                    ) : (
+                        <>
+                            {currentSlide === 0 ? (
+                                "Continue"
+                            ) : (
+                                <span className="flex items-center">
+                                    Connect Wallet
+                                    <IoMdWallet size={18} className="text-lg ml-2" />
+                                </span>
+                            )}
+                        </>
+                    )}
                 </button>
             </div>
         </div>

@@ -5,6 +5,7 @@ export enum TimelineKeys {
     Week = "1W",
     Month = "1M",
     Year = "1Y",
+    TwoYear = "2Y",
     MAX = "MAX"
 }
 
@@ -14,6 +15,7 @@ export enum TIMELINES_PERIOD_SECONDS {
     "1W" = 604800,
     "1M" = 2592000,
     "1Y" = 31536000,
+    "2Y" = 63072000,
     "MAX" = 0
 }
 
@@ -23,5 +25,6 @@ export  const TIMELINES_INTERVALS_SECONDS = {
     "1W": 1800,
     "1M": 7200,
     "1Y": 86400,
+    "2Y": 129600,
     "MAX": 0
 }
