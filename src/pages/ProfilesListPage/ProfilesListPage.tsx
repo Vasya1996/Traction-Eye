@@ -7,6 +7,7 @@ import { postEvent } from '@telegram-apps/sdk';
 import { useTonAddress } from "@tonconnect/ui-react";
 import { useTonConnectUI } from '@tonconnect/ui-react';
 import { useStore } from "@/store/store";
+import { LocalStorageKeys } from '@/constants/localStorage';
 
 
 const profiles = [
@@ -48,6 +49,7 @@ const ProfilesListPage: FC = () => {
       if (isConfirmed) {
         if (tonConnectUI) {
           try {
+            localStorage.removeItem(LocalStorageKeys.wallet_address);
             postEvent('web_app_trigger_haptic_feedback', { type: 'notification', notification_type: 'success' });
             alert('Successfuly removed!');
             await tonConnectUI.disconnect();

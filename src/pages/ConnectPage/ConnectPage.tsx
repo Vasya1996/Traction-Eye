@@ -12,20 +12,21 @@ import ScreenshotImage from "@/pages/ConnectPage/screenshots.png";
 import { IoMdWallet } from "@/components/icons";
 import "./ConnectPage.css"; // Импортируйте CSS файл
 import { Spinner } from "@/components/ui/spinner";
+import { LocalStorageKeys } from "@/constants/localStorage";
 
 export const ConnectPage = () => {
     const [currentSlide, setCurrentSlide] = useState(0);
     const userFriendlyAddress = useTonAddress();
     const navigate = useNavigate();
     const initData = useInitData();
-    const walletAddress = localStorage.getItem("wallet_address");
+    const walletAddress = localStorage.getItem(LocalStorageKeys.wallet_address);
 
     const mutation = useMutation({
         mutationFn: (params: { telegram_id: number; wallet_address: string }) =>
             API.addWallet(params.telegram_id, params.wallet_address),
         mutationKey: ["add-wallet"],
         onSettled: () => {
-            localStorage.setItem("wallet_address", userFriendlyAddress);
+            localStorage.setItem(LocalStorageKeys.wallet_address, userFriendlyAddress);
             navigate("/");
         },
     });
