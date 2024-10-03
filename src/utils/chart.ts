@@ -22,8 +22,8 @@ export const updateChartPnlData = (chartData?: ChartData[]): ChartData[] => {
 
         return {
             ...data,
-            pnl_percentage: pnl_percentage >= 0 ? pnl_percentage : 0,
-            pnl_usd: pnl_usd >= 0 ? pnl_usd : 0,
+            pnl_percentage: Number.isFinite(pnl_percentage) ? pnl_percentage : 0,
+            pnl_usd: Number.isFinite(pnl_usd) ? pnl_usd : 0,
         }
     });
 }
@@ -50,8 +50,8 @@ export const updateAssetChartPnlData = (chartData?: ChartData[]): ChartData[] =>
 
         return {
             ...data,
-            pnl_percentage: pnl_percentage >= 0 ? pnl_percentage : 0,
-            pnl_usd: pnl_usd >= 0 ? pnl_usd : 0,
+            pnl_percentage: Number.isFinite(pnl_percentage) ? pnl_percentage : 0,
+            pnl_usd: Number.isFinite(pnl_usd) ? pnl_usd : 0,
         }
     });
 }
