@@ -1,3 +1,5 @@
+import { ProtocolTypes } from "@/constants";
+
 export * from "./apiTypes";
 export * from "./chart";
 
@@ -29,8 +31,10 @@ export interface LpTokenInfo {
 
 export interface LPPairInfo {
 	supplied: LpTokenInfo[];
+	borrowed: LpTokenInfo[];
 	rewards: LpTokenInfo[];
 	usd_sum: string;
+	type: ProtocolTypes;
 }
 
 export interface LPResponse extends Array<LPPairInfo> {}
