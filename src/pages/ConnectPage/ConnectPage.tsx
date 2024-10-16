@@ -19,7 +19,9 @@ export const ConnectPage = () => {
     const userFriendlyAddress = useTonAddress();
     const navigate = useNavigate();
     const initData = useInitData();
-    const walletAddress = localStorage.getItem(LocalStorageKeys.wallet_address);
+    const [walletAddress, setWalletAddress] = useState(() =>
+        localStorage.getItem(LocalStorageKeys.wallet_address)
+    );
 
     const mutation = useMutation({
         mutationFn: (params: { telegram_id: number; wallet_address: string }) =>
@@ -32,12 +34,24 @@ export const ConnectPage = () => {
     });
 
     useEffect(() => {
-        if (!userFriendlyAddress) return;
+        if (!userFriendlyAddress) {
+            const timeoutId = setTimeout(() => {
+                localStorage.removeItem(LocalStorageKeys.wallet_address);
+                setWalletAddress(null); // Update the state after removal
+            }, 5000);
+
+            return () => clearTimeout(timeoutId); // Cleanup
+        }
+
+        if(userFriendlyAddress && walletAddress && userFriendlyAddress === walletAddress) {
+            navigate("/");
+        }
+
         mutation.mutate({
             telegram_id: initData?.user?.id ? initData?.user?.id : 0,
             wallet_address: userFriendlyAddress,
         });
-    }, [userFriendlyAddress]);
+    }, [userFriendlyAddress, walletAddress]);
 
     const [tonConnectUI] = useTonConnectUI();
 
