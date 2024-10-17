@@ -4,6 +4,7 @@ import { mockTelegramEnv, parseInitData, retrieveLaunchParams } from '@telegram-
 // application, import.meta.env.DEV will become false, and the code inside will be tree-shaken,
 // so you will not see it in your final bundle.
 if (import.meta.env.DEV) {
+  console.log('-dev');
   let shouldMock: boolean;
 
   // Try to extract launch parameters to check if the current environment is Telegram-based.
@@ -31,7 +32,7 @@ if (import.meta.env.DEV) {
         is_premium: true,
         allows_write_to_pm: true,
       })],
-      ['hash', '89d6079ad6762351f38c6dbbc41bb53048019256a9443988af7a48bcad16ba31'],
+      ['hash', '9de38224b5d95f42c2bd25f955344b6ffaa011bcdcd1a167be1bdd8174cd081c'],
       ['auth_date', '1716922846'],
       ['start_param', 'debug'],
       ['chat_type', 'sender'],

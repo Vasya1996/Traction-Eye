@@ -17,4 +17,12 @@ const endpoints = {
   getUserWalletCreationDate: (wallet_address: string) => `transactions?account=${wallet_address}&limit=1&offset=0&sort=asc`
 };
 
+export const userServiceEndpoints = {
+  connectReferral: '/connect',
+  getUser: '/user',
+  auth: '/auth/login',
+  addWallet: '/wallet/add',
+  removeWallet: '/wallet/remove'
+}
+
 export default endpoints;
