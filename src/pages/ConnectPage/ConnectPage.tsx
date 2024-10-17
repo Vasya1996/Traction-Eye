@@ -21,8 +21,10 @@ export const ConnectPage = () => {
     const userFriendlyAddress = useTonAddress();
     const navigate = useNavigate();
     const initData = useInitData();
-    const walletAddress = localStorage.getItem(LocalStorageKeys.wallet_address);
     const queryParams = useQueryParams();
+    const [walletAddress, setWalletAddress] = useState(() =>
+        localStorage.getItem(LocalStorageKeys.wallet_address)
+    );
 
     useEffect(() => {
         const refCode = queryParams?.get("ref") || queryParams?.get("startapp");
@@ -55,7 +57,20 @@ export const ConnectPage = () => {
     });
 
     useEffect(() => {
-        if (!userFriendlyAddress || !initDataRaw) return;
+        if (!userFriendlyAddress || !initDataRaw) {
+            const timeoutId = setTimeout(() => {
+                localStorage.removeItem(LocalStorageKeys.wallet_address);
+                setWalletAddress(null); // Update the state after removal
+            }, 5000);
+
+            return () => clearTimeout(timeoutId); // Cleanup
+        }
+        
+        
+        if(userFriendlyAddress && walletAddress && userFriendlyAddress === walletAddress) {
+            navigate("/");
+        }
+
         (async () => {
             try {
                 const {token} = await loginMutation.mutateAsync(initDataRaw);
@@ -82,7 +97,7 @@ export const ConnectPage = () => {
                 console.log('--err',err);
             }
         })();
-    }, [userFriendlyAddress, initDataRaw]);
+    }, [userFriendlyAddress, initDataRaw, walletAddress]);
 
     const [tonConnectUI] = useTonConnectUI();
 
