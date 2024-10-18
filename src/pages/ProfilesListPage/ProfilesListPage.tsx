@@ -49,7 +49,7 @@ const ProfilesListPage: FC = () => {
       if (isConfirmed) {
         if (tonConnectUI) {
           try {
-            localStorage.removeItem(LocalStorageKeys.wallet_address);
+            localStorage.removeItem(LocalStorageKeys.user_service_wallet_address);
             postEvent('web_app_trigger_haptic_feedback', { type: 'notification', notification_type: 'success' });
             alert('Successfuly removed!');
             await tonConnectUI.disconnect();

@@ -23,7 +23,7 @@ export const ConnectPage = () => {
     const initData = useInitData();
     const queryParams = useQueryParams();
     const [walletAddress, setWalletAddress] = useState(() =>
-        localStorage.getItem(LocalStorageKeys.wallet_address)
+        localStorage.getItem(LocalStorageKeys.user_service_wallet_address)
     );
 
     useEffect(() => {
@@ -59,22 +59,17 @@ export const ConnectPage = () => {
     useEffect(() => {
         if (!userFriendlyAddress || !initDataRaw) {
             const timeoutId = setTimeout(() => {
-                localStorage.removeItem(LocalStorageKeys.wallet_address);
+                localStorage.removeItem(LocalStorageKeys.user_service_wallet_address);
                 setWalletAddress(null); // Update the state after removal
             }, 5000);
 
             return () => clearTimeout(timeoutId); // Cleanup
         }
-        
-        
-        if(userFriendlyAddress && walletAddress && userFriendlyAddress === walletAddress) {
-            navigate("/");
-        }
 
         (async () => {
             try {
                 const {token} = await loginMutation.mutateAsync(initDataRaw);
-                if(token && userFriendlyAddress) {
+                if(token && userFriendlyAddress === walletAddress) {
                     navigate("/");
                     return;
                 }
@@ -91,7 +86,7 @@ export const ConnectPage = () => {
                 if(refCode) {
                     userServiceConnectReferralMutation.mutate(refCode);
                 }
-                localStorage.setItem(LocalStorageKeys.wallet_address, userFriendlyAddress);
+                localStorage.setItem(LocalStorageKeys.user_service_wallet_address, userFriendlyAddress);
                 navigate("/");
             } catch(err) {
                 console.log('--err',err);

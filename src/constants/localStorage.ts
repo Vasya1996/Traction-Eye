@@ -1,5 +1,5 @@
 export enum LocalStorageKeys {
-    wallet_address = "wallet_address",
+    user_service_wallet_address = "user_service_wallet_address",
     userServiceToken = "userServiceToken",
     ref = "ref"
 }
