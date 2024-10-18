@@ -34,7 +34,7 @@ export const ProfileItem: FC<ProfileItemProps> = ({ wallet, managed }) => {
     
     // If confirmed, perform the removal action
     if (isConfirmed) {
-      localStorage.removeItem(LocalStorageKeys.wallet_address);
+      localStorage.removeItem(LocalStorageKeys.user_service_wallet_address);
       tonConnectUI.disconnect();
       postEvent('web_app_trigger_haptic_feedback', { type: 'notification', notification_type: 'success' });
       alert('Profile removed successfully!');
