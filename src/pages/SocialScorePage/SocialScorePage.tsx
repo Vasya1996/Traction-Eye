@@ -75,7 +75,7 @@ export const SocialScorePage: React.FC = () => {
         fullWidth
         disabled={!userData?.referral_link}
         onClick={() => {
-          shareContent(`https://t.me/start?startapp=${userData?.referral_link}`,"\n\nYour network is your net worth \nElevate your social capital with TractionEye");
+          shareContent(`https://t.me/start?startapp=${userData?.referral_link}`,"Your network is your net worth \nElevate your social capital with TractionEye");
         }}
         sx={{
           height: "56px",
