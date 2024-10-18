@@ -1,5 +1,4 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { useMiniApp } from '@telegram-apps/sdk-react';
 
 // telegram-webapp.d.ts
 interface Window {
