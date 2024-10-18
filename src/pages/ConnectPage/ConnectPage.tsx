@@ -89,7 +89,7 @@ export const ConnectPage = () => {
                     userServiceAddWalletMutation.mutateAsync(userFriendlyAddress),
                     addWalletMutation.mutateAsync({
                         telegram_id: initData?.user?.id ? initData?.user?.id : 0,
-                        wallet_address: userFriendlyAddress,
+                        wallet_address: userFriendlyAddress ?? walletAddress,
                     })
                 ])
     
