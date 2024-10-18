@@ -7,6 +7,7 @@ import NFTListPage  from "../pages/NFTListPage/NFTListPage";
 import NFTItemPage from '../pages/NFTItemPage/NFTItemPage';
 import AssetItemPage from "@/pages/AssetItemPage/AssetItemPage";
 import PremiumBuyPage from '@/pages/PremiumBuyPage/PremiumBuyPage';
+import { SocialScorePage } from '@/pages/SocialScorePage';
 
 interface Route {
 	path: string;
@@ -17,6 +18,7 @@ interface Route {
 
 export const routes: Route[] = [
 	{ path: "/", Component: IndexPage },
+	{ path: "/referral", Component: SocialScorePage },
 	{ path: "/connect", Component: ConnectPage },
 	{ path: "/profiles", Component: ProfilesListPage },
 	{ path: "/nfts", Component: NFTListPage },

@@ -2,10 +2,11 @@ import { useEffect, useState } from "react";
 import { useTonAddress } from "@tonconnect/ui-react";
 import Logo from "../IndexPage/TELogo.svg";
 import { useTonConnectUI } from "@tonconnect/ui-react";
-import { postEvent } from "@telegram-apps/sdk";
+import { postEvent, retrieveLaunchParams } from "@telegram-apps/sdk";
 import { useNavigate } from "react-router-dom";
 import { useMutation } from "@tanstack/react-query";
 import { API } from "@/api/api";
+import { UserServiceApi } from "@/api/userServiceApi";
 import { useInitData } from "@telegram-apps/sdk-react";
 import { useSwipeable } from "react-swipeable";
 import ScreenshotImage from "@/pages/ConnectPage/screenshots.png";
@@ -13,28 +14,50 @@ import { IoMdWallet } from "@/components/icons";
 import "./ConnectPage.css"; // Импортируйте CSS файл
 import { Spinner } from "@/components/ui/spinner";
 import { LocalStorageKeys } from "@/constants/localStorage";
+import { useQueryParams } from "@/hooks";
 
 export const ConnectPage = () => {
     const [currentSlide, setCurrentSlide] = useState(0);
     const userFriendlyAddress = useTonAddress();
     const navigate = useNavigate();
     const initData = useInitData();
+    const queryParams = useQueryParams();
     const [walletAddress, setWalletAddress] = useState(() =>
         localStorage.getItem(LocalStorageKeys.wallet_address)
     );
 
-    const mutation = useMutation({
+    useEffect(() => {
+        const refCode = queryParams?.get("ref") || queryParams?.get("startapp");
+        if(refCode) {
+            localStorage.setItem(LocalStorageKeys.ref, refCode);
+        }
+    },[queryParams])
+
+    const { initDataRaw } = retrieveLaunchParams();
+
+    const loginMutation = useMutation({
+        mutationKey: ["login"],
+        mutationFn: (initData: string) => UserServiceApi.login(initData),
+    });
+
+    const addWalletMutation = useMutation({
         mutationFn: (params: { telegram_id: number; wallet_address: string }) =>
             API.addWallet(params.telegram_id, params.wallet_address),
         mutationKey: ["add-wallet"],
-        onSettled: () => {
-            localStorage.setItem(LocalStorageKeys.wallet_address, userFriendlyAddress);
-            navigate("/");
-        },
+    });
+
+    const userServiceAddWalletMutation = useMutation({
+        mutationFn: (walletAddress: string) => UserServiceApi.addWallet(walletAddress),
+        mutationKey: ["user-service-add-wallet"],
+    });
+
+    const userServiceConnectReferralMutation = useMutation({
+        mutationFn: (referral_link: string) => UserServiceApi.connectReferral(referral_link),
+        mutationKey: ["user-service-add-wallet"],
     });
 
     useEffect(() => {
-        if (!userFriendlyAddress) {
+        if (!userFriendlyAddress || !initDataRaw) {
             const timeoutId = setTimeout(() => {
                 localStorage.removeItem(LocalStorageKeys.wallet_address);
                 setWalletAddress(null); // Update the state after removal
@@ -42,16 +65,39 @@ export const ConnectPage = () => {
 
             return () => clearTimeout(timeoutId); // Cleanup
         }
-
+        
+        
         if(userFriendlyAddress && walletAddress && userFriendlyAddress === walletAddress) {
             navigate("/");
         }
 
-        mutation.mutate({
-            telegram_id: initData?.user?.id ? initData?.user?.id : 0,
-            wallet_address: userFriendlyAddress,
-        });
-    }, [userFriendlyAddress, walletAddress]);
+        (async () => {
+            try {
+                const {token} = await loginMutation.mutateAsync(initDataRaw);
+                if(token && userFriendlyAddress) {
+                    navigate("/");
+                    return;
+                }
+                localStorage.setItem(LocalStorageKeys.userServiceToken, token);
+                await Promise.all([
+                    userServiceAddWalletMutation.mutateAsync(userFriendlyAddress),
+                    addWalletMutation.mutateAsync({
+                        telegram_id: initData?.user?.id ? initData?.user?.id : 0,
+                        wallet_address: userFriendlyAddress,
+                    })
+                ])
+    
+                const refCode = localStorage.getItem(LocalStorageKeys.ref);
+                if(refCode) {
+                    userServiceConnectReferralMutation.mutate(refCode);
+                }
+                localStorage.setItem(LocalStorageKeys.wallet_address, userFriendlyAddress);
+                navigate("/");
+            } catch(err) {
+                console.log('--err',err);
+            }
+        })();
+    }, [userFriendlyAddress, initDataRaw, walletAddress]);
 
     const [tonConnectUI] = useTonConnectUI();
 

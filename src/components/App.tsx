@@ -1,30 +1,33 @@
 import { useIntegration } from "@telegram-apps/react-router-integration";
+import { BottomNavigation, BottomNavigationAction } from "@mui/material";
 import {
 	bindMiniAppCSSVars,
 	bindThemeParamsCSSVars,
 	bindViewportCSSVars,
 	initNavigator,
-	useInitData,
 	useMiniApp,
 	useThemeParams,
 	useViewport,
 } from "@telegram-apps/sdk-react";
-import { type FC, useEffect, useMemo } from "react";
+import { type FC, useEffect, useMemo, useState } from "react";
 import { Navigate, Route, Router, Routes } from "react-router-dom";
 import { postEvent } from "@telegram-apps/sdk";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { TonConnectUIProvider } from '@tonconnect/ui-react';
+import { TonConnectUIProvider, useTonAddress } from '@tonconnect/ui-react';
 
 
 import { routes } from "@/navigation/routes.tsx";
+import { SocialCap, AssetsOff } from "./icons";
 const queryClient = new QueryClient();
+
+const TEST_ADDRESSES = ["UQAINHiKgQMi0BQ-Y4C5AMFiZm_2dgvf-KPxdWJImKWArNwM", "UQBghyYO1PSqiHO70FNCE5NpU94rTE3pfxjGpzB2aD6fWVCO", "UQAiuSciIC6VfkKODF9xsrogE44Okn13XGvdzXq1uCoOH40Z"];
 
 export const App: FC = () => {
 	const miniApp = useMiniApp();
 	const themeParams = useThemeParams();
 	const viewport = useViewport();
-  const initDataRaw = useInitData();
-  console.log(initDataRaw);
+	const userFriendlyAddress = useTonAddress();
+
 	useEffect(() => {
 		return bindMiniAppCSSVars(miniApp, themeParams);
 	}, [miniApp, themeParams]);
@@ -45,7 +48,6 @@ export const App: FC = () => {
   const navigator = useMemo(() => initNavigator('app-navigation-state'), []);
   const [location, reactNavigator] = useIntegration(navigator);
   
-
   useEffect(() => {
     switch (true) {
         case location.pathname === '/connect':
@@ -90,6 +92,18 @@ export const App: FC = () => {
 		return () => navigator.detach();
 	}, [navigator]);
 
+	const [value, setValue] = useState(0);
+		// Bottom Navigation Handlers
+		const handleNavigationChange = (event: React.ChangeEvent<unknown>, newValue: number) => {
+			event.preventDefault();
+			setValue(newValue);
+			if (newValue === 0) {
+				navigator.push("/");
+			} else if (newValue === 1) {
+				navigator.push("/referral");
+			}
+		};
+
 	return (
 		<TonConnectUIProvider>
 			<QueryClientProvider client={queryClient}>
@@ -100,6 +114,17 @@ export const App: FC = () => {
 						))}
 						<Route path="*" element={<Navigate to="/" />} />
 					</Routes>
+					{location?.pathname !== "/connect" && TEST_ADDRESSES.includes(userFriendlyAddress) && (
+						<BottomNavigation
+							value={value}
+							onChange={handleNavigationChange}
+							showLabels
+							style={{ position: "fixed", bottom: 0, width: "100%", zIndex: 1000, height: 85 }}
+						>
+							<BottomNavigationAction icon={<AssetsOff isActive={value === 0}/>} />
+							<BottomNavigationAction icon={<SocialCap isActive={value === 1}/>} />
+						</BottomNavigation>	
+					)}
 				</Router>
 			</QueryClientProvider>
 		</TonConnectUIProvider>
