@@ -61,11 +61,14 @@ export const ConnectPage = () => {
     const [isDisconnected, setIsDisconnected] = useState(false);
     
     useEffect(() => {
+        const walletAddress = localStorage.getItem(LocalStorageKeys.user_service_wallet_address);
         if(!walletAddress && !isDisconnected) {
             tonConnectUI?.disconnect();
             setIsDisconnected(true);
+        } else {
+            setIsDisconnected(true);
         }
-    }, [walletAddress,isDisconnected])
+    }, [isDisconnected])
 
     useEffect(() => {
         if (!userFriendlyAddress || !initDataRaw || !isDisconnected) {
