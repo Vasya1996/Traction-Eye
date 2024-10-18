@@ -126,7 +126,7 @@ export const SocialScoreDrawer: React.FC<SocialScoreDrawerProps> = ({ open, onCl
           color="warning"
           disabled={!referral_link}
           onClick={() => {
-            shareContent(`https://t.me/TractionEyeBot/start?startapp=${referral_link}`,"\nYour network is your net worth \nElevate your social capital with TractionEye");
+            shareContent(`https://t.me/TractionEyeBot/start?startapp=${referral_link}`,"Your network is your net worth \nElevate your social capital with TractionEye");
           }}
           sx={{ fontWeight: "bold", height: "56px",fontSize: "19px", textTransform: "none", marginTop: 2, marginBottom: 2, paddingY: 1, borderRadius: '15px', width: '100%', color: '#1F2937', backgroundColor: '#FFD235', }}
         >
