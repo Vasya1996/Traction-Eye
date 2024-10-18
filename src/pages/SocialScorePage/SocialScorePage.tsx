@@ -100,7 +100,7 @@ export const SocialScorePage: React.FC = () => {
 
         {/* Social Score List */}
         <List sx={{ marginTop: 2, backgroundColor: '#fff', borderRadius: "16px", width: '100%', padding: "6px 16px" }}>
-        {userData?.referrals?.length === 0 && <Typography sx={{color: '#1F2937', padding: "8px 0px", fontSize: "12px", fontWeight: 300, opacity: 0.5}}>
+        {(!userData?.referrals || userData?.referrals?.length === 0) && <Typography sx={{color: '#1F2937', padding: "8px 0px", fontSize: "12px", fontWeight: 300, opacity: 0.5}}>
             You don't have any social contacts yet
           </Typography>}
           {(userData?.referrals ?? []).map(({referral_id, wallet, net_worth}) => (

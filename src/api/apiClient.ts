@@ -51,19 +51,16 @@ export const tonCenterApi = axios.create({
 });
 
 export const userServiceClient = axios.create({
-  // baseURL: 'https://tractioneye.ru/referral/',
-  baseURL: 'http://localhost:8001/',
+  baseURL: 'https://tractioneye.ru/referral/',
   headers: {
     'Content-Type': 'application/json',
   },
-  // withCredentials: true 
 });
 
 userServiceClient.interceptors.request.use(
   (config) => {
     const token = localStorage.getItem(LocalStorageKeys.userServiceToken);
 
-    console.log("--teok", token);
     if (token) {
       config.headers.Authorization = `Bearer ${token}`;
     }
