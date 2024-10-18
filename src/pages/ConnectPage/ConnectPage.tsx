@@ -56,7 +56,13 @@ export const ConnectPage = () => {
         mutationKey: ["user-service-add-wallet"],
     });
 
+    const [tonConnectUI] = useTonConnectUI();
+
     useEffect(() => {
+        if(!walletAddress) {
+            tonConnectUI.disconnect();
+        }
+
         if (!userFriendlyAddress || !initDataRaw) {
             const timeoutId = setTimeout(() => {
                 localStorage.removeItem(LocalStorageKeys.user_service_wallet_address);
@@ -92,9 +98,7 @@ export const ConnectPage = () => {
                 console.log('--err',err);
             }
         })();
-    }, [userFriendlyAddress, initDataRaw, walletAddress]);
-
-    const [tonConnectUI] = useTonConnectUI();
+    }, [userFriendlyAddress, initDataRaw, walletAddress, tonConnectUI]);
 
     const connectHandleClick = () => {
         postEvent("web_app_trigger_haptic_feedback", {
