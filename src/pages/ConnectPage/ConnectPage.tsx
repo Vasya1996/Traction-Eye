@@ -57,15 +57,17 @@ export const ConnectPage = () => {
     });
 
     const [tonConnectUI] = useTonConnectUI();
+    const [isDisconnected, setIsDisconnected] = useState(false);
     
     useEffect(() => {
-        if(!walletAddress) {
+        if(!walletAddress && !isDisconnected) {
             tonConnectUI?.disconnect();
+            setIsDisconnected(true);
         }
-    }, [walletAddress])
+    }, [walletAddress,isDisconnected])
 
     useEffect(() => {
-        if (!userFriendlyAddress || !initDataRaw) {
+        if (!userFriendlyAddress || !initDataRaw || !isDisconnected) {
             const timeoutId = setTimeout(() => {
                 localStorage.removeItem(LocalStorageKeys.user_service_wallet_address);
                 setWalletAddress(null); // Update the state after removal
@@ -100,7 +102,7 @@ export const ConnectPage = () => {
                 console.log('--err',err);
             }
         })();
-    }, [userFriendlyAddress, initDataRaw, walletAddress, tonConnectUI]);
+    }, [userFriendlyAddress, initDataRaw, walletAddress, tonConnectUI, isDisconnected]);
 
     const connectHandleClick = () => {
         postEvent("web_app_trigger_haptic_feedback", {
