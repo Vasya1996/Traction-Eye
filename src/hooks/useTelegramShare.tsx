@@ -4,10 +4,7 @@ export const useTelegramShare = () => {
   const utils = useUtils(); // Initialize utilities
 
   const shareContent = (url: string, text: string) => {
-    utils.shareURL(
-      url, // The URL you want to share
-      text, // Optional text message
-    );
+    utils.openTelegramLink(`https://t.me/share/url?url=${encodeURIComponent(url)}&text=${encodeURIComponent(text)}`);
   };
 
   return { shareContent };
