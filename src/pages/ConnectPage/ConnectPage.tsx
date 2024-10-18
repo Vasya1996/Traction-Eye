@@ -15,6 +15,8 @@ import "./ConnectPage.css"; // Импортируйте CSS файл
 import { Spinner } from "@/components/ui/spinner";
 import { LocalStorageKeys } from "@/constants/localStorage";
 import { useQueryParams } from "@/hooks";
+import { toast } from 'react-hot-toast';
+
 
 export const ConnectPage = () => {
     const [currentSlide, setCurrentSlide] = useState(0);
@@ -63,6 +65,7 @@ export const ConnectPage = () => {
         if(!walletAddress && !isDisconnected) {
             tonConnectUI?.disconnect();
             setIsDisconnected(true);
+            toast.success('Disconnect!');
         }
     }, [walletAddress,isDisconnected])
 
@@ -73,6 +76,7 @@ export const ConnectPage = () => {
                 setWalletAddress(null); // Update the state after removal
             }, 5000);
 
+            toast.success('Empty user wallet');
             return () => clearTimeout(timeoutId); // Cleanup
         }
 
@@ -92,6 +96,7 @@ export const ConnectPage = () => {
                     })
                 ])
     
+                toast.success('User was created');
                 const refCode = localStorage.getItem(LocalStorageKeys.ref);
                 if(refCode) {
                     userServiceConnectReferralMutation.mutate(refCode);
@@ -99,6 +104,7 @@ export const ConnectPage = () => {
                 localStorage.setItem(LocalStorageKeys.user_service_wallet_address, userFriendlyAddress);
                 navigate("/");
             } catch(err) {
+                toast.error(JSON.stringify(err));
                 console.log('--err',err);
             }
         })();

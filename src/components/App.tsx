@@ -14,8 +14,7 @@ import { Navigate, Route, Router, Routes } from "react-router-dom";
 import { postEvent } from "@telegram-apps/sdk";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { TonConnectUIProvider, useTonAddress } from '@tonconnect/ui-react';
-
-
+import { Toaster } from 'react-hot-toast';
 import { routes } from "@/navigation/routes.tsx";
 import { SocialCap, AssetsOff } from "./icons";
 const queryClient = new QueryClient();
@@ -107,6 +106,7 @@ export const App: FC = () => {
 	return (
 		<TonConnectUIProvider>
 			<QueryClientProvider client={queryClient}>
+				<Toaster position="top-right" reverseOrder={false} />
 				<Router location={location} navigator={reactNavigator}>
 					<Routes>
 						{routes.map((route) => (
