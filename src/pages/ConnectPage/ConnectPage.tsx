@@ -57,12 +57,14 @@ export const ConnectPage = () => {
     });
 
     const [tonConnectUI] = useTonConnectUI();
-
+    
     useEffect(() => {
         if(!walletAddress) {
             tonConnectUI?.disconnect();
         }
+    }, [walletAddress])
 
+    useEffect(() => {
         if (!userFriendlyAddress || !initDataRaw) {
             const timeoutId = setTimeout(() => {
                 localStorage.removeItem(LocalStorageKeys.user_service_wallet_address);
