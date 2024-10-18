@@ -16,6 +16,7 @@ import { Spinner } from "@/components/ui/spinner";
 import { LocalStorageKeys } from "@/constants/localStorage";
 import { useQueryParams } from "@/hooks";
 import { toast } from 'react-hot-toast';
+import copy from "clipboard-copy";
 
 
 export const ConnectPage = () => {
@@ -105,6 +106,7 @@ export const ConnectPage = () => {
                 navigate("/");
             } catch(err) {
                 toast.error(JSON.stringify(err));
+                copy(JSON.stringify(err));
                 console.log('--err',err);
             }
         })();
