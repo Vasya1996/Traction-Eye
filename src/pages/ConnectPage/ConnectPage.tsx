@@ -60,7 +60,7 @@ export const ConnectPage = () => {
 
     useEffect(() => {
         if(!walletAddress) {
-            tonConnectUI.disconnect();
+            tonConnectUI?.disconnect();
         }
 
         if (!userFriendlyAddress || !initDataRaw) {
