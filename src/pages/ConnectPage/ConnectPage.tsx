@@ -105,7 +105,17 @@ export const ConnectPage = () => {
                 localStorage.setItem(LocalStorageKeys.user_service_wallet_address, userFriendlyAddress);
                 navigate("/");
             } catch(err) {
-                toast.error(JSON.stringify(err));
+                toast.error(JSON.stringify(err),{
+                    duration: 20000, // 20 seconds
+                    style: {
+                      width: '100%', 
+                      height: 100,     // Make the toast full width
+                      maxWidth: 'none',   // Override max-width limit
+                      borderRadius: '0px', // Optional: No rounded corners
+                      background: '#333', // Optional: Change background color
+                      color: '#fff',      // Optional: Change text color
+                    },
+                  });
                 copy(JSON.stringify(err));
                 console.log('--err',err);
             }
