@@ -57,7 +57,7 @@ export const SocialScorePage: React.FC = () => {
       <Typography sx={{color: '#1F2937', width: "100%", marginTop: "16px"}} variant="body1" color="textSecondary" gutterBottom>
         Invite your friends and grow the value of your connections and relationships with others.
       </Typography>
-      <Typography sx={{color: '#1F2937', marginTop: "12px"}} variant="body2" color="textSecondary">
+      <Typography sx={{color: '#1F2937', marginTop: "12px"}} variant="body1" color="textSecondary">
         You and your friend will get a <Link
         component="button"
         onClick={handleDrawerOpen}
@@ -75,12 +75,12 @@ export const SocialScorePage: React.FC = () => {
         fullWidth
         disabled={!userData?.referral_link}
         onClick={() => {
-          shareContent(`https://t.me/start?startapp=${userData?.referral_link}`,"Your network is your net worth \nElevate your social capital with TractionEye");
+          shareContent(`https://t.me/TractionEyeBot/start?startapp=${userData?.referral_link}`,"\nYour network is your net worth \nElevate your social capital with TractionEye");
         }}
         sx={{
           height: "56px",
           color: '#1F2937',
-          fontWeight: 500,
+          fontWeight: "bold",
           marginTop: 2,
           borderRadius: "15px",
           paddingY: 1.5,
@@ -100,7 +100,7 @@ export const SocialScorePage: React.FC = () => {
 
         {/* Social Score List */}
         <List sx={{ marginTop: 2, backgroundColor: '#fff', borderRadius: "16px", width: '100%', padding: "6px 16px" }}>
-        {(!userData?.referrals || userData?.referrals?.length === 0) && <Typography sx={{color: '#1F2937', padding: "8px 0px", fontSize: "12px", fontWeight: 300, opacity: 0.5}}>
+        {(!userData?.referrals || userData?.referrals?.length === 0) && <Typography variant="body1" sx={{color: '#1F2937', padding: "8px 0px", fontWeight: 300, opacity: 0.5}}>
             You don't have any social contacts yet
           </Typography>}
           {(userData?.referrals ?? []).map(({referral_id, wallet, net_worth}) => (
