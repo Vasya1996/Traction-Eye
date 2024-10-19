@@ -8,17 +8,20 @@ import { useQuery } from "@tanstack/react-query";
 import { UserServiceApi } from "@/api/userServiceApi";
 import { UserResponse } from "@/types";
 import { useTelegramShare } from "@/hooks";
+import { useTonAddress } from "@tonconnect/ui-react";
 // import { Hexagon as HexagonIcon, Person as PersonIcon } from "@mui/icons-material"; // You can replace these icons with your custom icons if needed
 
 export const SocialScorePage: React.FC = () => {
   const { shareContent } = useTelegramShare();
+  const userFriendlyAddress = useTonAddress();
 
   const { data: userData } = useQuery<UserResponse>({
-    queryKey: ["userData"],
-    queryFn: () => UserServiceApi.getUser(),
+    queryKey: ["userData", userFriendlyAddress],
+    queryFn: () => UserServiceApi.getUser(userFriendlyAddress),
     retry: false,
     refetchOnWindowFocus: false,
     staleTime: Infinity,
+    enabled: !!userFriendlyAddress,
   })
 
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
