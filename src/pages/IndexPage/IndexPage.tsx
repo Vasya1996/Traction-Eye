@@ -61,7 +61,7 @@ export const IndexPage: FC = () => {
     };
 
     return (
-        <div className="bg-gray-800 min-h-screen select-none pb-12">
+        <div className="bg-gray-800 min-h-screen select-none">
             <div className="hero h-72 flex flex-col">
                 <div className="userdata px-4 flex justify-between items-center">
                     <Link to={"/profiles"}>
@@ -93,7 +93,7 @@ export const IndexPage: FC = () => {
                 </div>
             </div>
 
-            <div className="p-5 rounded-t-3xl bg-gray-50">
+            <div className="p-5 rounded-t-3xl bg-gray-50 pb-30">
                 <AssetList />
                 <NFTList />
                 <ProtocolsList />
