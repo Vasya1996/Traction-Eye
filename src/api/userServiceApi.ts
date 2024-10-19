@@ -13,9 +13,13 @@ export const UserServiceApi = {
 			throw error;
 		}
 	},
-	getUser: async () => {
+	getUser: async (wallet_address: string) => {
 		try {
-			const response = await userServiceClient.get(userServiceEndpoints.getUser);
+			const response = await userServiceClient.get(userServiceEndpoints.getUser, {
+				params: {
+					wallet_address
+				}
+			});
 			return response.data;
 		} catch (error) {
 			console.error("Error logging", error);
