@@ -119,10 +119,10 @@ export const App: FC = () => {
 							value={value}
 							onChange={handleNavigationChange}
 							showLabels
-							style={{ position: "fixed", bottom: 0, width: "100%", zIndex: 1000, height: 95 }}
+							style={{ position: "fixed", bottom: 0, width: "100%", zIndex: 1000, height: 90 }}
 						>
-							<BottomNavigationAction icon={<AssetsOff isActive={value === 0}/>} />
-							<BottomNavigationAction icon={<SocialCap isActive={value === 1}/>} />
+							<BottomNavigationAction icon={<div style={{paddingTop: 4}}><AssetsOff isActive={value === 0}/></div>} />
+							<BottomNavigationAction icon={<div style={{paddingTop: 4}}><SocialCap isActive={value === 1}/></div>} />
 						</BottomNavigation>	
 					)}
 				</Router>
