@@ -114,7 +114,7 @@ export const App: FC = () => {
 						))}
 						<Route path="*" element={<Navigate to="/" />} />
 					</Routes>
-					{location?.pathname !== "/connect" && TEST_ADDRESSES.includes(userFriendlyAddress) && (
+					{location?.pathname !== "/connect" && (
 						<BottomNavigation
 							value={value}
 							onChange={handleNavigationChange}

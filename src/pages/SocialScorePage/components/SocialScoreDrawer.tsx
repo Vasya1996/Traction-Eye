@@ -124,7 +124,8 @@ export const SocialScoreDrawer: React.FC<SocialScoreDrawerProps> = ({ open, onCl
         <Button
           variant="contained"
           color="warning"
-          disabled={!referral_link}
+          disabled
+          // disabled={!referral_link}
           onClick={() => {
             shareContent(`https://t.me/TractionEyeBot/start?startapp=${referral_link}`,"Your network is your net worth \nElevate your social capital with TractionEye");
           }}
