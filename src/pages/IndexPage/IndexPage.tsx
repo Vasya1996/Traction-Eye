@@ -93,7 +93,7 @@ export const IndexPage: FC = () => {
                 </div>
             </div>
 
-            <div className="p-5 rounded-t-3xl bg-gray-50 pb-30">
+            <div style={{height: "calc(100vh + 90px)"}} className="p-5 rounded-t-3xl bg-gray-50 pb-30">
                 <AssetList />
                 <NFTList />
                 <ProtocolsList />

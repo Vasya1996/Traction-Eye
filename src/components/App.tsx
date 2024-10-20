@@ -121,8 +121,8 @@ export const App: FC = () => {
 							showLabels
 							style={{ position: "fixed", bottom: 0, width: "100%", zIndex: 1000, height: 90, paddingBottom: 'env(safe-area-inset-bottom)', }}
 						>
-							<BottomNavigationAction icon={<div style={{paddingTop: 12}}><AssetsOff isActive={value === 0}/></div>} />
-							<BottomNavigationAction icon={<div style={{paddingTop: 12}}><SocialCap isActive={value === 1}/></div>} />
+							<BottomNavigationAction icon={<AssetsOff isActive={value === 0}/>} />
+							<BottomNavigationAction icon={<SocialCap isActive={value === 1}/>} />
 						</BottomNavigation>	
 					)}
 				</Router>
