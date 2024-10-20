@@ -13,19 +13,16 @@ import { type FC, useEffect, useMemo, useState } from "react";
 import { Navigate, Route, Router, Routes } from "react-router-dom";
 import { postEvent } from "@telegram-apps/sdk";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { TonConnectUIProvider, useTonAddress } from '@tonconnect/ui-react';
+import { TonConnectUIProvider } from '@tonconnect/ui-react';
 import { Toaster } from 'react-hot-toast';
 import { routes } from "@/navigation/routes.tsx";
 import { SocialCap, AssetsOff } from "./icons";
 const queryClient = new QueryClient();
 
-const TEST_ADDRESSES = ["UQAINHiKgQMi0BQ-Y4C5AMFiZm_2dgvf-KPxdWJImKWArNwM", "UQBghyYO1PSqiHO70FNCE5NpU94rTE3pfxjGpzB2aD6fWVCO", "UQAiuSciIC6VfkKODF9xsrogE44Okn13XGvdzXq1uCoOH40Z"];
-
 export const App: FC = () => {
 	const miniApp = useMiniApp();
 	const themeParams = useThemeParams();
 	const viewport = useViewport();
-	const userFriendlyAddress = useTonAddress();
 
 	useEffect(() => {
 		return bindMiniAppCSSVars(miniApp, themeParams);
