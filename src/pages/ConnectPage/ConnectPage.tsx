@@ -27,12 +27,13 @@ export const ConnectPage = () => {
         localStorage.getItem(LocalStorageKeys.user_service_wallet_address)
     );
 
-    useEffect(() => {
-        const refCode = initData?.startParam || queryParams?.get("ref") || queryParams?.get("startapp");
-        if(refCode) {
-            localStorage.setItem(LocalStorageKeys.ref, refCode);
-        }
-    },[queryParams, initData])
+    // initData?.queryId
+    // useEffect(() => {
+    //     const refCode = initData?.startParam || queryParams?.get("ref") || queryParams?.get("startapp");
+    //     if(refCode) {
+    //         localStorage.setItem(LocalStorageKeys.ref, refCode);
+    //     }
+    // },[queryParams, initData])
 
     const { initDataRaw } = retrieveLaunchParams();
 
@@ -96,7 +97,7 @@ export const ConnectPage = () => {
                     })
                 ])
     
-                const refCode = localStorage.getItem(LocalStorageKeys.ref);
+                const refCode = initData?.startParam || queryParams?.get("ref") || queryParams?.get("startapp");// localStorage.getItem(LocalStorageKeys.ref);
                 if(refCode) {
                     userServiceConnectReferralMutation.mutate(refCode);
                 }
@@ -106,7 +107,7 @@ export const ConnectPage = () => {
                 console.log('--err',err);
             }
         })();
-    }, [userFriendlyAddress, initDataRaw, walletAddress, tonConnectUI, isDisconnected]);
+    }, [userFriendlyAddress, initDataRaw, walletAddress, tonConnectUI, isDisconnected, queryParams, initData]);
 
     const connectHandleClick = () => {
         postEvent("web_app_trigger_haptic_feedback", {
