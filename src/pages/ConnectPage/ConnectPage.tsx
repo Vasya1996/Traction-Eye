@@ -28,11 +28,11 @@ export const ConnectPage = () => {
     );
 
     useEffect(() => {
-        const refCode = queryParams?.get("ref") || queryParams?.get("startapp");
+        const refCode = initData?.startParam || queryParams?.get("ref") || queryParams?.get("startapp");
         if(refCode) {
             localStorage.setItem(LocalStorageKeys.ref, refCode);
         }
-    },[queryParams])
+    },[queryParams, initData])
 
     const { initDataRaw } = retrieveLaunchParams();
 
