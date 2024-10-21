@@ -6,8 +6,11 @@ import { useNavigate } from 'react-router-dom';
 import { postEvent } from '@telegram-apps/sdk';
 import { useTonAddress } from "@tonconnect/ui-react";
 import { useTonConnectUI } from '@tonconnect/ui-react';
-import { useStore } from "@/store/store";
 import { LocalStorageKeys } from '@/constants/localStorage';
+import { useQuery } from '@tanstack/react-query';
+import { ChartData } from '@/types';
+import { PNL_API } from '@/api/pnl';
+import { CACHE_OPTIONS } from '@/constants';
 
 
 const profiles = [
@@ -16,15 +19,20 @@ const profiles = [
 ];
 
 const ProfilesListPage: FC = () => {
-  const { netWorth } = useStore();
   const walletAddress = useTonAddress();
   const [tonConnectUI] = useTonConnectUI();
   const navigate = useNavigate();  // Use useNavigate inside the component
+  const { data: mainChartData } = useQuery<ChartData[]>({
+    queryKey: ["mainChartData"],
+    queryFn: () => PNL_API.getPnlByAddress({wallet_address: walletAddress, interval: 100, period: 100 }),
+    enabled: !!walletAddress,
+    refetchOnWindowFocus: false,
+    ...CACHE_OPTIONS
+});
 
   const [isManaged, setIsManaged] = useState(false);
 
-  
-  const totalBalance: number = netWorth;
+  const totalBalance: number = mainChartData?.[0]?.net_worth ?? 0;
 
 
   useEffect(() => {
@@ -85,7 +93,7 @@ const ProfilesListPage: FC = () => {
             {profiles.map((profile) => (
               <ProfileItem
                 managed={isManaged}
-                balance={profile.balance}
+                balance={totalBalance}
                 key={profile.wallet}
                 username={profile.username}
                 wallet={walletAddress}
