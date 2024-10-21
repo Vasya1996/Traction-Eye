@@ -80,7 +80,6 @@ const ProfilesListPage: FC = () => {
   return (
     <div className='h-screen p-4 bg-gray-50 flex flex-col items-center'>
       <div className="flex justify-end mb-5 w-full">
-        {/* onClick передает функцию handleClick, которая вызывает setIsManaged */}
         <span className='cursor-pointer' onClick={() => handleClick('manageSwitch')}>
           {isManaged ? <p className='text-gray-400'>Manage</p> : 'Manage'}
         </span>
