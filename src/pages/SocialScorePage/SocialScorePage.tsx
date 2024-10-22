@@ -45,7 +45,8 @@ export const SocialScorePage: React.FC = () => {
         flexDirection: 'column',
         alignItems: 'center',
         backgroundColor: '#EFEFF3',
-        paddingBottom: "90px"
+        paddingBottom: "90px",
+        overflow: "auto,"
       }}
     >
       <img src={socialNetwork} alt="social score" style={{height: 213, width: 'auto'}} />

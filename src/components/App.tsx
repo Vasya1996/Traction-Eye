@@ -36,6 +36,13 @@ export const App: FC = () => {
   useEffect(() => {
 		return viewport && bindViewportCSSVars(viewport);
 	}, [viewport]);
+
+	useEffect(() => {
+		document.body.style.overflow = 'hidden'; // Disable body scroll
+		return () => {
+			document.body.style.overflow = ''; // Reset on cleanup
+		};
+	}, []);
   
     postEvent('web_app_expand');
     postEvent('web_app_setup_swipe_behavior', {allow_vertical_swipe: false});
@@ -102,7 +109,6 @@ export const App: FC = () => {
 		};
 
 	return (
-		// <div className="max-h-screen overflow-hidden">
 			<TonConnectUIProvider>
 				<QueryClientProvider client={queryClient}>
 					<Toaster position="top-right" reverseOrder={false} />
@@ -113,7 +119,7 @@ export const App: FC = () => {
 							))}
 							<Route path="*" element={<Navigate to="/" />} />
 						</Routes>
-						{/* {location?.pathname !== "/connect" && ( */}
+						{location?.pathname !== "/connect" && (
 							<BottomNavigation
 								value={value}
 								onChange={handleNavigationChange}
@@ -124,10 +130,9 @@ export const App: FC = () => {
 								<BottomNavigationAction icon={<AssetsOff isActive={value === 0}/>} />
 								<BottomNavigationAction icon={<SocialCap isActive={value === 1}/>} />
 							</BottomNavigation>	
-						{/* )} */}
+						)}
 					</Router>
 				</QueryClientProvider>
 			</TonConnectUIProvider>
-		// </div>
 	);
 };
