@@ -60,7 +60,7 @@ export const IndexPage: FC = () => {
     };
 
     return (
-        <div className="bg-gray-800 min-h-screen select-none overflow-auto">
+        <div className="bg-gray-800 min-h-screen select-none overflow-hidden">
             <div className="hero h-72 flex flex-col">
                 <div className="userdata px-4 flex justify-between items-center mt-1">
                     <Link to={"/profiles"}>
@@ -92,7 +92,7 @@ export const IndexPage: FC = () => {
                 </div>
             </div>
 
-            <div style={{minHeight: "calc(100vh + 180px)"}} className="p-5 rounded-t-3xl bg-gray-50 pb-30 overflow-auto">
+            <div style={{minHeight: "60vh"}} className="p-5 rounded-t-3xl bg-gray-50 pb-32">
                 <AssetList />
                 <NFTList />
                 <ProtocolsList />

@@ -7,6 +7,7 @@ import { useTonAddress } from "@tonconnect/ui-react";
 import { useStore } from "@/store/store";
 import { useEffect, useState } from "react";
 import { postEvent } from '@telegram-apps/sdk';
+import { CACHE_OPTIONS_FAST } from "@/constants";
 
 const AssetList = () => {
 	const userFriendlyAddress = useTonAddress();
@@ -15,9 +16,9 @@ const AssetList = () => {
 
 
 	const { data, isFetching } = useQuery({
-		queryKey: ["assets"],
+		queryKey: ["assets", userFriendlyAddress],
 		queryFn: () => API.getAssetsByWallet(userFriendlyAddress),
-		staleTime: Infinity,
+		...CACHE_OPTIONS_FAST
 	});
 
 	useEffect(() => {
