@@ -36,7 +36,7 @@ export const App: FC = () => {
   useEffect(() => {
 		return viewport && bindViewportCSSVars(viewport);
 	}, [viewport]);
-	
+
 	useEffect(() => {
 		document.body.style.overflow = 'hidden'; // Disable body scroll
 		return () => {
@@ -120,7 +120,7 @@ export const App: FC = () => {
 							))}
 							<Route path="*" element={<Navigate to="/" />} />
 						</Routes>
-						{/* {location?.pathname !== "/connect" && ( */}
+						{location?.pathname !== "/connect" && (
 							<BottomNavigation
 								value={value}
 								onChange={handleNavigationChange}
@@ -131,7 +131,7 @@ export const App: FC = () => {
 								<BottomNavigationAction icon={<AssetsOff isActive={value === 0}/>} />
 								<BottomNavigationAction icon={<SocialCap isActive={value === 1}/>} />
 							</BottomNavigation>	
-						{/* )} */}
+						)}
 					</Router>
 				</QueryClientProvider>
 			</TonConnectUIProvider>
