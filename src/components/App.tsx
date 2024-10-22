@@ -102,29 +102,32 @@ export const App: FC = () => {
 		};
 
 	return (
-		<TonConnectUIProvider>
-			<QueryClientProvider client={queryClient}>
-				<Toaster position="top-right" reverseOrder={false} />
-				<Router location={location} navigator={reactNavigator}>
-					<Routes>
-						{routes.map((route) => (
-							<Route key={route.path} {...route} />
-						))}
-						<Route path="*" element={<Navigate to="/" />} />
-					</Routes>
-					{location?.pathname !== "/connect" && (
-						<BottomNavigation
-							value={value}
-							onChange={handleNavigationChange}
-							showLabels
-							style={{ position: "fixed", bottom: 0, width: "100%", zIndex: 1000, height: 90, paddingBottom: 'env(safe-area-inset-bottom)', }}
-						>
-							<BottomNavigationAction icon={<AssetsOff isActive={value === 0}/>} />
-							<BottomNavigationAction icon={<SocialCap isActive={value === 1}/>} />
-						</BottomNavigation>	
-					)}
-				</Router>
-			</QueryClientProvider>
-		</TonConnectUIProvider>
+		// <div className="max-h-screen overflow-hidden">
+			<TonConnectUIProvider>
+				<QueryClientProvider client={queryClient}>
+					<Toaster position="top-right" reverseOrder={false} />
+					<Router location={location} navigator={reactNavigator}>
+						<Routes>
+							{routes.map((route) => (
+								<Route key={route.path} {...route} />
+							))}
+							<Route path="*" element={<Navigate to="/" />} />
+						</Routes>
+						{/* {location?.pathname !== "/connect" && ( */}
+							<BottomNavigation
+								value={value}
+								onChange={handleNavigationChange}
+								showLabels
+								className="fixed bottom-0 w-full z-50 pb-safe"
+								style={{ height: 90}}
+							>
+								<BottomNavigationAction icon={<AssetsOff isActive={value === 0}/>} />
+								<BottomNavigationAction icon={<SocialCap isActive={value === 1}/>} />
+							</BottomNavigation>	
+						{/* )} */}
+					</Router>
+				</QueryClientProvider>
+			</TonConnectUIProvider>
+		// </div>
 	);
 };

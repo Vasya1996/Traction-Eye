@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Box, Drawer, Typography, Button, IconButton, Tooltip } from '@mui/material';
 import { CloseIcon, InfoIcon, NetWorthBonus, BlockIcon } from '@/components/icons';
 import { useTelegramShare } from '@/hooks';
@@ -30,6 +30,18 @@ const SOCIAL_SCORE_INFO = [{
 
 export const SocialScoreDrawer: React.FC<SocialScoreDrawerProps> = ({ open, onClose, referral_link }) => {
   const { shareContent } = useTelegramShare();
+
+  const [openTooltip, setOpenTooltip] = useState(false);
+
+  // Toggle the tooltip on click
+  const handleTooltipToggle = () => {
+    setOpenTooltip(!openTooltip);
+  };
+
+  // Close the tooltip when clicking outside
+  const handleTooltipClose = () => {
+    setOpenTooltip(false);
+  };
 
   return (
     <Drawer anchor="bottom" open={open} onClose={onClose}     PaperProps={{
@@ -67,6 +79,8 @@ export const SocialScoreDrawer: React.FC<SocialScoreDrawerProps> = ({ open, onCl
                 depending on the NetWorth of each contact
                 </span>
             }
+            open={openTooltip} // Control the open state manually
+            onClose={handleTooltipClose} // Close when clicking outside
             componentsProps={{
                 tooltip: {
                   sx: {
@@ -91,7 +105,7 @@ export const SocialScoreDrawer: React.FC<SocialScoreDrawerProps> = ({ open, onCl
             placement="top" // This ensures the tooltip appears at the top
             >
             {/* <Tooltip title="Dynamic metric for the value of your contacts that changes depending on the NetWorth of each contact"> */}
-                <div style={{width: "24px", height: "24px", position: "absolute", top: "-4px", right: -16}}>
+                <div onClick={handleTooltipToggle} style={{width: "24px", height: "24px", position: "absolute", top: "-4px", right: -16}}>
                     <InfoIcon style={{marginLeft: "10px"}} />
                 </div>
                     
