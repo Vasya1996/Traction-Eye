@@ -60,7 +60,7 @@ export const IndexPage: FC = () => {
     };
 
     return (
-        <div className="bg-gray-800 min-h-screen select-none overflow-scroll">
+        <div className="bg-gray-800 min-h-screen select-none overflow-auto">
             <div className="hero h-72 flex flex-col">
                 <div className="userdata px-4 flex justify-between items-center mt-1">
                     <Link to={"/profiles"}>
