@@ -5,7 +5,6 @@ import TELogo from "@/pages/IndexPage/TELogo.svg";
 import { MdOutlineKeyboardArrowRight } from "@/components/icons";
 import NFTList from "@/components/NFTList";
 import ProtocolsList from "@/components/ProtocolsList";
-// import { IoDiamondOutline } from "@/components/icons";
 // import { postEvent } from "@telegram-apps/sdk";
 import { useTonAddress } from "@tonconnect/ui-react";
 import { retrieveLaunchParams } from "@telegram-apps/sdk-react";
