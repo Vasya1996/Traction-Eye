@@ -109,7 +109,6 @@ export const App: FC = () => {
 		};
 
 	return (
-		<div className="max-h-screen overflow-hidden">
 			<TonConnectUIProvider>
 				<QueryClientProvider client={queryClient}>
 					<Toaster position="top-right" reverseOrder={false} />
@@ -135,6 +134,5 @@ export const App: FC = () => {
 					</Router>
 				</QueryClientProvider>
 			</TonConnectUIProvider>
-		</div>
 	);
 };
