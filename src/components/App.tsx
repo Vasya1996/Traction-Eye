@@ -37,12 +37,12 @@ export const App: FC = () => {
 		return viewport && bindViewportCSSVars(viewport);
 	}, [viewport]);
 
-	useEffect(() => {
-		document.body.style.overflow = 'hidden'; // Disable body scroll
-		return () => {
-			document.body.style.overflow = ''; // Reset on cleanup
-		};
-	}, []);
+	// useEffect(() => {
+	// 	document.body.style.overflow = 'hidden'; // Disable body scroll
+	// 	return () => {
+	// 		document.body.style.overflow = ''; // Reset on cleanup
+	// 	};
+	// }, []);
   
     postEvent('web_app_expand');
     postEvent('web_app_setup_swipe_behavior', {allow_vertical_swipe: false});
