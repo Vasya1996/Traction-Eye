@@ -9,7 +9,7 @@ import {
 	useThemeParams,
 	useViewport,
 } from "@telegram-apps/sdk-react";
-import { type FC, useEffect, useMemo, useState } from "react";
+import React, { type FC, useEffect, useMemo, useState } from "react";
 import { Navigate, Route, Router, Routes } from "react-router-dom";
 import { postEvent } from "@telegram-apps/sdk";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
@@ -17,13 +17,19 @@ import { TonConnectUIProvider } from '@tonconnect/ui-react';
 import { Toaster } from 'react-hot-toast';
 import { routes } from "@/navigation/routes.tsx";
 import { SocialCap, AssetsOff } from "./icons";
+import { useLocalStorageSubscription } from "@/hooks";
+import { LocalStorageKeys } from "@/constants/localStorage";
 const queryClient = new QueryClient();
+
 
 
 export const App: FC = () => {
 	const miniApp = useMiniApp();
 	const themeParams = useThemeParams();
 	const viewport = useViewport();
+	const scrollValue = useLocalStorageSubscription(LocalStorageKeys.scroll);
+
+	const isScrollBlocked = scrollValue?.toLowerCase() === "true" ? true : false;
 
 	useEffect(() => {
 		return bindMiniAppCSSVars(miniApp, themeParams);
@@ -37,12 +43,12 @@ export const App: FC = () => {
 		return viewport && bindViewportCSSVars(viewport);
 	}, [viewport]);
 
-	// useEffect(() => {
-	// 	document.body.style.overflow = 'hidden'; // Disable body scroll
-	// 	return () => {
-	// 		document.body.style.overflow = ''; // Reset on cleanup
-	// 	};
-	// }, []);
+	useEffect(() => {
+		document.body.style.overflow = 'hidden'; // Disable body scroll
+		return () => {
+			document.body.style.overflow = ''; // Reset on cleanup
+		};
+	}, []);
   
     postEvent('web_app_expand');
     postEvent('web_app_setup_swipe_behavior', {allow_vertical_swipe: false});
@@ -109,6 +115,7 @@ export const App: FC = () => {
 		};
 
 	return (
+		<div className="max-h-screen" style={{overflow: isScrollBlocked ? "hidden" : "auto" }}>
 			<TonConnectUIProvider>
 				<QueryClientProvider client={queryClient}>
 					<Toaster position="top-right" reverseOrder={false} />
@@ -134,5 +141,6 @@ export const App: FC = () => {
 					</Router>
 				</QueryClientProvider>
 			</TonConnectUIProvider>
+		</div>
 	);
 };
