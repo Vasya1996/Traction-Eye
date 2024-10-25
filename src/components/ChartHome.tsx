@@ -12,9 +12,11 @@ import { TON_CENTER_API } from "@/api/tonCenter";
 
 interface ChartHomeProps {
     timeline: keyof typeof TIMELINES_INTERVALS_SECONDS;
+    onMouseDown?: () => void;
+    onMouseUp?: () => void;
 }
 
-export function ChartHome({timeline}: ChartHomeProps) {
+export function ChartHome({timeline, onMouseDown, onMouseUp}: ChartHomeProps) {
     const walletAddress = useTonAddress();
     const { fontSizeCounter, element1Ref, element2Ref, checkIntersection } = useElementIntersection();
     const { data: userWalletCreationDate } = useQuery({
@@ -101,6 +103,8 @@ export function ChartHome({timeline}: ChartHomeProps) {
             <Chart
                 worth_chart={updatedChartData}
                 onSelectPoint={handleSelectPoint}
+                onMouseDown={onMouseDown}
+                onMouseUp={onMouseUp}
             />
         </>
     );

@@ -23,5 +23,6 @@ export * from "./NetworthBonus";
 export * from "./BlockIcon";
 export * from "./AssetsOff";
 export * from "./SocialCap";
+export * from "./Logo";
 // export * from "./SocialAvatar";
 // export * from "./InviteBonus";

@@ -8,6 +8,7 @@ import { useTonAddress } from "@tonconnect/ui-react";
 import NFTSkeletons from "./skeletons/NFTSkeletons";
 import { API } from "@/api/api";
 import { useStore } from "@/store/store";
+import { CACHE_OPTIONS_FAST } from "@/constants";
 
 const NFTList: FC = () => {
 	const userFriendlyAddress = useTonAddress();
@@ -18,10 +19,8 @@ const NFTList: FC = () => {
 		queryKey: ["nfts", userFriendlyAddress],
 		queryFn: () => API.getNftsByWallet(userFriendlyAddress),
 		enabled: !!userFriendlyAddress,
-    staleTime: Infinity,
+		...CACHE_OPTIONS_FAST
 	});
-
-  console.log(data);
 
 	useEffect(() => {
 		if (data?.nfts) {
