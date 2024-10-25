@@ -22,8 +22,6 @@ const NFTList: FC = () => {
 		...CACHE_OPTIONS_FAST
 	});
 
-  console.log(data);
-
 	useEffect(() => {
 		if (data?.nfts) {
 			setNfts(data.nfts);
