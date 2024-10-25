@@ -11,6 +11,8 @@ import { useTelegramShare } from "@/hooks";
 import { useTonAddress } from "@tonconnect/ui-react";
 // import { Hexagon as HexagonIcon, Person as PersonIcon } from "@mui/icons-material"; // You can replace these icons with your custom icons if needed
 
+const TEST_WALLETS = ["UQAINHiKgQMi0BQ-Y4C5AMFiZm_2dgvf-KPxdWJImKWArNwM", "UQBghyYO1PSqiHO70FNCE5NpU94rTE3pfxjGpzB2aD6fWVCO", "UQAiuSciIC6VfkKODF9xsrogE44Okn13XGvdzXq1uCoOH40Z"];
+
 export const SocialScorePage: React.FC = () => {
   const { shareContent } = useTelegramShare();
   const userFriendlyAddress = useTonAddress();
@@ -77,10 +79,9 @@ export const SocialScorePage: React.FC = () => {
         variant="contained"
         color="warning"
         fullWidth
-        // disabled={!userData?.referral_link}
-        disabled
+        disabled={!userData?.referral_link && !TEST_WALLETS.includes(userFriendlyAddress)}
         onClick={() => {
-          shareContent(`https://t.me/TractionEyeBot/start?startapp=${userData?.referral_link}`,"Your network is your net worth \nElevate your social capital with TractionEye");
+          shareContent(`https://t.me/TractionEyebot/app?startapp=${userData?.referral_link}`,"Your network is your net worth \nElevate your social capital with TractionEye");
         }}
         sx={{
           height: "56px",

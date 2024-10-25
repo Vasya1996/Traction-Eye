@@ -27,14 +27,6 @@ export const ConnectPage = () => {
         localStorage.getItem(LocalStorageKeys.user_service_wallet_address)
     );
 
-    // initData?.queryId
-    // useEffect(() => {
-    //     const refCode = initData?.startParam || queryParams?.get("ref") || queryParams?.get("startapp");
-    //     if(refCode) {
-    //         localStorage.setItem(LocalStorageKeys.ref, refCode);
-    //     }
-    // },[queryParams, initData])
-
     const { initDataRaw } = retrieveLaunchParams();
 
     const loginMutation = useMutation({
@@ -97,7 +89,7 @@ export const ConnectPage = () => {
                     })
                 ])
     
-                const refCode = initData?.startParam || queryParams?.get("ref") || queryParams?.get("startapp");// localStorage.getItem(LocalStorageKeys.ref);
+                const refCode = initData?.startParam;
                 if(refCode) {
                     userServiceConnectReferralMutation.mutate(refCode);
                 }

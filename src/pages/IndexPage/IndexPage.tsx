@@ -1,8 +1,7 @@
 import { FC, useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import AssetList from "@/components/AssetList";
-import TELogo from "@/pages/IndexPage/TELogo.svg";
-import { MdOutlineKeyboardArrowRight } from "@/components/icons";
+import { Logo, MdOutlineKeyboardArrowRight } from "@/components/icons";
 import NFTList from "@/components/NFTList";
 import ProtocolsList from "@/components/ProtocolsList";
 // import { postEvent } from "@telegram-apps/sdk";
@@ -65,11 +64,7 @@ export const IndexPage: FC = () => {
                 <div className="userdata px-4 flex justify-between items-center mt-1">
                     <Link to={"/profiles"}>
                         <div className="flex items-center">
-                            <img
-                                className="h-11 w-11 py-3 px-2 bg-black rounded-full mr-3"
-                                src={TELogo}
-                                alt=""
-                            />
+                            <Logo className="h-11 w-11 py-3 px-2 bg-black rounded-full mr-3"/>
                             <div className="items-center">
                                 <p className="text-gray-400 font-light">{shortenWallet(walletAddress)}</p>
                             </div>
@@ -92,7 +87,7 @@ export const IndexPage: FC = () => {
                 </div>
             </div>
 
-            <div style={{minHeight: "60vh"}} className="p-5 rounded-t-3xl bg-gray-50 pb-32">
+            <div style={{minHeight: "60vh", height: "100%"}} className="p-5 rounded-t-3xl bg-gray-50 pb-32">
                 <AssetList />
                 <NFTList />
                 <ProtocolsList />
