@@ -14,7 +14,6 @@ import { IoMdWallet } from "@/components/icons";
 import "./ConnectPage.css"; // Импортируйте CSS файл
 import { Spinner } from "@/components/ui/spinner";
 import { LocalStorageKeys } from "@/constants/localStorage";
-import { useQueryParams } from "@/hooks";
 
 
 export const ConnectPage = () => {
@@ -22,7 +21,6 @@ export const ConnectPage = () => {
     const userFriendlyAddress = useTonAddress();
     const navigate = useNavigate();
     const initData = useInitData();
-    const queryParams = useQueryParams();
     const [walletAddress, setWalletAddress] = useState(() =>
         localStorage.getItem(LocalStorageKeys.user_service_wallet_address)
     );
@@ -99,7 +97,7 @@ export const ConnectPage = () => {
                 console.log('--err',err);
             }
         })();
-    }, [userFriendlyAddress, initDataRaw, walletAddress, tonConnectUI, isDisconnected, queryParams, initData]);
+    }, [userFriendlyAddress, initDataRaw, walletAddress, tonConnectUI, isDisconnected, initData]);
 
     const connectHandleClick = () => {
         postEvent("web_app_trigger_haptic_feedback", {
