@@ -156,7 +156,7 @@ export const API = {
 		try {
       const payload = {
 				telegram_id,
-        wallet_address
+        		wallet_address
 			};
 			const response = await apiClient.post(
 				endpoints.addWallet,
@@ -165,7 +165,8 @@ export const API = {
 			return response.data;
 		} catch (error) {
 			console.error("Error getTotalPnl", error);
-			throw error;
+			return;
+			// throw error;
 		}
 	},
 };

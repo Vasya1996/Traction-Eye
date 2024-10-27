@@ -38,6 +38,9 @@ module.exports = {
             fontSize: {
                 "2xs": "0.6rem",
             },
+            borderWidth: {
+                3: "3px",
+            },
         },
     },
     plugins: [require("tailwindcss-animate")],

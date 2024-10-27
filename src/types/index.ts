@@ -2,6 +2,7 @@ import { ProtocolTypes } from "@/constants";
 
 export * from "./apiTypes";
 export * from "./chart";
+export * from "./user"
 
 export interface Asset {
 	image_url: string;
