@@ -1,4 +1,4 @@
-import { FC } from "react";
+import { FC, ReactElement } from "react";
 import { formatNumber, getAPYLabel } from "@/utils";
 import { TokenList, HealthRate, Token, PoolHeader} from "./";
 import { ProtocolNames, ProtocolTypes } from "@/constants";
@@ -9,19 +9,23 @@ interface LiquidityPoolCardProps {
     supplied: Token[];
     borrowed: Token[];
     rewards: Token[];
+    indexes: Token[];
+    vaults: Token[];
     type: ProtocolTypes;
     usd_sum: string;
     totalApy?: number;
     healthRate?: number;
   }>;
-  icon: string;
+  icon: string | ReactElement;
+  hasIcon?: boolean;
 }
 
-export const LiquidityPoolCard: FC<LiquidityPoolCardProps> = ({ poolName, poolData, icon }) => {
+export const LiquidityPoolCard: FC<LiquidityPoolCardProps> = ({ poolName, poolData, icon, hasIcon = true }) => {
   if (!poolData?.length) {
     return null;
   }
 
+  console.log('---poolData',poolData);
   return (
     <>
       {
@@ -30,7 +34,7 @@ export const LiquidityPoolCard: FC<LiquidityPoolCardProps> = ({ poolName, poolDa
             <div className="flex justify-between items-center my-4">
               <div className="flex w-full items-center justify-between">
                 <div className="flex items-center min-h-8">
-                  {index === 0 && (
+                  {(index === 0 && hasIcon) && (
                     <PoolHeader icon={icon} poolName={poolName} />
                   )}
                 </div>
@@ -51,6 +55,8 @@ export const LiquidityPoolCard: FC<LiquidityPoolCardProps> = ({ poolName, poolDa
                 <TokenList title="Supplied" tokens={pool.supplied} />
                 <TokenList title="Borrowed" tokens={pool.borrowed} />
                 <TokenList title="Rewarded" tokens={pool.rewards} />
+                <TokenList title="Supplied" tokens={pool.vaults} />
+                <TokenList title="Supplied" tokens={pool.indexes} />
               </div>
             </div>
           </div>
