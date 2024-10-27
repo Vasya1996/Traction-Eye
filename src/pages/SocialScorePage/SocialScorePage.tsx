@@ -79,7 +79,7 @@ export const SocialScorePage: React.FC = () => {
         variant="contained"
         color="warning"
         fullWidth
-        disabled={!userData?.referral_link && !TEST_WALLETS.includes(userFriendlyAddress)}
+        disabled={!userData?.referral_link || !TEST_WALLETS.includes(userFriendlyAddress)}
         onClick={() => {
           shareContent(`https://t.me/TractionEyebot/app?startapp=${userData?.referral_link}`,"Your network is your net worth \nElevate your social capital with TractionEye");
         }}
