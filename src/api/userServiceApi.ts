@@ -38,11 +38,12 @@ export const UserServiceApi = {
 			throw error;
 		}
 	},
-	addWallet: async (wallet: string) => {
+	addWallet: async (wallet: string, referrer_link?: string) => {
 		try {
 
 			const payload = {
 				wallet_id: wallet,
+				referrer_link
 			};
 			const response = await userServiceClient.post(userServiceEndpoints.addWallet, payload);
 			return response.data;

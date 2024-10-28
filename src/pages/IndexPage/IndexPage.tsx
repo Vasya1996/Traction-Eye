@@ -3,7 +3,7 @@ import { Link, useNavigate } from "react-router-dom";
 import AssetList from "@/components/AssetList";
 import { Logo, MdOutlineKeyboardArrowRight } from "@/components/icons";
 import NFTList from "@/components/NFTList";
-import ProtocolsList from "@/components/ProtocolsList";
+import { ProtocolsList } from "@/components/ProtocolList";
 // import { postEvent } from "@telegram-apps/sdk";
 import { useTonAddress } from "@tonconnect/ui-react";
 import { retrieveLaunchParams } from "@telegram-apps/sdk-react";
