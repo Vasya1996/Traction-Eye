@@ -16,7 +16,6 @@ export const LiquidityPoolCard: FC<LiquidityPoolCardProps> = ({ poolName, poolDa
     return null;
   }
 
-  console.log('---poolData',poolData);
   return (
     <>
       {

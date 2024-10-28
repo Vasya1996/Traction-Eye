@@ -8,7 +8,7 @@ import SettleTonLogo from "@/components/icons/SettleTon.svg";
 import { useQuery } from "@tanstack/react-query";
 import { API } from "@/api/api";
 import { useTonAddress, useTonWallet } from "@tonconnect/ui-react";
-import { ProtocolNames } from "@/constants";
+import { CACHE_OPTIONS, ProtocolNames } from "@/constants";
 import { SETTLE_API } from "@/api/settleTonApi";
 // import { Link } from "react-router-dom";
 // import { postEvent } from "@telegram-apps/sdk";
@@ -22,18 +22,22 @@ export const ProtocolsList: FC = () => {
       const { data: dedustData } = useQuery({
           queryFn: () => API.getDedustInfo(userFriendlyAddress),
           queryKey: ["dedust", userFriendlyAddress],
+          enabled: !!userFriendlyAddress,
+          ...CACHE_OPTIONS
       });
 
       const { data: stonFiData } = useQuery({
           queryFn: () => API.getStonfiInfo(userFriendlyAddress),
           queryKey: ["stonfi", userFriendlyAddress],
-          staleTime: 5 * 1000,
+          enabled: !!userFriendlyAddress,
+          ...CACHE_OPTIONS
       });
     
       const { data: settleTonData } = useQuery({
           queryFn: () => SETTLE_API.getSettleTonJettons(wallet?.account.address),
           queryKey: ["settleTon",wallet?.account.address],
           enabled: !!wallet?.account.address,
+          ...CACHE_OPTIONS
       });
     
     return (
