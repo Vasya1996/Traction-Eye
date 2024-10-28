@@ -1,9 +1,10 @@
 import { FC } from "react";
 import {LiquidityPoolCard } from "./components";
-import { IoMdGitNetwork, SettleTon } from "@/components/icons";
+import { IoMdGitNetwork } from "@/components/icons";
 // import { MdOutlineKeyboardArrowRight } from "@/components/icons"; 
 import STONLogo from "@/pages/IndexPage/stonfilogo.jpg";
 import dedustLogo from "@/pages/IndexPage/dedustlogo.png";
+import SettleTonLogo from "@/components/icons/SettleTon.svg";
 import { useQuery } from "@tanstack/react-query";
 import { API } from "@/api/api";
 import { useTonAddress, useTonWallet } from "@tonconnect/ui-react";
@@ -15,22 +16,24 @@ import { SETTLE_API } from "@/api/settleTonApi";
 export const ProtocolsList: FC = () => {
     const userFriendlyAddress = useTonAddress();
     const wallet = useTonWallet();
-    console.log('---wallet',wallet?.account.address, userFriendlyAddress);
+
 
   
       const { data: dedustData } = useQuery({
-          queryFn: () => API.getDedustInfo("UQBghyYO1PSqiHO70FNCE5NpU94rTE3pfxjGpzB2aD6fWVCO"),
-          queryKey: ["dedust"],
+          queryFn: () => API.getDedustInfo(userFriendlyAddress),
+          queryKey: ["dedust", userFriendlyAddress],
       });
 
       const { data: stonFiData } = useQuery({
-          queryFn: () => API.getStonfiInfo("UQBghyYO1PSqiHO70FNCE5NpU94rTE3pfxjGpzB2aD6fWVCO"),
-          queryKey: ["stonfi"],
+          queryFn: () => API.getStonfiInfo(userFriendlyAddress),
+          queryKey: ["stonfi", userFriendlyAddress],
+          staleTime: 5 * 1000,
       });
     
       const { data: settleTonData } = useQuery({
-          queryFn: () => SETTLE_API.getSettleTonJettons("0:6087260ed4f4aa8873bbd0534213936953de2b4c4de97f18c6a73076683e9f59"),
-          queryKey: ["settleTon"],
+          queryFn: () => SETTLE_API.getSettleTonJettons(wallet?.account.address),
+          queryKey: ["settleTon",wallet?.account.address],
+          enabled: !!wallet?.account.address,
       });
     
     return (
@@ -42,8 +45,8 @@ export const ProtocolsList: FC = () => {
             <ul>
                 <li><LiquidityPoolCard poolName={ProtocolNames.StonFi} icon={STONLogo} poolData={stonFiData ?? []} /></li>
                 <li className="mt-10"><LiquidityPoolCard poolName={ProtocolNames.DeDust} icon={dedustLogo} poolData={dedustData ?? []} /></li>
-                <li className="mt-10"><LiquidityPoolCard poolName={ProtocolNames.SettleTON} icon={<SettleTon/>} poolData={settleTonData?.vaults ?? []} /></li>
-                <li><LiquidityPoolCard poolName={ProtocolNames.SettleTON} icon={<SettleTon/>} hasIcon={false} poolData={settleTonData?.indexes ?? []} /></li>
+                <li className="mt-10"><LiquidityPoolCard poolName={ProtocolNames.SettleTON} icon={SettleTonLogo} poolData={settleTonData?.vaults ?? []} /></li>
+                <li><LiquidityPoolCard poolName={ProtocolNames.SettleTON} icon={SettleTonLogo} hasIcon={false} poolData={settleTonData?.indexes ?? []} /></li>
             </ul>
         </div>
     )

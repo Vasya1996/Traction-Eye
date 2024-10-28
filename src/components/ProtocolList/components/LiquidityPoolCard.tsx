@@ -1,21 +1,12 @@
 import { FC, ReactElement } from "react";
 import { formatNumber, getAPYLabel } from "@/utils";
-import { TokenList, HealthRate, Token, PoolHeader} from "./";
-import { ProtocolNames, ProtocolTypes } from "@/constants";
+import { TokenList, HealthRate, PoolHeader} from "./";
+import { ProtocolNames } from "@/constants";
+import { PoolData } from "@/types/pools";
 
 interface LiquidityPoolCardProps {
   poolName: ProtocolNames;
-  poolData: Array<{
-    supplied: Token[];
-    borrowed: Token[];
-    rewards: Token[];
-    indexes: Token[];
-    vaults: Token[];
-    type: ProtocolTypes;
-    usd_sum: string;
-    totalApy?: number;
-    healthRate?: number;
-  }>;
+  poolData: Array<PoolData>;
   icon: string | ReactElement;
   hasIcon?: boolean;
 }

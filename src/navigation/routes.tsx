@@ -19,7 +19,7 @@ interface Route {
 export const routes: Route[] = [
 	{ path: "/", Component: IndexPage },
 	{ path: "/referral", Component: SocialScorePage },
-	{ path: "/connect", Component: IndexPage },
+	{ path: "/connect", Component: ConnectPage },
 	{ path: "/profiles", Component: ProfilesListPage },
 	{ path: "/nfts", Component: NFTListPage },
 	{ path: "/nft/:id", Component: NFTItemPage },
