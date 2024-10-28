@@ -1,6 +1,7 @@
-import { Asset, ChartResponse, JettonInfo, LPResponse } from "@/types";
+import { Asset, ChartResponse, JettonInfo, LPPairInfo, LPResponse } from "@/types";
 import apiClient from "./apiClient";
 import endpoints from "./endpoints";
+import { ProtocolTypes } from "@/constants";
 
 export const API = {
 	getAssetsByWallet: async (wallet: string): Promise<{ assets: Asset[] }> => {
@@ -35,7 +36,8 @@ export const API = {
 		try {
 			const payload = { wallet_address: wallet };
 			const response = await apiClient.post(endpoints.getStonfiInfo, payload);
-			return response.data;
+			const updatedResponse = (response.data ?? []).map((item: LPPairInfo) => ({ ...item, type: ProtocolTypes.LiquidityPool }));
+			return updatedResponse;
 		} catch (error) {
 			console.error("Error fetching nfts:", error);
 			throw error;
@@ -46,7 +48,8 @@ export const API = {
 		try {
 			const payload = { wallet_address: wallet };
 			const response = await apiClient.post(endpoints.getDedustInfo, payload);
-			return response.data;
+			const updatedResponse = (response.data ?? []).map((item: LPPairInfo) => ({ ...item, type: ProtocolTypes.LiquidityPool }));
+			return updatedResponse;
 		} catch (error) {
 			console.error("Error fetching nfts:", error);
 			throw error;

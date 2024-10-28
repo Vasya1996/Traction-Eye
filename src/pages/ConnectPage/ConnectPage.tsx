@@ -41,12 +41,13 @@ export const ConnectPage = () => {
     });
 
     const userServiceAddWalletMutation = useMutation({
-        mutationFn: (walletAddress: string) => UserServiceApi.addWallet(walletAddress),
-        mutationKey: ["user-service-add-wallet"],
-    });
-
-    const userServiceConnectReferralMutation = useMutation({
-        mutationFn: (referral_link: string) => UserServiceApi.connectReferral(referral_link),
+        mutationFn: ({
+            walletAddress,
+            referrer_link,
+        }: {
+            walletAddress: string;
+            referrer_link?: string;
+        }) => UserServiceApi.addWallet(walletAddress, referrer_link),
         mutationKey: ["user-service-add-wallet"],
     });
 
@@ -81,18 +82,18 @@ export const ConnectPage = () => {
                     return;
                 }
                 localStorage.setItem(LocalStorageKeys.userServiceToken, token);
+                const refCode = initData?.startParam;
                 await Promise.all([
-                    userServiceAddWalletMutation.mutateAsync(userFriendlyAddress),
+                    userServiceAddWalletMutation.mutateAsync({
+                        walletAddress: userFriendlyAddress,
+                        referrer_link: refCode 
+                    }),
                     addWalletMutation.mutateAsync({
                         telegram_id: initData?.user?.id ? initData?.user?.id : 0,
                         wallet_address: userFriendlyAddress ?? walletAddress,
                     })
                 ])
     
-                const refCode = initData?.startParam;
-                if(refCode) {
-                    userServiceConnectReferralMutation.mutate(refCode);
-                }
                 localStorage.setItem(LocalStorageKeys.user_service_wallet_address, userFriendlyAddress);
                 navigate("/");
             } catch(err) {

@@ -72,4 +72,11 @@ userServiceClient.interceptors.request.use(
   }
 );
 
+export const settleTonClient = axios.create({
+  baseURL: 'https://tractioneye.ru/settleton_api/',
+  headers: {
+    'Content-Type': 'application/json',
+  },
+});
+
 export default apiClient;

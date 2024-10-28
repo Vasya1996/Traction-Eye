@@ -25,4 +25,9 @@ export const userServiceEndpoints = {
   removeWallet: '/wallet/remove'
 }
 
+export const settleTonEndpoints = {
+  apr: "/apr",
+  jettons: "/jettons"
+}
+
 export default endpoints;

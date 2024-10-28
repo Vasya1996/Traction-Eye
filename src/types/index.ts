@@ -1,3 +1,5 @@
+import { ProtocolTypes } from "@/constants";
+
 export * from "./apiTypes";
 export * from "./chart";
 export * from "./user"
@@ -5,9 +7,9 @@ export * from "./user"
 export interface Asset {
 	image_url: string;
 	name: string;
-  address: string,
+  	address: string,
 	amount: number;
-  decimals: number;
+  	decimals: number;
 	price_usd: number;
 	symbol: string;
 }
@@ -30,8 +32,12 @@ export interface LpTokenInfo {
 
 export interface LPPairInfo {
 	supplied: LpTokenInfo[];
+	borrowed: LpTokenInfo[];
+	indexes: LpTokenInfo[];
+	vaults: LpTokenInfo[];
 	rewards: LpTokenInfo[];
 	usd_sum: string;
+	type: ProtocolTypes;
 }
 
 export interface LPResponse extends Array<LPPairInfo> {}
