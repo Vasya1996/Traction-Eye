@@ -25,7 +25,7 @@ export const TokenItem: FC<TokenItemProps> = ({ token }) => {
         <span className="text-black text-xs">{token.token_name}</span>
       </div>
       <p className="w-[30%] ml-3 text-left text-black text-xs">
-        {formatNumber((+token.amount / Math.pow(10, +token.decimals)), false)}
+        {formatNumber((+token.amount / Math.pow(10, +token.decimals)))}
       </p>
       <p className="w-[30%] text-right text-black text-xs">
         ${formatNumber(parseFloat(token.usd_value), false)}
