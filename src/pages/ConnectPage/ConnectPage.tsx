@@ -55,7 +55,7 @@ export const ConnectPage = () => {
     
     useEffect(() => {
         const walletAddress = localStorage.getItem(LocalStorageKeys.user_service_wallet_address);
-        if(!walletAddress && !isDisconnected) {
+        if(!walletAddress && !isDisconnected && !isFirstLogin) {
             tonConnectUI?.disconnect();
             setIsDisconnected(true);
         } else {
