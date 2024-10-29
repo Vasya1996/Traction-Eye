@@ -24,19 +24,22 @@ export type TransformedSettleTonResponse = {
 };
 
 export function transformSettleTonResponse(response: OriginalSettleTonResponse): TransformedSettleTonResponse {
-    const transformItem = (item: OriginalItem, isIndexes = false): PoolData => ({
+    const transformItem = (item: OriginalItem, isIndexes = false): PoolData => {
+
+        const tokenName = item.name.startsWith("STL_") ? item.name.substring(4) : item.name;
+        return {
         indexes: isIndexes ? [{
             amount: String(item.balance),
             usd_value: String(item.balance_in_usdt),
             token_image_url: item.icon,
-            token_name: item.name,
+            token_name: tokenName,
             decimals: "9",
         }] : [],
         vaults: !isIndexes ? [{
             amount: String(item.balance),
             usd_value: String(item.balance_in_usdt),
             token_image_url: item.icon,
-            token_name: item.name,
+            token_name: tokenName,
             decimals: "9",
         }] : [],
         totalApy: item.apy,
@@ -45,7 +48,7 @@ export function transformSettleTonResponse(response: OriginalSettleTonResponse):
         supplied: [],
         borrowed: [],
         rewards: [],
-    });
+    }};
 
     return {
         indexes: response.result.indexes.map((value) => transformItem(value, true)),
