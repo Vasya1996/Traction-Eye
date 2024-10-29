@@ -24,6 +24,7 @@ export const ConnectPage = () => {
     const [walletAddress, setWalletAddress] = useState(() =>
         localStorage.getItem(LocalStorageKeys.user_service_wallet_address)
     );
+    const isFirstLogin = localStorage.getItem(LocalStorageKeys.firstLogin) === "true";
 
     const { initDataRaw } = retrieveLaunchParams();
 
@@ -170,14 +171,14 @@ export const ConnectPage = () => {
             </div>
             <div className="flex justify-center mb-3">
                 <button
-                    disabled={!!walletAddress}
+                    disabled={!!walletAddress && isFirstLogin}
                     onClick={() => handleIndicatorClick(0)}
                     className={`w-2 h-2 mx-1 rounded-full cursor-pointer ${
                         currentSlide === 0 ? "bg-yellow-100" : "bg-gray-600"
                     }`}
                 ></button>
                 <button
-                    disabled={!!walletAddress}
+                    disabled={!!walletAddress && isFirstLogin}
                     onClick={() => handleIndicatorClick(1)}
                     className={`w-2 h-2 mx-1 rounded-full cursor-pointer ${
                         currentSlide === 1 ? "bg-yellow-100" : "bg-gray-600"
@@ -187,13 +188,13 @@ export const ConnectPage = () => {
 
             <div className="flex-none flex justify-center pb-10 w-full">
                 <button
-                    disabled={!!walletAddress}
+                    disabled={!!walletAddress && isFirstLogin}
                     onClick={handleNextSlide}
                     className={`${
                         walletAddress ? "bg-yellow-500 cursor-not-allowed" : "bg-yellow-400"
                     } py-3 px-6 rounded-2xl w-full sm:w-3/4 md:w-1/2 lg:w-1/3 flex justify-center items-center text-base sm:text-lg`}
                 >
-                    {walletAddress ? (
+                    {walletAddress && isFirstLogin ? (
                         <Spinner />
                     ) : (
                         <>
