@@ -1,3 +1,4 @@
+import { LocalStorageKeys } from "@/constants/localStorage";
 import { userServiceClient } from "./apiClient";
 import { userServiceEndpoints } from "./endpoints";
 
@@ -46,6 +47,7 @@ export const UserServiceApi = {
 				referrer_link
 			};
 			const response = await userServiceClient.post(userServiceEndpoints.addWallet, payload);
+			localStorage.setItem(LocalStorageKeys.firstLogin, "true")
 			return response.data;
 		} catch (error) {
 			console.error("Error logging", error);
