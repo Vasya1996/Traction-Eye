@@ -80,8 +80,7 @@ export const ConnectPage = () => {
         (async () => {
             try {
                 const {token} = await loginMutation.mutateAsync(initDataRaw);
-                const firstLogin = localStorage.getItem(LocalStorageKeys.firstLogin)
-                if(token && userFriendlyAddress === walletAddress && firstLogin === "true") {
+                if(token && userFriendlyAddress === walletAddress && isFirstLogin) {
                     navigate("/");
                     return;
                 }
@@ -105,7 +104,7 @@ export const ConnectPage = () => {
                 console.log('--err',err);
             }
         })();
-    }, [userFriendlyAddress, initDataRaw, walletAddress, tonConnectUI, isDisconnected, queryParams, initData]);
+    }, [userFriendlyAddress, initDataRaw, walletAddress, tonConnectUI, isDisconnected, queryParams, initData, isFirstLogin]);
 
     const connectHandleClick = () => {
         postEvent("web_app_trigger_haptic_feedback", {
