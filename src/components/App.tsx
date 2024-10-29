@@ -103,16 +103,24 @@ export const App: FC = () => {
 	}, [navigator]);
 
 	const [value, setValue] = useState(0);
-		// Bottom Navigation Handlers
-		const handleNavigationChange = (event: React.ChangeEvent<unknown>, newValue: number) => {
-			event.preventDefault();
-			setValue(newValue);
-			if (newValue === 0) {
-				navigator.push("/");
-			} else if (newValue === 1) {
-				navigator.push("/referral");
-			}
-		};
+	// Bottom Navigation Handlers
+	const handleNavigationChange = (event: React.ChangeEvent<unknown>, newValue: number) => {
+		event.preventDefault();
+		setValue(newValue);
+		if (newValue === 0) {
+			navigator.push("/");
+		} else if (newValue === 1) {
+			navigator.push("/referral");
+		}
+	};
+
+	useEffect(() => {
+		if(location?.pathname === "/referral") {
+			setValue(1);
+		} else {
+			setValue(0);
+		}
+	},[location?.pathname])
 
 	return (
 		<div className="max-h-screen" style={{overflow: isScrollBlocked ? "hidden" : "auto" }}>

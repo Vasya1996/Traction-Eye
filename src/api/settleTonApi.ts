@@ -6,7 +6,7 @@ export const SETTLE_API = {
 	getSettleTonJettons: async (userRawAddress?: string): Promise<TransformedSettleTonResponse> => {
 		try {
 			const response = await settleTonClient.get(
-				`${settleTonEndpoints.jettons}/${userRawAddress}`,
+				`${settleTonEndpoints.jettons}/${userRawAddress}/`,
 			);
 
 			return transformSettleTonResponse(response.data);
