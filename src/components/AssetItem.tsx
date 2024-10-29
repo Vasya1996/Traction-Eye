@@ -37,17 +37,17 @@ const AssetItem: FC<AssetItemProps> = ({
                 >
                     <img src={icon} alt={name} className="w-12 h-12 mr-2 rounded-full" />
                     <div className="grid">
-                        <span className="text-base">{formatNumber(amount)}</span>
+                        <span className="text-xs">{formatNumber(amount)}</span>
                         <span className="text-gray-400 font-semibold text-xs">{name}</span>
                     </div>
                 </Link>
             </td>
-            <td className="py-2 px-3 text-base">
+            <td className="py-2 px-3 text-xs">
                 <Link to={`/asset/${address}`} onClick={handleAssetClick} state={{ name, icon, amount, price }}>
                     {formatNumber(price)}$
                 </Link>
             </td>
-            <td className="py-2 px-3 text-end text-base">
+            <td className="py-2 px-3 text-end text-xs">
                 <Link to={`/asset/${address}`} onClick={handleAssetClick} state={{ name, icon, amount, price }}>
                     {formatNumber(usdValue, false)}$
                 </Link>
