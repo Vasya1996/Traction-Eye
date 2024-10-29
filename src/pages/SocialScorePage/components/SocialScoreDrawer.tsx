@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import { Box, Drawer, Typography, Button, IconButton, Tooltip } from '@mui/material';
-import { useTonAddress } from "@tonconnect/ui-react";
 import { CloseIcon, InfoIcon, NetWorthBonus, BlockIcon } from '@/components/icons';
 import { useTelegramShare } from '@/hooks';
 // import InviteBonus from "../InviteBonus.png";
@@ -29,11 +28,8 @@ const SOCIAL_SCORE_INFO = [{
   isDisabled: true
 }]
 
-const TEST_WALLETS = ["UQAINHiKgQMi0BQ-Y4C5AMFiZm_2dgvf-KPxdWJImKWArNwM", "UQBghyYO1PSqiHO70FNCE5NpU94rTE3pfxjGpzB2aD6fWVCO", "UQAiuSciIC6VfkKODF9xsrogE44Okn13XGvdzXq1uCoOH40Z"];
-
 export const SocialScoreDrawer: React.FC<SocialScoreDrawerProps> = ({ open, onClose, referral_link }) => {
   const { shareContent } = useTelegramShare();
-  const userFriendlyAddress = useTonAddress();
 
   const [openTooltip, setOpenTooltip] = useState(false);
 
@@ -142,7 +138,7 @@ export const SocialScoreDrawer: React.FC<SocialScoreDrawerProps> = ({ open, onCl
         <Button
           variant="contained"
           color="warning"
-          disabled={!referral_link || !TEST_WALLETS.includes(userFriendlyAddress)}
+          disabled={!referral_link}
           onClick={() => {
             shareContent(`https://t.me/TractionEyebot/app?startapp=${referral_link}`,"Your network is your net worth \nElevate your social capital with TractionEye");
           }}

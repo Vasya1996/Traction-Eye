@@ -3,4 +3,5 @@ export enum LocalStorageKeys {
     userServiceToken = "userServiceToken",
     ref = "ref",
     scroll = "scroll",
+    firstLogin = "firstLogin",
 }

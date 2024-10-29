@@ -75,7 +75,8 @@ export const ConnectPage = () => {
         (async () => {
             try {
                 const {token} = await loginMutation.mutateAsync(initDataRaw);
-                if(token && userFriendlyAddress === walletAddress) {
+                const firstLogin = localStorage.getItem(LocalStorageKeys.firstLogin)
+                if(token && userFriendlyAddress === walletAddress && firstLogin === "true") {
                     navigate("/");
                     return;
                 }
@@ -93,6 +94,7 @@ export const ConnectPage = () => {
                 ])
     
                 localStorage.setItem(LocalStorageKeys.user_service_wallet_address, userFriendlyAddress);
+                localStorage.setItem(LocalStorageKeys.firstLogin, "true")
                 navigate("/");
             } catch(err) {
                 console.log('--err',err);
