@@ -26,7 +26,9 @@ export const ConnectPage = () => {
     const [walletAddress, setWalletAddress] = useState(() =>
         localStorage.getItem(LocalStorageKeys.user_service_wallet_address)
     );
-    const isFirstLogin = localStorage.getItem(LocalStorageKeys.firstLogin) === "true";
+    const [isFirstLogin, setIsFirstLogin] = useState(() =>
+        localStorage.getItem(LocalStorageKeys.firstLogin) === "true"
+    );
 
     const { initDataRaw } = retrieveLaunchParams();
 
@@ -95,7 +97,7 @@ export const ConnectPage = () => {
                         wallet_address: userFriendlyAddress ?? walletAddress,
                     })
                 ])
-    
+                setIsFirstLogin(true);
                 localStorage.setItem(LocalStorageKeys.user_service_wallet_address, userFriendlyAddress);
                 localStorage.setItem(LocalStorageKeys.firstLogin, "true")
                 navigate("/");
