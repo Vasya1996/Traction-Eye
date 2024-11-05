@@ -1,11 +1,11 @@
 import { FC, useState, useEffect, useMemo } from "react";
-import { useLocation, useParams } from "react-router-dom";
+import { useLocation, useParams, useNavigate } from "react-router-dom";
 import Chart, { SelectedPoint } from "@/components/Chart";
 import { useQuery } from "@tanstack/react-query";
 // import { API } from "@/api/api";
 import { useTonAddress } from "@tonconnect/ui-react";
 import { AssetItemProps } from "@/components/AssetItem";
-import { MdOutlineInfo } from "@/components/icons";
+import { MdOutlineInfo, SwapToken } from "@/components/icons";
 import { postEvent } from '@telegram-apps/sdk';
 import { Skeleton } from "@/components/ui/skeleton";
 import { formatNumber, getTimelinePeriodAndIntervalKey, updateAssetChartPnlData } from "@/utils";
@@ -22,6 +22,7 @@ const AssetItemPage: FC = () => {
   const params = useParams<{ id: string }>();
   const walletAddress = useTonAddress();
   const location = useLocation();
+  const navigate = useNavigate();
   const state = location.state as AssetItemProps;
 // State for selected timeline
   const [selectedPoint, setSelectedPoint] = useState<SelectedPoint | null>(null);
@@ -148,6 +149,9 @@ const AssetItemPage: FC = () => {
             <div className="font-semibold text-gray-500">{"\u2014"} $</div>
             {/* <div className="font-semibold text-gray-500">$18,2B</div> */}
           </li>
+          <button onClick={() => navigate('/swap')} className='flex bg-yellow-400 p-3 items-center justify-center rounded-xl w-full'>
+            <SwapToken /><span className="ml-3">Swap token</span>
+          </button>
         </ul>
         <span className="w-full border-b"></span>
       </div>

@@ -1,6 +1,7 @@
 import type { ComponentType, JSX } from "react";
 
 import IndexPage from "../pages/IndexPage/IndexPage";
+import { SwapPage } from "../pages/SwapPage";
 import { ConnectPage } from "../pages/ConnectPage/ConnectPage";
 import ProfilesListPage from "../pages/ProfilesListPage/ProfilesListPage";
 import NFTListPage  from "../pages/NFTListPage/NFTListPage";
@@ -19,7 +20,8 @@ interface Route {
 export const routes: Route[] = [
 	{ path: "/", Component: IndexPage },
 	{ path: "/referral", Component: SocialScorePage },
-	{ path: "/connect", Component: ConnectPage },
+	{ path: "/connect", Component: IndexPage },
+	{ path: "/swap", Component: SwapPage },
 	{ path: "/profiles", Component: ProfilesListPage },
 	{ path: "/nfts", Component: NFTListPage },
 	{ path: "/nft/:id", Component: NFTItemPage },
