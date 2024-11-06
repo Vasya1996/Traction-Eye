@@ -13,6 +13,13 @@ import { ChartHome } from "@/components/ChartHome";
 import { TimelineToolbar } from "@/components/TImelineToolbar";
 import { Colors, TimelineKeys, TIMELINES_INTERVALS_SECONDS } from "@/constants";
 
+export const shortenWallet = (wallet: string, startLength: number = 4, endLength: number = 4): string => {
+  const start = wallet.substring(0, startLength);
+  const end = wallet.substring(wallet.length - endLength);
+  return `${start}...${end}`;
+};
+
+
 export const IndexPage: FC = () => {
     const navigate = useNavigate();
     const walletAddress = useTonAddress();
@@ -49,12 +56,6 @@ export const IndexPage: FC = () => {
             navigate("/connect");
         }, 300);
     }, [walletAddress]);
-
-    const shortenWallet = (wallet: string, startLength: number = 4, endLength: number = 4): string => {
-        const start = wallet.substring(0, startLength);
-        const end = wallet.substring(wallet.length - endLength);
-        return `${start}...${end}`;
-    };
 
     // State for selected timeline
     const [selectedTimeline, setSelectedTimeline] = useState<keyof typeof TIMELINES_INTERVALS_SECONDS>(TimelineKeys.Month);

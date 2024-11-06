@@ -7,7 +7,7 @@ import dedustLogo from "@/pages/IndexPage/dedustlogo.png";
 import SettleTonLogo from "@/components/icons/SettleTon.svg";
 import { useQuery } from "@tanstack/react-query";
 import { API } from "@/api/api";
-import { useTonAddress, useTonWallet } from "@tonconnect/ui-react";
+import { useTonAddress } from "@tonconnect/ui-react";
 import { CACHE_OPTIONS, ProtocolNames } from "@/constants";
 import { SETTLE_API } from "@/api/settleTonApi";
 // import { Link } from "react-router-dom";
