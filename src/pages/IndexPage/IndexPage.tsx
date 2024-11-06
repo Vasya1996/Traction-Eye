@@ -16,7 +16,12 @@ import { Colors, TimelineKeys, TIMELINES_INTERVALS_SECONDS } from "@/constants";
 export const IndexPage: FC = () => {
     const navigate = useNavigate();
     const walletAddress = useTonAddress();
-    const { initDataRaw } = retrieveLaunchParams();
+    const { initDataRaw, initData } = retrieveLaunchParams();
+    
+    console.log(initData?.startParam)
+    if (initData?.startParam && initData?.startParam?.split("__wallet=").length > 1) {
+      navigate("/friend");
+    }
 
     const { data } = useQuery({
         queryKey: ["login"],
