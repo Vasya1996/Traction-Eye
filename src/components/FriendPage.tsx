@@ -22,8 +22,8 @@ const FriendPage = () => {
 				className="p-5 rounded-t-3xl bg-gray-50 pb-32"
 			>
 				<AssetList friendWalletAddress={friendWalletAdress} />
-				<NFTList />
-				<ProtocolsList />
+				<NFTList friendWalletAddress={friendWalletAdress} />
+				<ProtocolsList friendWalletAdress={friendWalletAdress} />
 			</div>
 		</div>
 	);
