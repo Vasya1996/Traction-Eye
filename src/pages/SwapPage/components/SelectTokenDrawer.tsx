@@ -16,6 +16,8 @@ import {
   Toolbar,
   Drawer,
 } from '@mui/material';
+import { SwapAsset } from '@/hooks';
+import { formatNumber } from '@/utils';
 // import SearchIcon from '@mui/icons-material/Search';
 // import StarOutlineIcon from '@mui/icons-material/StarOutline';
 
@@ -38,14 +40,17 @@ const tokens: Token[] = [
 interface SelectTokenDrawerProps {
   open: boolean;
   onClose: () => void;
+  assets: SwapAsset[];
 }
 
-export const SelectTokenDrawer: React.FC<SelectTokenDrawerProps> = ({ open, onClose }) => {
+export const SelectTokenDrawer: React.FC<SelectTokenDrawerProps> = ({ open, onClose, assets }) => {
   const [tabIndex, setTabIndex] = React.useState(0);
 
   const handleTabChange = (event: React.SyntheticEvent, newValue: number) => {
     setTabIndex(newValue);
   };
+
+  // console.log('---assets-SelectTokenDrawer',assets);
 
   return (
     <Drawer
@@ -82,23 +87,23 @@ export const SelectTokenDrawer: React.FC<SelectTokenDrawerProps> = ({ open, onCl
         </Tabs>
 
         <List>
-          {tokens.map((token, index) => (
+          {assets.map((token, index) => (
             <React.Fragment key={token.name}>
               <ListItem>
                 <ListItemAvatar>
-                  <Avatar src={token.icon} alt={token.name} />
+                  <Avatar src={token.imageUrl} alt={token.name} />
                 </ListItemAvatar>
                 <ListItemText
                   primary={
                     <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
                       <Typography variant="body1">{token.name}</Typography>
-                      <Typography variant="body1">{token.balance}</Typography>
+                      {token.amount && <Typography variant="body1">{token.amount}</Typography>}
                     </Box>
                   }
                   secondary={
                     <Box sx={{ display: 'flex', justifyContent: 'space-between', color: 'grey.600' }}>
-                      <Typography variant="caption">{token.ticker}</Typography>
-                      <Typography variant="caption">{token.value}</Typography>
+                      <Typography variant="caption">{token.symbol}</Typography>
+                      {token.price && <Typography variant="caption">${token.price}</Typography>}
                     </Box>
                   }
                 />

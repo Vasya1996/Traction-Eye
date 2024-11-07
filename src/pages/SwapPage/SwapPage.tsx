@@ -9,7 +9,7 @@ import { useSwapAssets } from "@/hooks";
 export const SwapPage = () => {
   const swapData = useSwapAssets();
 
-  console.log('---swapData',swapData);
+  // console.log('---swapData',swapData);
 
   const [drawerOpen, setDrawerOpen] = useState(false);
 
@@ -116,7 +116,7 @@ export const SwapPage = () => {
           </Button>
         </Box>
       </Box>
-      <SelectTokenDrawer open={drawerOpen} onClose={handleDrawerClose} />
+      <SelectTokenDrawer assets={swapData} open={drawerOpen} onClose={handleDrawerClose} />
     </>
   );
 };

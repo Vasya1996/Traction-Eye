@@ -9,6 +9,12 @@ export const SETTLE_API = {
 				`${settleTonEndpoints.jettons}/${userRawAddress}/`,
 			);
 
+			if(response.data.error === "'No data'") {
+				return {
+					indexes: [],
+					vaults: [],
+				};
+			}
 			return transformSettleTonResponse(response.data);
 		} catch (error) {
 			console.error("Error fetching settle ton jettons:", error);
