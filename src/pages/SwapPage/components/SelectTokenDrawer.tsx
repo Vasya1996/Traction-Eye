@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import {
   AppBar,
   Box,
@@ -17,25 +17,8 @@ import {
   Drawer,
 } from '@mui/material';
 import { SwapAsset } from '@/hooks';
-import { formatNumber } from '@/utils';
-// import SearchIcon from '@mui/icons-material/Search';
-// import StarOutlineIcon from '@mui/icons-material/StarOutline';
-
-interface Token {
-  name: string;
-  ticker: string;
-  balance: string;
-  value: string;
-  icon: string;
-}
-
-const tokens: Token[] = [
-  { name: 'TON', ticker: 'TON', balance: '727.78808', value: '$3.78K', icon: '/path/to/ton-icon.png' },
-  { name: 'NOT', ticker: 'Notcoin', balance: '26 900.15235', value: '$213.02', icon: '/path/to/notcoin-icon.png' },
-  { name: 'OPEN', ticker: 'OPEN', balance: '697 723', value: '$197.28', icon: '/path/to/open-icon.png' },
-  { name: 'CES', ticker: 'swap.coffee', balance: '136.35716', value: '$186.60', icon: '/path/to/ces-icon.png' },
-  { name: 'STON', ticker: 'STON', balance: '23.33961', value: '$83.51', icon: '/path/to/ston-icon.png' },
-];
+import { debounce } from "underscore";
+import emptyToken from "./emptyToken.png"
 
 interface SelectTokenDrawerProps {
   open: boolean;
@@ -45,12 +28,34 @@ interface SelectTokenDrawerProps {
 
 export const SelectTokenDrawer: React.FC<SelectTokenDrawerProps> = ({ open, onClose, assets }) => {
   const [tabIndex, setTabIndex] = React.useState(0);
+  const [search, setSearch] = React.useState("");
+  const [debouncedSearch, setDebouncedSearch] = React.useState("");
 
   const handleTabChange = (event: React.SyntheticEvent, newValue: number) => {
     setTabIndex(newValue);
   };
 
-  // console.log('---assets-SelectTokenDrawer',assets);
+  const debouncedSetSearch = React.useCallback(
+    debounce((value: string) => setDebouncedSearch(value), 300),
+    []
+  );
+
+  const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setSearch(event.target.value);
+    debouncedSetSearch(event.target.value);
+  }
+
+  const filteredAssets = useMemo(() => {
+    if (!debouncedSearch) {
+      return assets;
+    }
+    const lowerCaseSearch = debouncedSearch.toLowerCase();
+    return assets.filter((asset) =>
+      asset.name.toLowerCase().includes(lowerCaseSearch) ||
+      asset.symbol.toLowerCase().includes(lowerCaseSearch) ||
+      asset.address.toLowerCase().includes(lowerCaseSearch)
+    );
+  }, [debouncedSearch, assets]);
 
   return (
     <Drawer
@@ -59,65 +64,87 @@ export const SelectTokenDrawer: React.FC<SelectTokenDrawerProps> = ({ open, onCl
       onClose={onClose}
       PaperProps={{
         sx: {
-          paddingTop: '12px',
+          height: 'calc(100vh - 100px)',
+          display: 'flex',
+          flexDirection: 'column',
           borderTopLeftRadius: 24,
           borderTopRightRadius: 24,
-          overflow: 'hidden', // Ensure content doesn't overflow the rounded corners
+          overflow: 'hidden',
         },
       }}
     >
-      <Box sx={{ width: '100%', bgcolor: 'background.paper' }}>
-        <AppBar position="static" color="transparent" elevation={0}>
-          <Toolbar>
-            <Typography variant="h6" sx={{ flexGrow: 1 }}>
-              Select token
+      <AppBar position="static" color="transparent" elevation={0}>
+        <Toolbar>
+          <Typography variant="h6" sx={{ flexGrow: 1 }}>
+            Select token
+          </Typography>
+        </Toolbar>
+      </AppBar>
+
+      <Box sx={{ px: 2, py: 1 }}>
+        <Box sx={{ display: 'flex', alignItems: 'center', bgcolor: 'grey.100', border: "1px solid rgb(212, 212, 212)", borderRadius: '0.75rem', px: 1 }}>
+          <InputBase value={search} onChange={handleSearchChange} placeholder="Search assets or address" sx={{ ml: 1, flex: 1, height: "3rem" }} />
+        </Box>
+      </Box>
+
+      <Tabs value={tabIndex} onChange={handleTabChange} sx={{ marginLeft: '16px' }}>
+        <Tab label="All assets" />
+      </Tabs>
+
+      <Box sx={{ flex: 1, overflowY: 'auto', px: 2 }}>
+      {filteredAssets.length > 0 ? (
+          <List>
+            {filteredAssets.map((token, index) => (
+              <React.Fragment key={token.name}>
+                <ListItem>
+                  <ListItemAvatar>
+                    <Avatar src={token.imageUrl} alt={token.name} />
+                  </ListItemAvatar>
+                  <ListItemText
+                    primary={
+                      <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
+                        <Typography variant="body1">{token.name}</Typography>
+                        {token.amount && <Typography variant="body1">{token.amount}</Typography>}
+                      </Box>
+                    }
+                    secondary={
+                      <Box sx={{ display: 'flex', justifyContent: 'space-between', color: 'grey.600' }}>
+                        <Typography variant="caption">{token.symbol}</Typography>
+                        {token.price && <Typography variant="caption">${token.price}</Typography>}
+                      </Box>
+                    }
+                  />
+                </ListItem>
+                {index < filteredAssets.length - 1 && <Divider />}
+              </React.Fragment>
+            ))}
+          </List>
+        ) : (
+          <Box sx={{ 
+            flex: 1, 
+            display: 'flex', 
+            flexDirection: 'column', 
+            justifyContent: 'center', 
+            alignItems: 'center', 
+            textAlign: 'center', 
+            color: 'grey.500',
+            marginTop: 2,
+          }}>
+            <img src={emptyToken} style={{height: 100, width: 100}} alt="Token not found"/>
+            <Typography variant="h6" sx={{ color: 'text.primary', fontWeight: 500 }}>
+              We didn&apos;t find any assets
             </Typography>
-          </Toolbar>
-        </AppBar>
-
-        <Box sx={{ px: 2, py: 1 }}>
-          <Box sx={{ display: 'flex', alignItems: 'center', bgcolor: 'grey.100', borderRadius: '20px', px: 1 }}>
-            {/* <SearchIcon sx={{ color: 'grey.500' }} /> */}
-            <InputBase placeholder="Search assets or address" sx={{ ml: 1, flex: 1 }} />
+            <Typography sx={{ color: 'text.secondary', fontSize: 18 }}>
+              Try searching by address
+            </Typography>
           </Box>
-        </Box>
+        )}
+      </Box>
 
-        <Tabs value={tabIndex} onChange={handleTabChange} sx={{ marginLeft: '16px' }}>
-          <Tab label="All assets" />
-        </Tabs>
-
-        <List>
-          {assets.map((token, index) => (
-            <React.Fragment key={token.name}>
-              <ListItem>
-                <ListItemAvatar>
-                  <Avatar src={token.imageUrl} alt={token.name} />
-                </ListItemAvatar>
-                <ListItemText
-                  primary={
-                    <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
-                      <Typography variant="body1">{token.name}</Typography>
-                      {token.amount && <Typography variant="body1">{token.amount}</Typography>}
-                    </Box>
-                  }
-                  secondary={
-                    <Box sx={{ display: 'flex', justifyContent: 'space-between', color: 'grey.600' }}>
-                      <Typography variant="caption">{token.symbol}</Typography>
-                      {token.price && <Typography variant="caption">${token.price}</Typography>}
-                    </Box>
-                  }
-                />
-              </ListItem>
-              {index < tokens.length - 1 && <Divider />}
-            </React.Fragment>
-          ))}
-        </List>
-
-        <Box sx={{ p: 2 }}>
-          <Button variant="contained" color="primary" fullWidth onClick={onClose}>
-            Close
-          </Button>
-        </Box>
+      <Box sx={{ p: 2 }}>
+        <Button variant="contained" color="primary" fullWidth onClick={onClose}>
+          Close
+        </Button>
       </Box>
     </Drawer>
   );

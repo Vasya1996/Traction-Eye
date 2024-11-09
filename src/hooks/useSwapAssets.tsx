@@ -53,13 +53,17 @@ export const useSwapAssets = (): SwapAsset[] => {
       const amount = +matchingExternalData.amount / Math.pow(10, +asset.decimals);
       return {
         ...asset,
+        address: asset.address?.address,
         amount: formatNumber(amount),
         price: formatNumber(matchingExternalData.price * Number(amount), false),
       };
     }
 
     // Return original asset if no match is found
-    return asset;
+    return {
+      ...asset,
+      address: asset.address?.address
+    };
   }), [assetList, formattedExternalData]);
 
   return mergedAssetList ?? [];
