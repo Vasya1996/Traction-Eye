@@ -52,7 +52,6 @@ const AssetItemPage: FC = () => {
     ...CACHE_OPTIONS
   });
 
-
   const updatedChartData = useMemo(() => {
     if(!assetChartData) {
       return [];

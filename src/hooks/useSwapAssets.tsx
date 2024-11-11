@@ -1,4 +1,4 @@
-import { useAssetList} from "@ston-fi/omniston-sdk-react";
+import { useAssetList } from "@ston-fi/omniston-sdk-react";
 import { useQuery } from "@tanstack/react-query";
 import { API } from "@/api/api";
 import { useTonAddress } from "@tonconnect/ui-react";
@@ -6,6 +6,7 @@ import { convertToUserFriendlyAddress } from "@/utils/convertToUserFriendlyAddre
 import { useMemo } from "react";
 import { Asset } from "@/types";
 import { formatNumber } from "@/utils";
+import { CACHE_OPTIONS_FAST } from "@/constants";
 
 export interface SwapAsset {
   address: string;
@@ -21,13 +22,13 @@ export const useSwapAssets = (): SwapAsset[] => {
   // Get asset list from the hook
   const { data: assetList } = useAssetList();
 
-
-  const userFriendlyAddress = "UQAINHiKgQMi0BQ-Y4C5AMFiZm_2dgvf-KPxdWJImKWArNwM";//useTonAddress();
+  const userFriendlyAddress = useTonAddress();
 
   // Get additional data (similar to the screenshot format)
   const { data: externalData } = useQuery({
     queryKey: ["assets", userFriendlyAddress],
     queryFn: () => API.getAssetsByWallet(userFriendlyAddress),
+    ...CACHE_OPTIONS_FAST
   });
 
   // Transform external data to match the format of assetList for merging
