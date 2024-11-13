@@ -148,7 +148,7 @@ const AssetItemPage: FC = () => {
             <div className="font-semibold text-gray-500">{"\u2014"} $</div>
             {/* <div className="font-semibold text-gray-500">$18,2B</div> */}
           </li>
-          <button onClick={() => navigate('/swap')} className='flex bg-yellow-400 p-3 items-center justify-center rounded-xl w-full'>
+          <button onClick={() => navigate('/swap')} className='flex bg-yellow-400 p-2 h-[51px] items-center justify-center rounded-xl w-full'>
             <SwapToken /><span className="ml-3">Swap token</span>
           </button>
         </ul>

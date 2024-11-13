@@ -204,7 +204,8 @@ export const SwapPage = () => {
             <Box sx={{
               position: "relative"
             }}>
-              <Box className="flex justify-between items-center p-4">
+              {sendToken ? (
+                <Box className="flex justify-between items-center p-4">
                   <Box onClick={handleDrawerOpen(true)} className="flex items-center">
                     <Avatar sx={{ height: 32, width: 32, marginRight: "6px" }} src={sendToken?.imageUrl} alt={sendToken?.symbol} />
                     <Typography variant="body1" sx={{fontSize: "1.875rem"}} className="font-semibold">{sendToken?.symbol}</Typography>
@@ -238,12 +239,15 @@ export const SwapPage = () => {
                   {/* <Typography variant="body1" color="textSecondary">$5.16</Typography> */}
                   </Box>
               </Box>
+              ) : (
+                <Skeleton variant="rectangular" width="100%" height={119} />
+              )}
               <Divider className="my-1 w-full" />
               {/* Swap Icon */}
               <IconButton sx={{
                       position: "absolute",
                       left: "50%",
-                      top: "53%",
+                      top: "50%",
                       transform: "translate(-50%, -50%)",
                       border: '1px solid',
                       borderColor: 'gray.300',
@@ -257,7 +261,8 @@ export const SwapPage = () => {
               </IconButton>
 
               {/* Receive Section */}
-              <Box className="flex justify-between items-center p-4 mb-3">
+              {receiveToken ? (
+                <Box className="flex justify-between items-center p-4 mb-3">
                   <Box onClick={handleDrawerOpen(false)} className="flex items-center">
                     <Avatar sx={{ height: 32, width: 32, marginRight: "6px" }} src={receiveToken?.imageUrl} alt={receiveToken?.symbol} />
                     <Typography variant="body1" sx={{fontSize: "1.875rem"}} className="font-semibold">{receiveToken?.symbol}</Typography>
@@ -268,10 +273,13 @@ export const SwapPage = () => {
                       <WalletIcon color={Colors.textGray}/>
                       <Typography sx={{marginLeft: 0.625, fontWeight: 100}}> {receiveToken?.amount ?? 0}</Typography>
                     </Box>
-                    <Typography variant="body1" sx={{ fontSize: '2rem', color: sendTokenAmount && quote?.askUnits ? "rgba(0, 0, 0, 0.87)" : "rgba(0, 0, 0, 0.4)"}} className="font-semibold">{(sendTokenAmount && receiveToken?.decimals && quote?.askUnits) ? (quote.askUnits / Math.pow(10, receiveToken?.decimals)) : 0}</Typography>
+                    <Typography variant="body1" sx={{ padding: "7.5px 0px", fontSize: '2rem', color: sendTokenAmount && quote?.askUnits ? "rgba(0, 0, 0, 0.87)" : "rgba(0, 0, 0, 0.4)"}} className="font-semibold">{(sendTokenAmount && receiveToken?.decimals && quote?.askUnits) ? (quote.askUnits / Math.pow(10, receiveToken?.decimals)) : 0}</Typography>
                     {/* <Typography variant="body1" color="textSecondary">$5.13 (-0.66%)</Typography> */}
                   </Box>
-              </Box>
+                </Box>
+              ) : (
+                <Skeleton variant="rectangular" width="100%" height={119} />
+              )}
             </Box>
             <Divider className="my-1 w-full" />
             {/* Rate Information */}
