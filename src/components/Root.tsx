@@ -1,9 +1,12 @@
 import { SDKProvider, useLaunchParams } from '@telegram-apps/sdk-react';
 import { TonConnectUIProvider } from '@tonconnect/ui-react';
+import { OmnistonProvider } from "@ston-fi/omniston-sdk-react";
 import { type FC, useEffect, useMemo } from 'react';
 
 import { App } from '@/components/App.tsx';
 import { ErrorBoundary } from '@/components/ErrorBoundary.tsx';
+
+const OMNISTON_API_URL = "wss://omni-ws.ston.fi";
 
 const ErrorBoundaryError: FC<{ error: unknown }> = ({ error }) => (
   <div>
@@ -34,11 +37,13 @@ const Inner: FC = () => {
   }, [debug]);
 
   return (
-    <TonConnectUIProvider manifestUrl={manifestUrl}>
-      <SDKProvider acceptCustomStyles debug={debug}>
-        <App/>
-      </SDKProvider>
-    </TonConnectUIProvider>
+    <OmnistonProvider apiUrl={OMNISTON_API_URL}>
+      <TonConnectUIProvider manifestUrl={manifestUrl}>
+          <SDKProvider acceptCustomStyles debug={debug}>
+            <App/>
+          </SDKProvider>
+      </TonConnectUIProvider>
+    </OmnistonProvider>
   );
 };
 
