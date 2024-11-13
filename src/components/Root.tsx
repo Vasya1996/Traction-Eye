@@ -37,8 +37,8 @@ const Inner: FC = () => {
   }, [debug]);
 
   return (
-    <OmnistonProvider apiUrl="wss://omni-ws.ston.fi">
-      <TonConnectUIProvider manifestUrl={"https://tractioneye.ru/tonconnect-manifest.json"}>
+    <OmnistonProvider apiUrl={OMNISTON_API_URL}>
+      <TonConnectUIProvider manifestUrl={manifestUrl}>
           <SDKProvider acceptCustomStyles debug={debug}>
             <App/>
           </SDKProvider>
