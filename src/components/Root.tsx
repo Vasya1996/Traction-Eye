@@ -6,8 +6,6 @@ import { type FC, useEffect, useMemo } from 'react';
 import { App } from '@/components/App.tsx';
 import { ErrorBoundary } from '@/components/ErrorBoundary.tsx';
 
-const OMNISTON_API_URL = "wss://omni-ws.ston.fi";
-
 const ErrorBoundaryError: FC<{ error: unknown }> = ({ error }) => (
   <div>
     <p>An unhandled error occurred:</p>
@@ -37,7 +35,7 @@ const Inner: FC = () => {
   }, [debug]);
 
   return (
-    <OmnistonProvider apiUrl={OMNISTON_API_URL}>
+    <OmnistonProvider apiUrl="wss://omni-ws.ston.fi">
       <TonConnectUIProvider manifestUrl={manifestUrl}>
           <SDKProvider acceptCustomStyles debug={debug}>
             <App/>
