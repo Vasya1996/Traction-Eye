@@ -17,6 +17,8 @@ import { ChartData } from "@/types";
 import { TON_CENTER_API } from "@/api/tonCenter";
 // import { API } from "@/api/api";
 
+const TEST_WALLETS = ["UQAINHiKgQMi0BQ-Y4C5AMFiZm_2dgvf-KPxdWJImKWArNwM", "UQBghyYO1PSqiHO70FNCE5NpU94rTE3pfxjGpzB2aD6fWVCO", "UQAiuSciIC6VfkKODF9xsrogE44Okn13XGvdzXq1uCoOH40Z"];
+
 const AssetItemPage: FC = () => {
   const [tooltip, setTooltip] = useState<null | string>(null);
   const params = useParams<{ id: string }>();
@@ -148,9 +150,9 @@ const AssetItemPage: FC = () => {
             <div className="font-semibold text-gray-500">{"\u2014"} $</div>
             {/* <div className="font-semibold text-gray-500">$18,2B</div> */}
           </li>
-          <button onClick={() => navigate('/swap')} className='flex bg-yellow-400 p-2 h-[51px] items-center justify-center rounded-xl w-full'>
+          {TEST_WALLETS.includes(walletAddress) && <button onClick={() => navigate('/swap')} className='flex bg-yellow-400 p-2 h-[51px] items-center justify-center rounded-xl w-full'>
             <SwapToken /><span className="ml-3">Swap token</span>
-          </button>
+          </button>}
         </ul>
         <span className="w-full border-b"></span>
       </div>
