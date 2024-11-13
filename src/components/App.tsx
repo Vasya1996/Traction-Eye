@@ -22,7 +22,6 @@ import { LocalStorageKeys } from "@/constants/localStorage";
 const queryClient = new QueryClient();
 
 
-
 export const App: FC = () => {
 	const miniApp = useMiniApp();
 	const themeParams = useThemeParams();

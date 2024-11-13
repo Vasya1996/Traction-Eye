@@ -16,29 +16,27 @@ import { SETTLE_API } from "@/api/settleTonApi";
 export const ProtocolsList: FC = () => {
     const userFriendlyAddress = useTonAddress();
     const wallet = useTonWallet();
-
-
   
-      const { data: dedustData } = useQuery({
-          queryFn: () => API.getDedustInfo(userFriendlyAddress),
-          queryKey: ["dedust", userFriendlyAddress],
-          enabled: !!userFriendlyAddress,
-          ...CACHE_OPTIONS
-      });
+    const { data: dedustData } = useQuery({
+        queryFn: () => API.getDedustInfo(userFriendlyAddress),
+        queryKey: ["dedust", userFriendlyAddress],
+        enabled: !!userFriendlyAddress,
+        ...CACHE_OPTIONS
+    });
 
-      const { data: stonFiData } = useQuery({
-          queryFn: () => API.getStonfiInfo(userFriendlyAddress),
-          queryKey: ["stonfi", userFriendlyAddress],
-          enabled: !!userFriendlyAddress,
-          ...CACHE_OPTIONS
-      });
-    
-      const { data: settleTonData } = useQuery({
-          queryFn: () => SETTLE_API.getSettleTonJettons(wallet?.account.address),
-          queryKey: ["settleTon",wallet?.account.address],
-          enabled: !!wallet?.account.address,
-          ...CACHE_OPTIONS
-      });
+    const { data: stonFiData } = useQuery({
+        queryFn: () => API.getStonfiInfo(userFriendlyAddress),
+        queryKey: ["stonfi", userFriendlyAddress],
+        enabled: !!userFriendlyAddress,
+        ...CACHE_OPTIONS
+    });
+
+    const { data: settleTonData } = useQuery({
+        queryFn: () => SETTLE_API.getSettleTonJettons(wallet?.account.address),
+        queryKey: ["settleTon",wallet?.account.address],
+        enabled: !!wallet?.account.address,
+        ...CACHE_OPTIONS
+    });
     
     return (
         <div className="tools mt-7">

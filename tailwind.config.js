@@ -31,6 +31,7 @@ module.exports = {
             },
             spacing: {
                 13: "3.35rem", // Define your custom size, e.g., 3.25rem (52px)
+                30: "7.5rem",
             },
             padding: {
                 0.5: "0.5rem",

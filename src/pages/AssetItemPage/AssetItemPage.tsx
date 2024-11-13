@@ -1,11 +1,11 @@
 import { FC, useState, useEffect, useMemo } from "react";
-import { useLocation, useParams } from "react-router-dom";
+import { useLocation, useParams, useNavigate } from "react-router-dom";
 import Chart, { SelectedPoint } from "@/components/Chart";
 import { useQuery } from "@tanstack/react-query";
 // import { API } from "@/api/api";
 import { useTonAddress } from "@tonconnect/ui-react";
 import { AssetItemProps } from "@/components/AssetItem";
-import { MdOutlineInfo } from "@/components/icons";
+import { MdOutlineInfo, SwapToken } from "@/components/icons";
 import { postEvent } from '@telegram-apps/sdk';
 import { Skeleton } from "@/components/ui/skeleton";
 import { formatNumber, getTimelinePeriodAndIntervalKey, updateAssetChartPnlData } from "@/utils";
@@ -17,11 +17,14 @@ import { ChartData } from "@/types";
 import { TON_CENTER_API } from "@/api/tonCenter";
 // import { API } from "@/api/api";
 
+const TEST_WALLETS = ["UQAINHiKgQMi0BQ-Y4C5AMFiZm_2dgvf-KPxdWJImKWArNwM", "UQBghyYO1PSqiHO70FNCE5NpU94rTE3pfxjGpzB2aD6fWVCO", "UQAiuSciIC6VfkKODF9xsrogE44Okn13XGvdzXq1uCoOH40Z"];
+
 const AssetItemPage: FC = () => {
   const [tooltip, setTooltip] = useState<null | string>(null);
   const params = useParams<{ id: string }>();
   const walletAddress = useTonAddress();
   const location = useLocation();
+  const navigate = useNavigate();
   const state = location.state as AssetItemProps;
 // State for selected timeline
   const [selectedPoint, setSelectedPoint] = useState<SelectedPoint | null>(null);
@@ -50,7 +53,6 @@ const AssetItemPage: FC = () => {
     refetchOnWindowFocus: false,
     ...CACHE_OPTIONS
   });
-
 
   const updatedChartData = useMemo(() => {
     if(!assetChartData) {
@@ -148,6 +150,9 @@ const AssetItemPage: FC = () => {
             <div className="font-semibold text-gray-500">{"\u2014"} $</div>
             {/* <div className="font-semibold text-gray-500">$18,2B</div> */}
           </li>
+          {TEST_WALLETS.includes(walletAddress) && <button onClick={() => navigate('/swap')} className='flex bg-yellow-400 p-2 h-[51px] items-center justify-center rounded-xl w-full'>
+            <SwapToken /><span className="ml-3">Swap token</span>
+          </button>}
         </ul>
         <span className="w-full border-b"></span>
       </div>
