@@ -38,10 +38,11 @@ export const useQuote = ({
   useEffect(() => {
     let unsubscribe: Subscription;
     if(omniston && quoteRequest && sendToken && receiveToken) {
+
+      console.log('--quoteRequest',quoteRequest);
       const quoteObserver = omniston.requestForQuote(quoteRequest);
 
       unsubscribe = quoteObserver.subscribe(omnistonQuote => {
-        console.log('--omnistonQuote',omnistonQuote);
         const askUnits = omnistonQuote.askUnits / Math.pow(10, receiveToken.decimals);
         const offerUnits = omnistonQuote.offerUnits / Math.pow(10, sendToken.decimals);
 

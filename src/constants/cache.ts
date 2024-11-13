@@ -1,5 +1,6 @@
 export const FIVE_MINUTES = 5 * 60 * 1000;
 export const ONE_MINUTE = 1 * 60 * 1000;
+export const THIRTY_SECONDS = 1* 30 * 1000;
 
 export const CACHE_OPTIONS = {
     staleTime: FIVE_MINUTES,  // Data is fresh for 5 minutes
@@ -9,4 +10,9 @@ export const CACHE_OPTIONS = {
 export const CACHE_OPTIONS_FAST = {
     staleTime: ONE_MINUTE,
     getStackedDataOfItem: ONE_MINUTE,
+}
+
+export const CACHE_OPTIONS_SWAP = {
+    staleTime: THIRTY_SECONDS,
+    getStackedDataOfItem: THIRTY_SECONDS,
 }

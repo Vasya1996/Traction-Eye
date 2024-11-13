@@ -15,6 +15,7 @@ import {
     Toolbar,
     Drawer,
 } from "@mui/material";
+import { SearchIcon } from "@/components/icons";
 import { SwapAsset } from "@/hooks";
 import { debounce } from "underscore";
 import emptyToken from "./emptyToken.png";
@@ -24,9 +25,10 @@ interface SelectTokenDrawerProps {
     onClose: () => void;
     onSelect: (token: SwapAsset) => void; 
     assets: SwapAsset[];
+    filteredTokenAddress?: string;
 }
 
-export const SelectTokenDrawer: React.FC<SelectTokenDrawerProps> = ({ open, onClose, assets, onSelect }) => {
+export const SelectTokenDrawer: React.FC<SelectTokenDrawerProps> = ({ open, onClose, assets, onSelect, filteredTokenAddress }) => {
     const [tabIndex, setTabIndex] = React.useState(0);
     const [search, setSearch] = React.useState("");
     const [debouncedSearch, setDebouncedSearch] = React.useState("");
@@ -46,18 +48,20 @@ export const SelectTokenDrawer: React.FC<SelectTokenDrawerProps> = ({ open, onCl
         debouncedSetSearch(event.target.value);
     };
 
+    const assetsWithoutFilteredAddress = useMemo(() => assets.filter((asset) => asset.address.toLowerCase() !== filteredTokenAddress?.toLowerCase()), [assets, filteredTokenAddress]);
+
     const filteredAssets = useMemo(() => {
         if (!debouncedSearch) {
-            return assets;
+            return assetsWithoutFilteredAddress;
         }
         const lowerCaseSearch = debouncedSearch.toLowerCase();
-        return assets.filter(
+        return assetsWithoutFilteredAddress.filter(
             (asset) =>
                 asset.name.toLowerCase().includes(lowerCaseSearch) ||
                 asset.symbol.toLowerCase().includes(lowerCaseSearch) ||
-                asset.address.toLowerCase().includes(lowerCaseSearch),
+                asset.address.toLowerCase().includes(lowerCaseSearch)
         );
-    }, [debouncedSearch, assets]);
+    }, [debouncedSearch, assetsWithoutFilteredAddress, filteredTokenAddress]);
 
     return (
         <Drawer
@@ -66,6 +70,7 @@ export const SelectTokenDrawer: React.FC<SelectTokenDrawerProps> = ({ open, onCl
             onClose={onClose}
             PaperProps={{
                 sx: {
+                    maxHeight: "700px",
                     height: "calc(100vh - 80px)",
                     display: "flex",
                     flexDirection: "column",
@@ -93,7 +98,8 @@ export const SelectTokenDrawer: React.FC<SelectTokenDrawerProps> = ({ open, onCl
                         borderRadius: "0.75rem",
                         px: 1,
                     }}
-                >
+                >   
+                    <SearchIcon color="rgb(117, 127, 138)" />
                     <InputBase
                         value={search}
                         onChange={handleSearchChange}
@@ -179,7 +185,7 @@ export const SelectTokenDrawer: React.FC<SelectTokenDrawerProps> = ({ open, onCl
                         boxShadow: "none",
                         color: "#0C0C0D",
                         textTransform: "none",
-                        fontSize: 15,
+                        fontSize: 18,
                         "&:hover": {
                           backgroundColor: "rgba(77, 92, 107, 0.08)", // Keep the same color on hover to prevent highlight
                         },

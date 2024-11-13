@@ -29,5 +29,6 @@ export * from "./SwapToken";
 export * from "./FilterIcon";
 export * from "./WalletIcon";
 export * from "./ThinArrowIcon";
+export * from "./SearchIcon";
 // export * from "./SocialAvatar";
 // export * from "./InviteBonus";

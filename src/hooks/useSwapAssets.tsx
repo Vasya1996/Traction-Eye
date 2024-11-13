@@ -1,5 +1,5 @@
 import { useAssetList } from "@ston-fi/omniston-sdk-react";
-import { useQuery } from "@tanstack/react-query";
+import { RefetchOptions, useQuery } from "@tanstack/react-query";
 import { API } from "@/api/api";
 import { useTonAddress } from "@tonconnect/ui-react";
 import { convertToUserFriendlyAddress } from "@/utils/convertToUserFriendlyAddress";
@@ -18,14 +18,19 @@ export interface SwapAsset {
   decimals: number;
 }
 
-export const useSwapAssets = (): SwapAsset[] => {
+interface SwapAssetsResponse {
+  assets: SwapAsset[],
+  refetchBalances: (options?: RefetchOptions) => void;
+}
+
+export const useSwapAssets = (): SwapAssetsResponse => {
   // Get asset list from the hook
   const { data: assetList } = useAssetList();
 
   const userFriendlyAddress = useTonAddress();
 
   // Get additional data (similar to the screenshot format)
-  const { data: externalData } = useQuery({
+  const { data: externalData, refetch } = useQuery({
     queryKey: ["assets", userFriendlyAddress],
     queryFn: () => API.getAssetsByWallet(userFriendlyAddress),
     ...CACHE_OPTIONS_FAST
@@ -41,8 +46,6 @@ export const useSwapAssets = (): SwapAsset[] => {
     imageUrl: item.image_url,
   })),[externalData]);
 
-  // console.log('--assetList',assetList, '--formattedExternalData',formattedExternalData);
-
   // Merge data based on address
   const mergedAssetList = useMemo(() => assetList?.assets.map((asset) => {
 
@@ -55,7 +58,7 @@ export const useSwapAssets = (): SwapAsset[] => {
       return {
         ...asset,
         address: asset.address?.address,
-        amount: formatNumber(amount),
+        amount: amount,
         price: formatNumber(matchingExternalData.price * Number(amount), false),
       };
     }
@@ -67,5 +70,8 @@ export const useSwapAssets = (): SwapAsset[] => {
     };
   }), [assetList, formattedExternalData]);
 
-  return mergedAssetList ?? [];
+  return {
+    assets: mergedAssetList ?? [],
+    refetchBalances: refetch,
+  };
 };

@@ -17,7 +17,6 @@ export const ProtocolsList: FC = () => {
     const userFriendlyAddress = useTonAddress();
     const wallet = useTonWallet();
   
-    console.log('--wallet?.account.address',wallet?.account.address);
     const { data: dedustData } = useQuery({
         queryFn: () => API.getDedustInfo(userFriendlyAddress),
         queryKey: ["dedust", userFriendlyAddress],

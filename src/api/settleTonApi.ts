@@ -9,7 +9,7 @@ export const SETTLE_API = {
 				`${settleTonEndpoints.jettons}/${userRawAddress}/`,
 			);
 
-			if(response.data.error === "'No data'") {
+			if(response.data.error === "No data") {
 				return {
 					indexes: [],
 					vaults: [],
