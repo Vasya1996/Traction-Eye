@@ -6,7 +6,7 @@ import { convertToUserFriendlyAddress } from "@/utils/convertToUserFriendlyAddre
 import { useMemo } from "react";
 import { Asset } from "@/types";
 import { formatNumber } from "@/utils";
-import { CACHE_OPTIONS_FAST } from "@/constants";
+import { CACHE_OPTIONS_FAST, OMNISTON_ASSETS } from "@/constants";
 
 export interface SwapAsset {
   address: string;
@@ -26,6 +26,8 @@ interface SwapAssetsResponse {
 export const useSwapAssets = (): SwapAssetsResponse => {
   // Get asset list from the hook
   const { data: assetList } = useAssetList();
+
+  const omnistonAssets = useMemo(() => assetList && assetList?.assets && assetList.assets?.length > 0 ? assetList : OMNISTON_ASSETS, [assetList?.assets]);
 
   const userFriendlyAddress = useTonAddress();
 
@@ -47,7 +49,7 @@ export const useSwapAssets = (): SwapAssetsResponse => {
   })),[externalData]);
 
   // Merge data based on address
-  const mergedAssetList = useMemo(() => assetList?.assets.map((asset) => {
+  const mergedAssetList = useMemo(() => omnistonAssets?.assets.map((asset) => {
 
     const matchingExternalData = formattedExternalData?.find(
       (externalAsset) => externalAsset.address === asset.address?.address
@@ -68,7 +70,7 @@ export const useSwapAssets = (): SwapAssetsResponse => {
       ...asset,
       address: asset.address?.address
     };
-  }), [assetList, formattedExternalData]);
+  }), [omnistonAssets, formattedExternalData]);
 
   return {
     assets: mergedAssetList ?? [],

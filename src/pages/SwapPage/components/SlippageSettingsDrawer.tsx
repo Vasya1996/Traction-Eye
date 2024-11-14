@@ -4,7 +4,6 @@ import {
     Button,
     Typography,
     Drawer,
-    InputBase,
     ToggleButton,
     ToggleButtonGroup,
     IconButton,
@@ -20,6 +19,7 @@ interface SlippageSettingsDrawerProps {
 export const SlippageSettingsDrawer: React.FC<SlippageSettingsDrawerProps> = ({ open, onClose, onSave }) => {
     const [slippage, setSlippage] = useState<number>(5);
     const [customSlippage, setCustomSlippage] = useState<string>("");
+    const [isKeyboardOpen, setIsKeyboardOpen] = useState(false);
 
     const handleSlippageChange = (_event: React.MouseEvent<HTMLElement>, newSlippage: string | null) => {
         if (newSlippage !== null) {
@@ -35,6 +35,20 @@ export const SlippageSettingsDrawer: React.FC<SlippageSettingsDrawerProps> = ({ 
 
     const hasError = useMemo(() => (Number(customSlippage) > 50 || Number(customSlippage) < 0) && !!customSlippage, [customSlippage]);
 
+    const handleFocus = () => {
+        setIsKeyboardOpen(true);
+    }
+
+    const handleBlur = () => {
+        setIsKeyboardOpen(false);
+    }
+
+    const handleKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
+        if (event.key === 'Enter') {
+          (event.target as unknown as { blur: () => void; })?.blur(); // Hide the keyboard
+        }
+      };
+
     return (
         <Drawer
             anchor="bottom"
@@ -43,7 +57,7 @@ export const SlippageSettingsDrawer: React.FC<SlippageSettingsDrawerProps> = ({ 
             PaperProps={{
                 sx: {
                     height: "100%",
-                    maxHeight: "550px",
+                    maxHeight: isKeyboardOpen? "700px" : "550px",
                     borderTopLeftRadius: 24,
                     borderTopRightRadius: 24,
                     p: 4,
@@ -128,19 +142,26 @@ export const SlippageSettingsDrawer: React.FC<SlippageSettingsDrawerProps> = ({ 
                         py: 1,
                         mb: 1,
                         color: "#757E8A",
+                        height: "51px",
+                        maxHeight: "51px",
                     }}
                 >
-                    <InputBase
-                        fullWidth
+                    <input
+                        onFocus={handleFocus}
+                        onBlur={handleBlur}
+                        onKeyDown={handleKeyDown}
                         type="number"
                         value={customSlippage}
                         onChange={handleCustomSlippageChange}
                         placeholder="Custom %"
-                        sx={{
+                        style={{
+                            width: "100%",
+                            border: "none",
+                            outline: "none",
                             color: "inherit",
+                            fontSize: "inherit",
+                            backgroundColor: "transparent",
                         }}
-                        error={hasError}
-                        prefix="%"
                     />
                 </Box>
                 {hasError && <Typography sx={{color: "red", fontSize: 14}}>The maximum slippage tolerance cannot be more than 50%. The recommended range is 1%</Typography>}
@@ -151,7 +172,7 @@ export const SlippageSettingsDrawer: React.FC<SlippageSettingsDrawerProps> = ({ 
                 disabled={slippage === 0 && customSlippage === "" || hasError}
                 onClick={() => onSave(Number(slippage || customSlippage))}
                 sx={{
-                    bgcolor: "#F5B502",
+                    bgcolor: "#FACC15",
                     color: "black",
                     "&:hover": { bgcolor: "#F5B502" },
                     borderRadius: "12px",
