@@ -39,7 +39,6 @@ export const useQuote = ({
     let unsubscribe: Subscription;
     if(omniston && quoteRequest && sendToken && receiveToken) {
 
-      console.log('--quoteRequest',quoteRequest);
       const quoteObserver = omniston.requestForQuote(quoteRequest);
 
       unsubscribe = quoteObserver.subscribe(omnistonQuote => {

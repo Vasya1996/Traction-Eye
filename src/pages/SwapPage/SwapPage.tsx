@@ -1,15 +1,16 @@
 import { useState, useEffect, useMemo } from "react";
 import { Box, Button, Divider, IconButton, Typography, Paper, Avatar, TextField, Skeleton } from '@mui/material';
 import { Blockchain, SettlementMethod, useOmniston, useTrackTrade } from "@ston-fi/omniston-sdk-react";
-import { useTonAddress, useTonConnectUI} from "@tonconnect/ui-react";
+import { useTonAddress, useTonConnectUI, THEME} from "@tonconnect/ui-react";
 import { SwapToken, FilterIcon, WalletIcon, ThinArrowIcon } from '@/components/icons';
 import { SwapArrows } from '@/components/icons/SwapArrows';
 import { Colors } from '@/constants';
 import { SelectTokenDrawer, SlippageSettingsDrawer } from "./components";
-import { SwapAsset, useQuote, useSwapAssets } from "@/hooks";
+import { setLocalStorageWithEvent, SwapAsset, useLocalStorageSubscription, useQuote, useSwapAssets } from "@/hooks";
 import { formatNumber } from "@/utils";
 import { Spinner } from "@/components/ui/spinner";
 import toast from "react-hot-toast";
+import { LocalStorageKeys } from "@/constants/localStorage";
 
 const INIT_SWAP = {
   settlementMethods: [SettlementMethod.SETTLEMENT_METHOD_SWAP],
@@ -38,6 +39,7 @@ export const SwapPage = () => {
   const {assets: swapData, refetchBalances } = useSwapAssets();
   const userFriendlyAddress = useTonAddress();
   const [tonConnect] = useTonConnectUI();
+  const swapQuoteId = useLocalStorageSubscription(LocalStorageKeys.quoteId);
 
   const[sendToken, setSendToken] = useState<SwapAsset | null>(swapData[0]);
   const [sendTokenAmount, setSendTokenAmount] = useState("");
@@ -61,7 +63,7 @@ export const SwapPage = () => {
   const {
     data: status,
   } = useTrackTrade({
-      quoteId: omnistonQuote?.quoteId,
+      quoteId: swapQuoteId,
       traderWalletAddress: {
       blockchain: Blockchain.TON,
       address: userFriendlyAddress
@@ -69,15 +71,22 @@ export const SwapPage = () => {
   });
   const [isLoadingTransaction, SetIsLoadingTransaction] = useState(false);
 
+
+  useEffect(() => {
+    setLocalStorageWithEvent(LocalStorageKeys.scroll, "true");
+  },[])
+
   useEffect(() => {
     const result = status?.status?.tradeSettled?.result;
     if (result === TRADE_RESULT_FULLY_FILLED) {
       refetchBalances();
       SetIsLoadingTransaction(false);
+      setLocalStorageWithEvent(LocalStorageKeys.quoteId, "");
     } else if (result === TRADE_RESULT_ABORTED) {
       refetchBalances();
       SetIsLoadingTransaction(false);
       toast.error('Something went wrong!');
+      setLocalStorageWithEvent(LocalStorageKeys.quoteId, "");
     }
     
     
@@ -153,6 +162,8 @@ export const SwapPage = () => {
   const handleSwap = async () => {
     try {
       SetIsLoadingTransaction(true);
+      toast.success(`quota=${omnistonQuote?.quoteId}`);
+      setLocalStorageWithEvent(LocalStorageKeys.quoteId, String(omnistonQuote?.quoteId));
       const tx = await omniston.buildTransfer({
         quote: omnistonQuote,
         sourceAddress: {
@@ -168,6 +179,11 @@ export const SwapPage = () => {
       
       const messages = tx.transaction!.ton!.messages;
   
+      tonConnect.uiOptions = {
+        uiPreferences: {
+            theme: THEME.LIGHT
+        }
+      };
       await tonConnect.sendTransaction({
         validUntil: Date.now() + 1000000,
         messages: messages.map((message: Record<string, string>) => ({
@@ -179,23 +195,23 @@ export const SwapPage = () => {
     } catch (err) {
       toast.error('Something went wrong!');
       SetIsLoadingTransaction(false);
+      setLocalStorageWithEvent(LocalStorageKeys.quoteId, "");
     }
   }
 
   const canDoSwap = useMemo(() => Number(sendToken?.amount) >= Number(sendTokenAmount), [sendToken?.amount, sendTokenAmount]);
 
   return (
-    <>
       <Box className="flex flex-col items-center bg-gray-100 h-screen w-full">
-                  {/* Header */}
-            <Box className="flex w-full items-center justify-between px-4 mt-10 mb-2">
-                <Typography sx={{fontSize: 24, color: "#1F2937"}} className="font-semibold">
-                    Swap tokens
-                </Typography>
-                <IconButton onClick={handleSlippageDrawerOpen}>
-                    <FilterIcon />
-                </IconButton>
-            </Box>
+        {/* Header */}
+        <Box className="flex w-full items-center justify-between px-4 mt-10 mb-2">
+            <Typography sx={{fontSize: 24, color: "#1F2937"}} className="font-semibold">
+                Swap tokens
+            </Typography>
+            <IconButton onClick={handleSlippageDrawerOpen}>
+                <FilterIcon />
+            </IconButton>
+        </Box>
 
 
         <Box className="flex flex-1 flex-col justify-between w-full max-w-md rounded-lg" sx={{height: "calc(100% - 200px)"}}>
@@ -214,7 +230,7 @@ export const SwapPage = () => {
                   <Box className="text-right">
                   <Box className="flex items-center justify-end">
                     <WalletIcon/>
-                    <Typography sx={{marginLeft: 0.625, color: Colors.blue, fontWeight: 100}}> {sendToken?.amount ?? 0}</Typography>
+                    <Typography onClick={() => setSendTokenAmount(String(sendToken?.amount ?? 0))} sx={{marginLeft: 0.625, color: Colors.blue, fontWeight: 100}}> {sendToken?.amount ?? 0}</Typography>
                   </Box>
                   <TextField
                     value={sendTokenAmount}
@@ -283,7 +299,7 @@ export const SwapPage = () => {
             </Box>
             <Divider className="my-1 w-full" />
             {/* Rate Information */}
-            {quote && sendToken && receiveToken && (
+            {quote && sendToken && receiveToken ? (
               <Paper className="p-3 m-4" sx={{backgroundColor: "#D9D9D9", borderRadius: 5}}>
                 <Box className="flex justify-between mb-3">
                   <Typography variant="body1" color="#0E0E0E">Rate</Typography>
@@ -298,6 +314,8 @@ export const SwapPage = () => {
                   <Typography variant="body1" color="#0E0E0E">≤ {quote.gasFee / Math.pow(10, TON_DECIMALS)} TON</Typography>
                 </Box>
               </Paper>
+            ) : (
+              <Skeleton variant="rectangular" width="100%" height={119} />
             )}
           </Box>
 
@@ -316,9 +334,8 @@ export const SwapPage = () => {
             </Button>
           </Box>
         </Box>
-      </Box>
       <SelectTokenDrawer assets={swapData} open={drawerOpen} onClose={handleDrawerClose} filteredTokenAddress={isSendTokenMode ? receiveToken?.address : sendToken?.address} onSelect={isSendTokenMode ? onSelectSendToken : onSelectReceiveToken} />
       <SlippageSettingsDrawer open={slippageDrawerOpen} onClose={handleSlippageDrawerClose} onSave={handleSlippage} />
-    </>
+    </Box>
   );
 };
