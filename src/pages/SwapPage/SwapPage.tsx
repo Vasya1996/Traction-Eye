@@ -162,7 +162,6 @@ export const SwapPage = () => {
   const handleSwap = async () => {
     try {
       SetIsLoadingTransaction(true);
-      toast.success(`quota=${omnistonQuote?.quoteId}`);
       setLocalStorageWithEvent(LocalStorageKeys.quoteId, String(omnistonQuote?.quoteId));
       const tx = await omniston.buildTransfer({
         quote: omnistonQuote,
