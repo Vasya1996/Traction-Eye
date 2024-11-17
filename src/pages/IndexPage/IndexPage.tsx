@@ -25,7 +25,8 @@ export const IndexPage: FC = () => {
     const walletAddress = useTonAddress();
     const { initDataRaw, initData } = retrieveLaunchParams();
     
-    console.log(initData?.startParam)
+    console.log(initData?.startParam, "index")
+
     if (initData?.startParam && initData?.startParam?.split("__wallet=").length > 1) {
       navigate("/friend");
     }
@@ -96,7 +97,7 @@ export const IndexPage: FC = () => {
             <div style={{minHeight: "60vh", height: "100%"}} className="p-5 rounded-t-3xl bg-gray-50 pb-32">
                 <AssetList />
                 <NFTList />
-                <ProtocolsList />
+                {/* <ProtocolsList /> */}
             </div>
         </div>
     );

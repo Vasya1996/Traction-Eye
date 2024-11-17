@@ -30,4 +30,10 @@ export const settleTonEndpoints = {
   jettons: "/jettons"
 }
 
+export const stormTonEndpoints = {
+  positions: "/positions",
+  vaults: "/vaults"
+}
+
+
 export default endpoints;
