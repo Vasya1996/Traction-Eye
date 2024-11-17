@@ -7,8 +7,6 @@ import { useStore } from "@/store/store";
 const NFTListPage: FC = () => {
 	const nfts = useStore((state) => state.nfts);
 
-  console.log("nfts", nfts);
-
 	if (nfts.length === 0) {
 		return (
 			<div className="h-screen p-4 bg-gray-50 flex justify-center items-center">
