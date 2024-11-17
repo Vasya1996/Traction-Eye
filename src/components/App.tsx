@@ -115,7 +115,7 @@ export const App: FC = () => {
 	},[location?.pathname])
 
 	return (
-		<div className="max-h-screen" style={{overflow: isScrollBlocked ? "hidden" : "auto" }}>
+		<div className="max-h-screen" style={{ overflow: isScrollBlocked ? "hidden" : "auto"}}>
 			<TonConnectUIProvider>
 				<QueryClientProvider client={queryClient}>
 					<Toaster position="top-right" reverseOrder={false} />
