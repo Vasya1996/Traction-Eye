@@ -2,7 +2,7 @@ import { LocalStorageKeys } from '@/constants/localStorage';
 import axios from 'axios';
 
 const apiClient = axios.create({
-  baseURL: 'https://tractionyey2.tw1.ru',
+  baseURL: 'https://tractioneye.ru/backend_api/',
   headers: {
     'Content-Type': 'application/json',
   },
