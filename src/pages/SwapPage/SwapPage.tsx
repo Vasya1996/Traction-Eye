@@ -57,6 +57,7 @@ export const SwapPage = () => {
     quoteRequest,
     sendToken,
     receiveToken,
+    sendTokenAmount
   });
 
 
@@ -70,11 +71,6 @@ export const SwapPage = () => {
     },
   });
   const [isLoadingTransaction, SetIsLoadingTransaction] = useState(false);
-
-
-  useEffect(() => {
-    setLocalStorageWithEvent(LocalStorageKeys.scroll, "true");
-  },[])
 
   useEffect(() => {
     const result = status?.status?.tradeSettled?.result;

@@ -19,7 +19,6 @@ interface SlippageSettingsDrawerProps {
 export const SlippageSettingsDrawer: React.FC<SlippageSettingsDrawerProps> = ({ open, onClose, onSave }) => {
     const [slippage, setSlippage] = useState<number>(5);
     const [customSlippage, setCustomSlippage] = useState<string>("");
-    const [isKeyboardOpen, setIsKeyboardOpen] = useState(false);
 
     const handleSlippageChange = (_event: React.MouseEvent<HTMLElement>, newSlippage: string | null) => {
         if (newSlippage !== null) {
@@ -35,14 +34,6 @@ export const SlippageSettingsDrawer: React.FC<SlippageSettingsDrawerProps> = ({ 
 
     const hasError = useMemo(() => (Number(customSlippage) > 50 || Number(customSlippage) < 0) && !!customSlippage, [customSlippage]);
 
-    const handleFocus = () => {
-        setIsKeyboardOpen(true);
-    }
-
-    const handleBlur = () => {
-        setIsKeyboardOpen(false);
-    }
-
     const handleKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
         if (event.key === 'Enter') {
           (event.target as unknown as { blur: () => void; })?.blur(); // Hide the keyboard
@@ -56,8 +47,7 @@ export const SlippageSettingsDrawer: React.FC<SlippageSettingsDrawerProps> = ({ 
             onClose={onClose}
             PaperProps={{
                 sx: {
-                    height: "100%",
-                    maxHeight: isKeyboardOpen? "700px" : "550px",
+                    height: "700px",
                     borderTopLeftRadius: 24,
                     borderTopRightRadius: 24,
                     p: 4,
@@ -147,8 +137,6 @@ export const SlippageSettingsDrawer: React.FC<SlippageSettingsDrawerProps> = ({ 
                     }}
                 >
                     <input
-                        onFocus={handleFocus}
-                        onBlur={handleBlur}
                         onKeyDown={handleKeyDown}
                         type="number"
                         value={customSlippage}

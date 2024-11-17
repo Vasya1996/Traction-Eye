@@ -115,7 +115,7 @@ export const App: FC = () => {
 	},[location?.pathname])
 
 	return (
-		<div className="max-h-screen" style={{overflow: isScrollBlocked ? "hidden" : "auto" }}>
+		<div className="max-h-screen" style={{ overflow: isScrollBlocked ? "hidden" : "auto", backgroundColor: "red",color: 'red', paddingBottom: 90}}>
 			<TonConnectUIProvider>
 				<QueryClientProvider client={queryClient}>
 					<Toaster position="top-right" reverseOrder={false} />
@@ -126,7 +126,7 @@ export const App: FC = () => {
 							))}
 							<Route path="*" element={<Navigate to="/" />} />
 						</Routes>
-						{location?.pathname !== "/connect" && (
+						{/* {location?.pathname !== "/connect" && ( */}
 							<BottomNavigation
 								value={value}
 								onChange={handleNavigationChange}
@@ -137,7 +137,7 @@ export const App: FC = () => {
 								<BottomNavigationAction icon={<AssetsOff isActive={value === 0}/>} />
 								<BottomNavigationAction icon={<SocialCap isActive={value === 1}/>} />
 							</BottomNavigation>	
-						)}
+						{/* )} */}
 					</Router>
 				</QueryClientProvider>
 			</TonConnectUIProvider>

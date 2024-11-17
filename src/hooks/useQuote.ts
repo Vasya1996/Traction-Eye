@@ -17,6 +17,7 @@ interface QuoteProps {
     quoteRequest: QuoteRequest;
     sendToken: SwapAsset | null;
     receiveToken: SwapAsset | null;
+    sendTokenAmount: string;
 }
 
 type OmnistonQuote = Quote & Record<string, string>;
@@ -30,6 +31,7 @@ export const useQuote = ({
     quoteRequest,
     sendToken,
     receiveToken,
+    sendTokenAmount,
 }: QuoteProps): QuoteResponse => {
   const omniston = useOmniston();
   const [quote, setQuote] = useState<Quote | null>(null);
@@ -69,7 +71,7 @@ export const useQuote = ({
       unsubscribe && unsubscribe.unsubscribe();
     }
 
-  },[omniston, quoteRequest, sendToken, receiveToken])
+  },[omniston, quoteRequest, sendToken, receiveToken, sendTokenAmount])
 
   return {
     quote,
