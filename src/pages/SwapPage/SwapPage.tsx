@@ -251,7 +251,7 @@ export const SwapPage = () => {
                   </Box>
               </Box>
               ) : (
-                <Skeleton variant="rectangular" width="100%" height={119} />
+                <Skeleton animation="wave" variant="rectangular" width="100%" height={119} />
               )}
               <Divider className="my-1 w-full" />
               {/* Swap Icon */}
@@ -289,7 +289,7 @@ export const SwapPage = () => {
                   </Box>
                 </Box>
               ) : (
-                <Skeleton variant="rectangular" width="100%" height={119} />
+                <Skeleton animation="wave" variant="rectangular" width="100%" height={119} />
               )}
             </Box>
             <Divider className="my-1 w-full" />
@@ -310,7 +310,7 @@ export const SwapPage = () => {
                 </Box>
               </Paper>
             ) : (
-              <Skeleton variant="rectangular" width="100%" height={119} />
+              <Skeleton animation="wave" variant="rectangular" width="100%" height={119} />
             )}
           </Box>
 
