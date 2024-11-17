@@ -294,23 +294,27 @@ export const SwapPage = () => {
             </Box>
             <Divider className="my-1 w-full" />
             {/* Rate Information */}
-            {quote && sendToken && receiveToken ? (
-              <Paper className="p-3 m-4" sx={{backgroundColor: "#D9D9D9", borderRadius: 5}}>
-                <Box className="flex justify-between mb-3">
-                  <Typography variant="body1" color="#0E0E0E">Rate</Typography>
-                  <Typography variant="body1" color="#0E0E0E">1 {quote?.offerSymbol} ≈ {formatNumber(quote.conversionRate)} {quote.askSymbol}</Typography>
-                </Box>
-                <Box className="flex justify-between mb-3">
-                  <Typography variant="body1" color="#0E0E0E">Slippage</Typography>
-                  <Typography variant="body1" color="#0E0E0E">{slippage}%</Typography>
-                </Box>
-                <Box className="flex justify-between">
-                  <Typography variant="body1" color="#0E0E0E">Network fee</Typography>
-                  <Typography variant="body1" color="#0E0E0E">≤ {quote.gasFee / Math.pow(10, TON_DECIMALS)} TON</Typography>
-                </Box>
-              </Paper>
-            ) : (
-              <Skeleton animation="wave" variant="rectangular" width="100%" height={119} />
+            {(!quote && !sendTokenAmount) ? <></>: (
+              <>
+                {quote && sendToken && receiveToken ? (
+                  <Paper className="p-3 m-4" sx={{backgroundColor: "#D9D9D9", borderRadius: 5}}>
+                    <Box className="flex justify-between mb-3">
+                      <Typography variant="body1" color="#0E0E0E">Rate</Typography>
+                      <Typography variant="body1" color="#0E0E0E">1 {quote?.offerSymbol} ≈ {formatNumber(quote.conversionRate)} {quote.askSymbol}</Typography>
+                    </Box>
+                    <Box className="flex justify-between mb-3">
+                      <Typography variant="body1" color="#0E0E0E">Slippage</Typography>
+                      <Typography variant="body1" color="#0E0E0E">{slippage}%</Typography>
+                    </Box>
+                    <Box className="flex justify-between">
+                      <Typography variant="body1" color="#0E0E0E">Network fee</Typography>
+                      <Typography variant="body1" color="#0E0E0E">≤ {quote.gasFee / Math.pow(10, TON_DECIMALS)} TON</Typography>
+                    </Box>
+                  </Paper>
+                ) : (
+                  <Skeleton animation="wave" variant="rectangular" width="100%" height={119} />
+                )}
+              </>
             )}
           </Box>
 
