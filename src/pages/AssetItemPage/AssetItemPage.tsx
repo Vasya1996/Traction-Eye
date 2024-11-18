@@ -69,11 +69,6 @@ const AssetItemPage: FC = () => {
     }
 }, [timelineData?.interval, timelineData?.period, walletAddress, params.id]);
 
-  // const { data: jettonData } = useQuery({
-  //   queryKey: ['jettonData', params.id],
-  //   queryFn: () => API.getJettonInfo(walletAddress, params.id!),
-  // });
-
   const toggleTooltip = (key: string) => {
     postEvent('web_app_trigger_haptic_feedback', { type: 'impact', impact_style: 'light' });
 
