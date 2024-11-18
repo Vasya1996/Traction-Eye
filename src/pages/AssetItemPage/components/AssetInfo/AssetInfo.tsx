@@ -1,9 +1,7 @@
 import { MutableRefObject, useMemo, useEffect } from 'react';
 import { getDateAndTime, formatNumber, downgradeFontSize } from "@/utils";
-import { MdOutlineKeyboardArrowLeft, PiApproximateEqualsBold } from "@/components/icons";
-import { useNavigate } from "react-router-dom";
+import { PiApproximateEqualsBold } from "@/components/icons";
 import { useElementIntersection } from "@/hooks";
-import { Colors } from '@/constants';
 
 interface AssetInfoProps {
     icon: string;
@@ -24,7 +22,6 @@ export const AssetInfo = ({
     price,
     timestamp
 }: AssetInfoProps) => {
-    const navigate = useNavigate();
     const { element1Ref, element2Ref, fontSizeCounter, checkIntersection } = useElementIntersection();
     const { element1Ref: element3Ref, element2Ref: element4Ref, fontSizeCounter: bottomFontSizeCounter } = useElementIntersection();
 
@@ -36,10 +33,10 @@ export const AssetInfo = ({
 
     const pnl =  useMemo(() => {
         if(pnl_percentage === undefined || pnl_usd === undefined) {
-            return `0.00% $(0.00)`;
+            return `0.00% ($0.00)`;
         }
 
-        return `${pnl_percentage >= 0 ? "+" : ""}${formatNumber(pnl_percentage, false)}% $(${formatNumber(pnl_usd, false)})`;
+        return `${pnl_percentage >= 0 ? "+" : ""}${formatNumber(pnl_percentage, false)}% ($${formatNumber(pnl_usd, false)})`;
     },[pnl_percentage, pnl_usd])
 
     return (
@@ -47,17 +44,8 @@ export const AssetInfo = ({
             <div className="userdata">
                 <div className="flex items-center justify-start">
                     <div className="flex flex-shrink-0">
-                        <button
-                            className="flex items-center text-gray-500 rounded"
-                            onClick={() => {
-                                navigate(-1);
-                            }}
-                        >
-
-                            <MdOutlineKeyboardArrowLeft fill={Colors.zincLight} size={8} className="my-auto w-8 h-8" />
-                        </button>
                         <img
-                            className="h-13 w-13 mr-2 rounded-full"
+                            className="h-13 w-13 mr-2 ml-2 rounded-full"
                             src={icon}
                             alt={name}
                         />

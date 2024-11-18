@@ -16,7 +16,7 @@ const NFTListPage: FC = () => {
 	}
 
 	return (
-		<div className="p-4 bg-gray-50 flex flex-col items-center">
+		<div className="p-4 pb-[108px] bg-gray-50 flex flex-col items-center">
 			<div className="flex justify-start mb-5 w-full">
 				<span className="font-semibold flex items-center text-center text-lg">
 					The Open Network
