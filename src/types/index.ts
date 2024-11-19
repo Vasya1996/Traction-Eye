@@ -7,9 +7,9 @@ export * from "./user"
 export interface Asset {
 	image_url: string;
 	name: string;
-  	address: string,
+	address: string,
 	amount: number;
-  	decimals: number;
+	decimals: number;
 	price_usd: number;
 	symbol: string;
 }

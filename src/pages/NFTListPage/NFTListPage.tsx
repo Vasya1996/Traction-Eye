@@ -1,4 +1,4 @@
-import { FC } from "react";
+import { FC, useEffect } from "react";
 import { Link } from "react-router-dom";
 import TONLogo from "./ton_symbol.svg";
 import { NFT } from "@/types/index";
@@ -6,6 +6,13 @@ import { useStore } from "@/store/store";
 
 const NFTListPage: FC = () => {
 	const nfts = useStore((state) => state.nfts);
+
+	useEffect(() => {
+		const scrollContainer = document.querySelector('.max-h-screen');
+		if (scrollContainer) {
+			scrollContainer.scrollTo(0, 0);
+		}
+	}, []);
 
 	if (nfts.length === 0) {
 		return (
