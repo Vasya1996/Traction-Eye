@@ -81,13 +81,13 @@ export const IndexPage: FC = () => {
                         Get Premium
                     </Link> */}
                 </div>
-                <div className="mt-auto mb-4">
+                <div style={{ touchAction: "none" }} className="mt-auto">
                     <ChartHome timeline={selectedTimeline}/>
                     <TimelineToolbar onTimelineSelect={handleTimelineSelect}/>
                 </div>
             </div>
 
-            <div style={{minHeight: "60vh", height: "100%"}} className="p-5 rounded-t-3xl bg-gray-50 pb-32">
+            <div style={{ minHeight: "60vh", height: "100%" }} className="p-5 rounded-t-3xl bg-gray-50 pb-32">
                 <AssetList />
                 <NFTList />
                 <ProtocolsList />
