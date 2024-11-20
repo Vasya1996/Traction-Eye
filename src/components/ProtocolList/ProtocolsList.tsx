@@ -1,7 +1,6 @@
 import { FC, Fragment, useEffect, useMemo, useState } from "react";
 import { LiquidityPoolCard } from "./components";
 import { IoMdGitNetwork } from "@/components/icons";
-// import { MdOutlineKeyboardArrowRight } from "@/components/icons";
 import STONLogo from "@/pages/IndexPage/stonfilogo.jpg";
 import dedustLogo from "@/pages/IndexPage/dedustlogo.png";
 import stormTradeLogo from "@/pages/IndexPage/stormTradeLogo.png";
