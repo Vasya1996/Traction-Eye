@@ -13,10 +13,27 @@ import { ChartHome } from "@/components/ChartHome";
 import { TimelineToolbar } from "@/components/TImelineToolbar";
 import { Colors, TimelineKeys, TIMELINES_INTERVALS_SECONDS } from "@/constants";
 
+export const shortenWallet = (wallet: string, startLength: number = 4, endLength: number = 4): string => {
+  const start = wallet.substring(0, startLength);
+  const end = wallet.substring(wallet.length - endLength);
+  return `${start}...${end}`;
+};
+
+
 export const IndexPage: FC = () => {
     const navigate = useNavigate();
     const walletAddress = useTonAddress();
-    const { initDataRaw } = retrieveLaunchParams();
+    const { initDataRaw, initData } = retrieveLaunchParams();
+
+    useEffect(() => {
+      if (initData?.startParam && initData?.startParam?.split("__wallet=").length > 1) {
+        navigate("/friend");
+      }
+        if (walletAddress) return;
+        setTimeout(() => {
+            navigate("/connect");
+        }, 300);
+    }, [walletAddress]);
 
     const { data } = useQuery({
         queryKey: ["login"],
@@ -37,19 +54,6 @@ export const IndexPage: FC = () => {
     //         impact_style: "medium",
     //     });
     // };
-
-    useEffect(() => {
-        if (walletAddress) return;
-        setTimeout(() => {
-            navigate("/connect");
-        }, 300);
-    }, [walletAddress]);
-
-    const shortenWallet = (wallet: string, startLength: number = 4, endLength: number = 4): string => {
-        const start = wallet.substring(0, startLength);
-        const end = wallet.substring(wallet.length - endLength);
-        return `${start}...${end}`;
-    };
 
     // State for selected timeline
     const [selectedTimeline, setSelectedTimeline] = useState<keyof typeof TIMELINES_INTERVALS_SECONDS>(TimelineKeys.Month);
