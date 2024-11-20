@@ -1,4 +1,4 @@
-import { FC, useEffect, useState } from "react";
+import { FC, Fragment, useEffect, useMemo, useState } from "react";
 import { LiquidityPoolCard } from "./components";
 import { IoMdGitNetwork } from "@/components/icons";
 // import { MdOutlineKeyboardArrowRight } from "@/components/icons";
@@ -12,7 +12,7 @@ import { useTonAddress } from "@tonconnect/ui-react";
 import { CACHE_OPTIONS, ProtocolNames } from "@/constants";
 import { SETTLE_API } from "@/api/settleTonApi";
 
-import { v4 as uuidv4 } from 'uuid';
+import { v4 as uuidv4 } from "uuid";
 import { PoolsData } from "@/types/pools";
 import { calculatePoolSum } from "@/utils";
 import { Address } from "ton";
@@ -24,133 +24,163 @@ interface ProtocolsListProps {
 	friendWalletAdress?: string; //ref adress
 }
 
-
 export const ProtocolsList: FC<ProtocolsListProps> = ({
 	friendWalletAdress,
 }) => {
-    const userFriendlyAddress = useTonAddress();
-    const wallet =useTonWallet();
+	const userFriendlyAddress = useTonAddress();
 
-	  const [rawAdress, setRawAdress] = useState("");
+	const [rawAdress, setRawAdress] = useState("");
 
-	  const targetAddress = friendWalletAdress || userFriendlyAddress;
+	const targetAddress = friendWalletAdress || userFriendlyAddress;
 
-	  useEffect(() => {
-		  if (targetAddress.length) {
-			  setRawAdress(Address.parse(targetAddress).hash.toString("hex"));
-		  }
-	  }, [targetAddress]);
+	useEffect(() => {
+		if (targetAddress.length) {
+			setRawAdress(Address.parse(targetAddress).hash.toString("hex"));
+		}
+	}, [targetAddress]);
 
-  
-    const { data: dedustData } = useQuery({
-        queryFn: () => API.getDedustInfo(targetAddress),
-        queryKey: ["dedust", targetAddress],
-        enabled: !!targetAddress,
-        ...CACHE_OPTIONS
-    });
+	const { data: dedustData } = useQuery({
+		queryFn: () => API.getDedustInfo(targetAddress),
+		queryKey: ["dedust", targetAddress],
+		enabled: !!targetAddress,
+		...CACHE_OPTIONS,
+	});
 
-    const { data: stonFiData } = useQuery({
-        queryFn: () => API.getStonfiInfo(targetAddress),
-        queryKey: ["stonfi", targetAddress],
-        enabled: !!targetAddress,
-        ...CACHE_OPTIONS
-    });
+	const { data: stonFiData } = useQuery({
+		queryFn: () => API.getStonfiInfo(targetAddress),
+		queryKey: ["stonfi", targetAddress],
+		enabled: !!targetAddress,
+		...CACHE_OPTIONS,
+	});
 
-    const { data: settleTonData } = useQuery({
-        queryFn: () => SETTLE_API.getSettleTonJettons(targetAddress),
-        queryKey: ["settleTon",targetAddress],
-        enabled: !!targetAddress,
-        ...CACHE_OPTIONS
-    });
+	const { data: settleTonData } = useQuery({
+		queryFn: () => SETTLE_API.getSettleTonJettons(targetAddress),
+		queryKey: ["settleTon", targetAddress],
+		enabled: !!targetAddress,
+		...CACHE_OPTIONS,
+	});
 
-    const { data: stormPositionsData } = useQuery({
-		  queryFn: () => STORM_API.getStormPositions(`0:${rawAdress}`),
-		  queryKey: ["stormTonPositions", rawAdress],
-		  enabled: !!rawAdress,
-		  ...CACHE_OPTIONS,
-	  });
-  
-    const { data: stormVautsData } = useQuery({
-		   queryFn: () => STORM_API.getStormVaults(`0:${rawAdress}`),
-		   queryKey: ["stormTonVaults", rawAdress],
-		   enabled: !!rawAdress,
-		   ...CACHE_OPTIONS,
-	  });
-    
+	const { data: stormPositionsData } = useQuery({
+		queryFn: () => STORM_API.getStormPositions(`0:${rawAdress}`),
+		queryKey: ["stormTonPositions", rawAdress],
+		enabled: !!rawAdress,
+		...CACHE_OPTIONS,
+	});
 
-    const poolsData: PoolsData = useMemo(() => {
-        const stonFiPool = {
-            id: uuidv4(),
-            poolName: ProtocolNames.StonFi,
-            icon: STONLogo,
-            poolData: stonFiData ?? [],
-            indexes: [],
-            vaults: [],
-            sum: calculatePoolSum(stonFiData ?? [])
-        }
+	const { data: stormVautsData } = useQuery({
+		queryFn: () => STORM_API.getStormVaults(`0:${rawAdress}`),
+		queryKey: ["stormTonVaults", rawAdress],
+		enabled: !!rawAdress,
+		...CACHE_OPTIONS,
+	});
 
-        const dedustPool = {
-            id: uuidv4(),
-            poolName: ProtocolNames.DeDust,
-            icon: dedustLogo,
-            poolData: dedustData ?? [],
-            indexes: [],
-            vaults: [],
-            sum: calculatePoolSum(dedustData ?? [])
-        }
+	const poolsData: PoolsData = useMemo(() => {
+		const stonFiPool = {
+			id: uuidv4(),
+			poolName: ProtocolNames.StonFi,
+			icon: STONLogo,
+			poolData: stonFiData ?? [],
+			indexes: [],
+			vaults: [],
+			sum: calculatePoolSum(stonFiData ?? []),
+		};
 
-        const settleTonDataMerged = [...(settleTonData?.vaults ?? []), ...(settleTonData?.indexes ?? [])];
-        const settleTonPool = {
-            id: uuidv4(),
-            poolName: ProtocolNames.SettleTON,
-            icon: SettleTonLogo,
-            poolData: [],
-            indexes: settleTonData?.indexes ?? [],
-            vaults: settleTonData?.vaults ?? [],
-            sum: calculatePoolSum(settleTonDataMerged)
-        }
+		const dedustPool = {
+			id: uuidv4(),
+			poolName: ProtocolNames.DeDust,
+			icon: dedustLogo,
+			poolData: dedustData ?? [],
+			indexes: [],
+			vaults: [],
+			sum: calculatePoolSum(dedustData ?? []),
+		};
 
-        return [stonFiPool, dedustPool, settleTonPool].sort((a, b) => b.sum - a.sum);
-    },[stonFiData, dedustData, settleTonData?.vaults, settleTonData?.indexes])
-    
+		const settleTonDataMerged = [
+			...(settleTonData?.vaults ?? []),
+			...(settleTonData?.indexes ?? []),
+		];
+		const settleTonPool = {
+			id: uuidv4(),
+			poolName: ProtocolNames.SettleTON,
+			icon: SettleTonLogo,
+			poolData: [],
+			indexes: settleTonData?.indexes ?? [],
+			vaults: settleTonData?.vaults ?? [],
+			sum: calculatePoolSum(settleTonDataMerged),
+		};
 
-    return (
-        <div className="tools mt-7">
-            <p className="font-semibold flex items-center text-xl mb-6">
-                <IoMdGitNetwork className="mr-2" /> Protocols
-            </p>
+		return [stonFiPool, dedustPool, settleTonPool].sort(
+			(a, b) => b.sum - a.sum
+		);
+	}, [stonFiData, dedustData, settleTonData?.vaults, settleTonData?.indexes]);
 
-            <ul>
-                {(poolsData ?? []).map(({id, poolName, icon, poolData, indexes = [], vaults = []}, index) => {
-                    const hasMargin = (index !== 0 || index !== poolsData.length - 1);
-                    if(poolName === ProtocolNames.SettleTON) {
-                        return (
-                            <Fragment key={id}>
-                                <li className={(hasMargin && indexes?.length > 0) ? "mt-10" : ""}><LiquidityPoolCard poolName={poolName} icon={icon} poolData={vaults} /></li>
-                                <li className={(hasMargin && indexes?.length === 0) ? "mt-10" : ""}><LiquidityPoolCard poolName={ProtocolNames.SettleTON} icon={icon} hasIcon={vaults?.length > 0 ? false : true} poolData={indexes} /></li>
-                            </Fragment>
-                        )
-                    }
+	return (
+		<div className="tools mt-7">
+			<p className="font-semibold flex items-center text-xl mb-6">
+				<IoMdGitNetwork className="mr-2" /> Protocols
+			</p>
 
-                    return (
-                        <li key={id} className={hasMargin ? "mt-10" : ""}><LiquidityPoolCard poolName={poolName} icon={icon} poolData={poolData ?? []} /></li>
-                    )
-                })}
-              <li className="mt-10">
-					      <StormPoolCard
-						      poolName={ProtocolNames.StormTrade}
-						      icon={stormTradeLogo}
-						      poolData={stormPositionsData?.data ?? []}
-					      />
-				      </li>
-              <li className="mt-10">
-					    <StormVaultCard
-						      poolName={ProtocolNames.StormTrade}
-						      icon={stormTradeLogo}
-						      poolData={stormVautsData?.data ?? []}
-					    />
+			<ul>
+				{(poolsData ?? []).map(
+					(
+						{ id, poolName, icon, poolData, indexes = [], vaults = [] },
+						index
+					) => {
+						const hasMargin = index !== 0 || index !== poolsData.length - 1;
+						if (poolName === ProtocolNames.SettleTON) {
+							return (
+								<Fragment key={id}>
+									<li
+										className={hasMargin && indexes?.length > 0 ? "mt-10" : ""}
+									>
+										<LiquidityPoolCard
+											poolName={poolName}
+											icon={icon}
+											poolData={vaults}
+										/>
+									</li>
+									<li
+										className={
+											hasMargin && indexes?.length === 0 ? "mt-10" : ""
+										}
+									>
+										<LiquidityPoolCard
+											poolName={ProtocolNames.SettleTON}
+											icon={icon}
+											hasIcon={vaults?.length > 0 ? false : true}
+											poolData={indexes}
+										/>
+									</li>
+								</Fragment>
+							);
+						}
+
+						return (
+							<li key={id} className={hasMargin ? "mt-10" : ""}>
+								<LiquidityPoolCard
+									poolName={poolName}
+									icon={icon}
+									poolData={poolData ?? []}
+								/>
+							</li>
+						);
+					}
+				)}
+				<li className="mt-10">
+					<StormPoolCard
+						poolName={ProtocolNames.StormTrade}
+						icon={stormTradeLogo}
+						poolData={stormPositionsData?.data ?? []}
+					/>
 				</li>
-            </ul>
-        </div>
-    )
+				<li className="mt-10">
+					<StormVaultCard
+						poolName={ProtocolNames.StormTrade}
+						icon={stormTradeLogo}
+						poolData={stormVautsData?.data ?? []}
+					/>
+				</li>
+			</ul>
+		</div>
+	);
 };
