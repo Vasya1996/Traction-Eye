@@ -1,56 +1,101 @@
-import { formatNumber, getAPYLabel } from "@/utils";
-import { TokenList } from "./TokenList";
+import { formatNumber } from "@/utils";
 import { PoolHeader } from "./PoolHeader";
 import { ProtocolNames } from "@/constants";
 import { FC, ReactElement } from "react";
+import { PositionData } from "@/api/stormApi";
 
 interface LiquidityPoolCardProps {
-  poolName: ProtocolNames;
-  poolData: Array<PoolData>;
-  icon: string | ReactElement;
-  hasIcon?: boolean;
+	poolName: ProtocolNames;
+	poolData: Array<PositionData> | [];
+	icon: string | ReactElement;
+	hasIcon?: boolean;
 }
 
-export const StormPoolCard: FC<LiquidityPoolCardProps> = ({ poolName, poolData, icon, hasIcon = true }) => {
-  if (!poolData?.length) {
-    return null;
-  }
+export const StormPoolCard: FC<LiquidityPoolCardProps> = ({
+	poolName,
+	poolData,
+	icon,
+	hasIcon = true,
+}) => {
+	if (!poolData?.length) {
+		return null;
+	}
 
-  return (
-    <>
-      {
-        poolData?.map((pool, index) => (
-          <div key={index}>
-            <div className="flex justify-between items-center my-4">
-              <div className="flex w-full items-center justify-between">
-                <div className="flex items-center min-h-8">
-                  {(index === 0 && hasIcon) && (
-                    <PoolHeader icon={icon} poolName={poolName} />
-                  )}
-                </div>
-                {pool.totalApy && <p className="text-gray-400 font-medium text-lg">{getAPYLabel(pool.type)} {pool.totalApy}%</p>}
-              </div>
-            </div>
-            <div className="p-4 bg-white rounded-2xl shadow-md">
-              <div className="mb-2">
-                <div className="flex justify-between items-center">
-                  <p className="text-blue-500 bg-blue-100 rounded-full px-4 py-1 h-8">
-                    {pool.type}
-                  </p>
-                  <p className="text-xl font-bold mt-2">
-                    ${formatNumber(parseFloat(pool.usd_sum), false)}
-                  </p>
-                </div>
-                <TokenList title="Supplied" tokens={pool.supplied} />
-                <TokenList title="Borrowed" tokens={pool.borrowed} />
-                <TokenList title="Rewarded" tokens={pool.rewards} />
-                <TokenList title="Supplied" tokens={pool.vaults} />
-                <TokenList title="Supplied" tokens={pool.indexes} />
-              </div>
-            </div>
-          </div>
-        ))
-      }
-    </>
-  );
+	console.log("pool data", poolData);
+
+	return (
+		<>
+			{poolData?.map((pool, index) => (
+				<div key={index}>
+					<div className="flex justify-between items-center my-2">
+						<div className="flex w-full items-center justify-between">
+							<div className="flex items-center min-h-8">
+								{index === 0 && hasIcon && (
+									<PoolHeader icon={icon} poolName={poolName} />
+								)}
+							</div>
+						</div>
+					</div>
+					<div className="p-4 bg-white rounded-2xl shadow-md">
+						<div className="mb-2">
+							<div className="flex justify-between items-center">
+								<p className="text-blue-500 bg-blue-100 rounded-full px-4 py-1 h-8">
+									{pool.direction}
+								</p>
+								<p className="text-xl font-bold mt-2">
+									${formatNumber(pool.total_balance_usd, false)}
+								</p>
+							</div>
+							<div>
+								<div className="flex justify-between items-center">
+									<div className="flex items-center">
+										<div className="flex">
+											<img src={pool.icon[0]} className="w-6 h-6" />
+											<img src={pool.icon[1]} className="-ml-2 w-6 h-6" />
+										</div>
+										<p className="ml-1 opacity-80 py-4">{pool.name}</p>
+									</div>
+									<p className="py-2 px-1 text-right text-xs font-medium text-black uppercase tracking-wider whitespace-nowrap">
+										{formatNumber(pool.pnl)}
+									</p>
+								</div>
+								<div className="flex w-full justify-between text-sm">
+									<div className="flex flex-col">
+										<p className="py-2 px-1 text-sm font-medium text-gray-400 uppercase tracking-wider whitespace-nowrap">
+											Asset/Amount
+										</p>
+										<div className="flex justify-center">
+											<div className="w-6 h-6 rounded-full bg-black"></div>
+											<div className="flex flex-col">
+												<p className="py-2 px-1 text-sm font-medium text-black uppercase tracking-wider whitespace-nowrap">
+													{formatNumber(pool.total_balance_token, true)}
+												</p>
+												<p>{pool.name.split("/")[0] || pool.name}</p>
+											</div>
+										</div>
+									</div>
+									<div className="flex flex-col">
+										<p className="py-2 px-1 text-sm font-medium text-gray-400 uppercase tracking-wider whitespace-nowrap">
+											Entry Price
+										</p>
+										<p className="py-2 px-1 text-xs text-right text-black font-medium uppercase tracking-wider whitespace-nowrap">
+											{formatNumber(pool.entry_price)}
+										</p>
+									</div>
+									<div className="flex flex-col">
+										<p className="py-2 px-1 text-sm font-medium uppercase text-gray-400 tracking-wider text-right whitespace-nowrap">
+											PNL
+										</p>
+										<p className="py-2 px-1 text-right text-xs font-medium text-black uppercase tracking-wider whitespace-nowrap">
+											{formatNumber(pool.pnl)}
+										</p>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			))}
+		</>
+	);
 };

@@ -15,6 +15,7 @@ import { SETTLE_API } from "@/api/settleTonApi";
 import { Address } from "ton";
 import { STORM_API } from "@/api/stormApi";
 import { StormPoolCard } from "./components/StormTradeCard";
+import { StormVaultCard } from "./components/StormVaultCard";
 
 // import { Link } from "react-router-dom";
 // import { postEvent } from "@telegram-apps/sdk";
@@ -59,14 +60,19 @@ export const ProtocolsList: FC<ProtocolsListProps> = ({
 		...CACHE_OPTIONS,
 	});
 
-	const { data: stormData } = useQuery({
+	const { data: stormPositionsData } = useQuery({
 		queryFn: () => STORM_API.getStormPositions(`0:${rawAdress}`),
-		queryKey: ["stormTon", rawAdress],
+		queryKey: ["stormTonPositions", rawAdress],
 		enabled: !!rawAdress,
 		...CACHE_OPTIONS,
 	});
 
-	console.log("stormdata:", stormData);
+  const { data: stormVautsData } = useQuery({
+		queryFn: () => STORM_API.getStormVaults(`0:${rawAdress}`),
+		queryKey: ["stormTonVaults", rawAdress],
+		enabled: !!rawAdress,
+		...CACHE_OPTIONS,
+	});
 
 	return (
 		<div className="tools mt-7">
@@ -108,7 +114,14 @@ export const ProtocolsList: FC<ProtocolsListProps> = ({
 					<StormPoolCard
 						poolName={ProtocolNames.StormTrade}
 						icon={stormTradeLogo}
-						poolData={dedustData ?? []}
+						poolData={stormPositionsData?.data ?? []}
+					/>
+				</li>
+        <li className="mt-10">
+					<StormVaultCard
+						poolName={ProtocolNames.StormTrade}
+						icon={stormTradeLogo}
+						poolData={stormVautsData?.data ?? []}
 					/>
 				</li>
 			</ul>
