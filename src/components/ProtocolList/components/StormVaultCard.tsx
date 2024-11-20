@@ -61,7 +61,7 @@ export const StormVaultCard: FC<LiquidityPoolCardProps> = ({ poolData }) => {
 											</p>
 										</div>
 										<div className="flex flex-col">
-											<p className="py-2 px-1 text-sm font-medium text-gray-400 uppercase tracking-wider whitespace-nowrap">
+											<p className="py-2 px-1 text-sm font-medium text-gray-400 uppercase tracking-wider whitespace-nowrap text-right">
 												USD Value
 											</p>
 											<p className="py-2 px-1 text-right text-xs text-black uppercase tracking-wider whitespace-nowrap">
@@ -90,7 +90,7 @@ export const StormVaultCard: FC<LiquidityPoolCardProps> = ({ poolData }) => {
 											</p>
 										</div>
 										<div className="flex flex-col">
-											<p className="py-2 px-1 text-sm font-medium text-gray-400 uppercase tracking-wider whitespace-nowrap">
+											<p className="py-2 px-1 text-sm font-medium text-gray-400 uppercase tracking-wider whitespace-nowrap text-right">
 												USD Value
 											</p>
 											<p className="py-2 px-1 text-right text-xs text-black uppercase tracking-wider whitespace-nowrap">

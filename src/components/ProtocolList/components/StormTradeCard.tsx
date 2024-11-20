@@ -40,9 +40,14 @@ export const StormPoolCard: FC<LiquidityPoolCardProps> = ({
 					<div className="p-4 bg-white rounded-2xl shadow-md">
 						<div className="mb-2">
 							<div className="flex justify-between items-center">
-									<p className="text-blue-500 bg-blue-100 rounded-full px-2 py-1 h-8 flex items-center gap-x-2">
-                  {pool.direction === "LONG" ? <MoveUpRight className="text-green-400 h-5 w-5" /> : <MoveDownRight className="text-red-400 h-5 w-5"/>}<span>{pool.direction} </span>
-									</p>
+								<p className="text-blue-500 bg-blue-100 rounded-full px-2 py-1 h-8 flex items-center gap-x-2">
+									{pool.direction === "LONG" ? (
+										<MoveUpRight className="text-green-400 h-5 w-5" />
+									) : (
+										<MoveDownRight className="text-red-400 h-5 w-5" />
+									)}
+									<span>{pool.direction} </span>
+								</p>
 								<p className="text-xl font-bold mt-2">
 									${formatNumber(pool.total_balance_usd, false)}
 								</p>
@@ -100,7 +105,7 @@ export const StormPoolCard: FC<LiquidityPoolCardProps> = ({
 											Est.Liq.Price
 										</p>
 										<p className="py-2 px-1 text-right text-xs text-black uppercase tracking-wider whitespace-nowrap">
-											{formatNumber(pool.elp, true)}
+											{formatNumber(pool.elp, false, 6)}
 										</p>
 									</div>
 								</div>

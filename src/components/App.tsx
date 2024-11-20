@@ -133,7 +133,7 @@ export const App: FC = () => {
 								onChange={handleNavigationChange}
 								showLabels
 								className="fixed bottom-0 w-full z-50 pb-safe"
-								style={{ height: 90}}
+								style={{ height: location?.pathname === "/friend" ? 0 : 90}}
 							>
 								<BottomNavigationAction icon={<AssetsOff isActive={value === 0}/>} />
 								<BottomNavigationAction icon={<SocialCap isActive={value === 1}/>} />
