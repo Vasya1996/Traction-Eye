@@ -40,55 +40,61 @@ export const StormVaultCard: FC<LiquidityPoolCardProps> = ({ poolData }) => {
 								{/* <div className="grid grid-cols-3 text-gray-500 text-sm">
 								 */}
 								<div className="flex w-full justify-between text-sm flex-col">
-									<div className="flex w-full justify-between">
+									<div className="grid grid-cols-3 w-full">
 										<div className="flex flex-col">
 											<p className="py-2 px-1 text-sm font-medium text-gray-400 uppercase tracking-wider whitespace-nowrap">
 												Supplied
 											</p>
-											<p className="py-2 px-1 text-xs font-medium text-black uppercase tracking-wider whitespace-nowrap">
-												{pool.name}
-											</p>
+											<div className="flex items-center">
+												<img src={pool.icon} className="w-6 h-6" alt="" />
+												<p className="py-2 px-1 text-xs text-black uppercase tracking-wider whitespace-nowrap">
+													{pool.name}
+												</p>
+											</div>
 										</div>
 										<div className="flex flex-col">
 											<p className="py-2 px-1 text-sm font-medium text-gray-400 uppercase tracking-wider whitespace-nowrap">
 												Amount
 											</p>
-											<p className="py-2 px-1 text-xs font-medium text-black uppercase tracking-wider whitespace-nowrap">
-												{pool.lp_balance}
+											<p className="py-2 px-1 text-xs text-black uppercase tracking-wider whitespace-nowrap">
+												{formatNumber(pool.lp_balance, true)}
 											</p>
 										</div>
 										<div className="flex flex-col">
 											<p className="py-2 px-1 text-sm font-medium text-gray-400 uppercase tracking-wider whitespace-nowrap">
 												USD Value
 											</p>
-											<p className="py-2 px-1 text-right text-xs font-medium text-black uppercase tracking-wider whitespace-nowrap">
-												${formatNumber(pool.price, false)}
+											<p className="py-2 px-1 text-right text-xs text-black uppercase tracking-wider whitespace-nowrap">
+												{formatNumber(pool.price, false)}
 											</p>
 										</div>
 									</div>
-									<div className="flex w-full justify-between">
+									<div className="grid grid-cols-3 w-full">
 										<div className="flex flex-col">
 											<p className="py-2 px-1 text-sm font-medium text-gray-400 uppercase tracking-wider whitespace-nowrap">
 												Rewarded
 											</p>
-											<p className="py-2 px-1 text-xs font-medium text-black uppercase tracking-wider whitespace-nowrap">
-												{pool.name}
-											</p>
+											<div className="flex items-center">
+												<img src={pool.icon} className="w-6 h-6" alt="" />
+												<p className="py-2 px-1 text-xs text-black uppercase tracking-wider whitespace-nowrap">
+													{pool.name}
+												</p>
+											</div>
 										</div>
 										<div className="flex flex-col">
 											<p className="py-2 px-1 text-sm font-medium text-gray-400 uppercase tracking-wider whitespace-nowrap">
 												Amount
 											</p>
-											<p className="py-2 px-1 text-xs font-medium text-black uppercase tracking-wider whitespace-nowrap">
-												{pool.rewards_token}
+											<p className="py-2 px-1 text-xs text-black uppercase tracking-wider whitespace-nowrap">
+												{formatNumber(pool.rewards_token, true)}
 											</p>
 										</div>
 										<div className="flex flex-col">
 											<p className="py-2 px-1 text-sm font-medium text-gray-400 uppercase tracking-wider whitespace-nowrap">
 												USD Value
 											</p>
-											<p className="py-2 px-1 text-right text-xs font-medium text-black uppercase tracking-wider whitespace-nowrap">
-												${formatNumber(pool.rewards_usd, false)}
+											<p className="py-2 px-1 text-right text-xs text-black uppercase tracking-wider whitespace-nowrap">
+												{formatNumber(pool.rewards_usd, false)}
 											</p>
 										</div>
 									</div>

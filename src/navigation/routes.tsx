@@ -1,7 +1,7 @@
 import type { ComponentType, JSX } from "react";
 
 import IndexPage from "../pages/IndexPage/IndexPage";
-// import { ConnectPage } from "../pages/ConnectPage/ConnectPage";
+import { ConnectPage } from "../pages/ConnectPage/ConnectPage";
 import ProfilesListPage from "../pages/ProfilesListPage/ProfilesListPage";
 import NFTListPage  from "../pages/NFTListPage/NFTListPage";
 import NFTItemPage from '../pages/NFTItemPage/NFTItemPage';
