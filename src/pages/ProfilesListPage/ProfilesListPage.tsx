@@ -1,6 +1,6 @@
 import { FC, useState, useEffect } from 'react';
 import { ProfileItem } from '@/components/ProfileItem';
-import AddWallet from "@/pages/ProfilesListPage/AddWallet.svg";
+// import AddWallet from "@/pages/ProfilesListPage/AddWallet.svg";
 import { RxExit } from "@/components/icons";
 import { useNavigate } from 'react-router-dom';
 import { postEvent } from '@telegram-apps/sdk';
@@ -100,10 +100,10 @@ const ProfilesListPage: FC = () => {
             ))}
           </ul>
           <div className="buttons flex mx-auto mt-10 flex-col gap-4 w-4/5">
-            <button onClick={() => handleClick('premium')} className='flex bg-yellow-400 p-3 items-center justify-center rounded-xl w-100'>
+            {/* <button onClick={() => handleClick('premium')} className='flex bg-yellow-400 p-3 items-center justify-center rounded-xl w-100'>
               <img className='h-5 mr-2' src={AddWallet} alt="Add Wallet Icon" />
               Add Account
-            </button>
+            </button> */}
             <button
               onClick={() => handleClick('disconnect')}
               className='flex bg-gray-300 p-3 items-center justify-center rounded-xl w-100'

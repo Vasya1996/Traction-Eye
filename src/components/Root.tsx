@@ -1,5 +1,6 @@
 import { SDKProvider, useLaunchParams } from '@telegram-apps/sdk-react';
 import { TonConnectUIProvider } from '@tonconnect/ui-react';
+import { OmnistonProvider } from "@ston-fi/omniston-sdk-react";
 import { type FC, useEffect, useMemo } from 'react';
 
 import { App } from '@/components/App.tsx';
@@ -34,11 +35,13 @@ const Inner: FC = () => {
   }, [debug]);
 
   return (
-    <TonConnectUIProvider manifestUrl={manifestUrl}>
-      <SDKProvider acceptCustomStyles debug={debug}>
-        <App/>
-      </SDKProvider>
-    </TonConnectUIProvider>
+    <OmnistonProvider apiUrl="wss://omni-ws.ston.fi">
+      <TonConnectUIProvider manifestUrl={manifestUrl}>
+          <SDKProvider acceptCustomStyles debug={debug}>
+            <App/>
+          </SDKProvider>
+      </TonConnectUIProvider>
+    </OmnistonProvider>
   );
 };
 

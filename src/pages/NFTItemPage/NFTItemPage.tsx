@@ -38,8 +38,6 @@ const NFTItemPage: FC = () => {
 			impact_style: "medium",
 		});
 	};
-	console.log(id);
-	console.log("XDEADEED", nft);
 
 	// const assetMarketCap = API.getJettonCap(nft.nft_address);
 
