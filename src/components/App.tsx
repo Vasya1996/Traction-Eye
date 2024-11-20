@@ -17,17 +17,12 @@ import { TonConnectUIProvider } from "@tonconnect/ui-react";
 import { Toaster } from "react-hot-toast";
 import { routes } from "@/navigation/routes.tsx";
 import { SocialCap, AssetsOff, IoMdWallet } from "./icons";
-import { useLocalStorageSubscription } from "@/hooks";
-import { LocalStorageKeys } from "@/constants/localStorage";
 const queryClient = new QueryClient();
 
 export const App: FC = () => {
 	const miniApp = useMiniApp();
 	const themeParams = useThemeParams();
 	const viewport = useViewport();
-	const scrollValue = useLocalStorageSubscription(LocalStorageKeys.scroll);
-
-	const isScrollBlocked = scrollValue?.toLowerCase() === "true" ? true : false;
 
 	useEffect(() => {
 		return bindMiniAppCSSVars(miniApp, themeParams);
@@ -124,7 +119,7 @@ export const App: FC = () => {
 	}, []);
 
 	return (
-		<div className="max-h-screen" style={{ overflow: isScrollBlocked ? "hidden" : "auto"}}>
+		<div className="max-h-screen overflow-scroll">
 			<TonConnectUIProvider>
 				<QueryClientProvider client={queryClient}>
 					<Toaster position="top-right" reverseOrder={false} />
