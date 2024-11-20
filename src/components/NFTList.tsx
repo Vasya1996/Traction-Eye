@@ -10,21 +10,15 @@ import { API } from "@/api/api";
 import { useStore } from "@/store/store";
 import { CACHE_OPTIONS_FAST } from "@/constants";
 
-interface NFTListProps {
-  friendWalletAddress?: string;
-}
-
-const NFTList: FC<NFTListProps>  = ({ friendWalletAddress }) => {
+const NFTList: FC = () => {
 	const userFriendlyAddress = useTonAddress();
 
   const setNfts = useStore((state) => state.setNfts);
 
-  const targetAddress = friendWalletAddress || userFriendlyAddress;
-
 	const { data, isFetching, error } = useQuery({
-		queryKey: ["nfts", targetAddress],
-		queryFn: () => API.getNftsByWallet(targetAddress),
-		enabled: !!targetAddress,
+		queryKey: ["nfts", userFriendlyAddress],
+		queryFn: () => API.getNftsByWallet(userFriendlyAddress),
+		enabled: !!userFriendlyAddress,
 		...CACHE_OPTIONS_FAST
 	});
 

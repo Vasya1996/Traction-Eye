@@ -8,17 +8,9 @@ import { AssetItemProps } from "@/components/AssetItem";
 import { MdOutlineInfo, SwapToken } from "@/components/icons";
 import { postEvent } from '@telegram-apps/sdk';
 import { Skeleton } from "@/components/ui/skeleton";
-import {
-	formatNumber,
-	getTimelinePeriodAndIntervalKey,
-	updateAssetChartPnlData,
-} from "@/utils";
+import { formatNumber, getTimelinePeriodAndIntervalKey, updateAssetChartPnlData } from "@/utils";
 import { AssetInfo } from "./components";
-import {
-	TimelineKeys,
-	TIMELINES_INTERVALS_SECONDS,
-	CACHE_OPTIONS,
-} from "@/constants";
+import { TimelineKeys, TIMELINES_INTERVALS_SECONDS, CACHE_OPTIONS } from "@/constants";
 import { TimelineToolbar } from "@/components/TImelineToolbar";
 import { PNL_API } from "@/api/pnl";
 import { ChartData } from "@/types";
@@ -40,13 +32,10 @@ const AssetItemPage: FC = () => {
   const handleTimelineSelect = (timeline: keyof typeof TIMELINES_INTERVALS_SECONDS) => {
     setSelectedTimeline(timeline);
   };
-
-  const targetAddress = state.friendWalletAddress || walletAddress;
-
   const { data: userWalletCreationDate } = useQuery({
-    queryKey: ["userWalletCreationDate", targetAddress], // Ensure the same queryKey is used in all components
-    queryFn: () => TON_CENTER_API.getUserWalletCreationDate(targetAddress!),
-    enabled: !!targetAddress,
+    queryKey: ["userWalletCreationDate", walletAddress], // Ensure the same queryKey is used in all components
+    queryFn: () => TON_CENTER_API.getUserWalletCreationDate(walletAddress!),
+    enabled: !!walletAddress,
     staleTime: Infinity
 });
 
@@ -59,8 +48,8 @@ const AssetItemPage: FC = () => {
 
   const { data: assetChartData, refetch: refetchAssetChartData } = useQuery<ChartData[]>({
     queryKey: ["assetChartData", timelineData?.period, timelineData?.interval, params.id],
-    queryFn: () => PNL_API.getTokenPnlByAddress({wallet_address: targetAddress, token_address: params.id as string, interval: timelineData!.interval, period: timelineData!.period}),
-    enabled: !!targetAddress && !!timelineData?.period && !!timelineData?.interval && !!params.id,
+    queryFn: () => PNL_API.getTokenPnlByAddress({wallet_address: walletAddress, token_address: params.id as string, interval: timelineData!.interval, period: timelineData!.period}),
+    enabled: !!walletAddress && !!timelineData?.period && !!timelineData?.interval && !!params.id,
     refetchOnWindowFocus: false,
     ...CACHE_OPTIONS
   });
@@ -74,11 +63,11 @@ const AssetItemPage: FC = () => {
 },[assetChartData])
 
   useEffect(() => {
-    if (timelineData?.interval && timelineData?.period && targetAddress) {
+    if (timelineData?.interval && timelineData?.period && walletAddress) {
       refetchAssetChartData();
       setSelectedPoint(null);
     }
-}, [timelineData?.interval, timelineData?.period, targetAddress, params.id]);
+}, [timelineData?.interval, timelineData?.period, walletAddress, params.id]);
 
   const toggleTooltip = (key: string) => {
     postEvent('web_app_trigger_haptic_feedback', { type: 'impact', impact_style: 'light' });

@@ -65,8 +65,8 @@ export default function Chart({ worth_chart, onMouseMove, onMouseDown, onMouseUp
             if (index !== undefined && worth_chart) {
 
                 const chartData = worth_chart[index];
-                const pointTimestamp = chartData?.timestamp;
-                const updatedNetWorth = chartData?.total_price ?? chartData?.net_worth ?? 0;
+                const pointTimestamp = chartData.timestamp;
+                const updatedNetWorth = chartData.total_price ?? chartData.net_worth ?? 0;
                 const updatedPnlData = {
                     pnl_percentage: chartData.pnl_percentage,
                     pnl_usd: chartData.pnl_usd

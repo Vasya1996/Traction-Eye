@@ -16,11 +16,9 @@ export const PNL_API = {
 	},
     getTokenPnlByAddress: async ({ wallet_address, token_address, interval, period }: getTokenPnlByAddressPayload): Promise<ChartData[]> => {
         try {
-          console.log("req made")
-        const response = await newApiClient.get(
+            const response = await newApiClient.get(
 				endpoints.getTokenPnlByAddress({wallet_address, token_address, interval, period})
 			);
-      console.log(response.data)
 			return response.data;
 		} catch (error) {
 			console.error("Error fetching users:", error);

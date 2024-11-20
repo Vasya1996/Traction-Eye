@@ -1,81 +1,43 @@
-import { FC, useEffect, useState } from "react";
-import { LiquidityPoolCard } from "./components";
+import { FC, useMemo, Fragment } from "react";
+import {LiquidityPoolCard } from "./components";
 import { IoMdGitNetwork } from "@/components/icons";
-// import { MdOutlineKeyboardArrowRight } from "@/components/icons";
+// import { MdOutlineKeyboardArrowRight } from "@/components/icons"; 
 import STONLogo from "@/pages/IndexPage/stonfilogo.jpg";
 import dedustLogo from "@/pages/IndexPage/dedustlogo.png";
-import stormTradeLogo from "@/pages/IndexPage/stormTradeLogo.png";
 import SettleTonLogo from "@/components/icons/SettleTon.svg";
 import { useQuery } from "@tanstack/react-query";
 import { API } from "@/api/api";
-import { useTonAddress } from "@tonconnect/ui-react";
+import { useTonAddress, useTonWallet } from "@tonconnect/ui-react";
 import { CACHE_OPTIONS, ProtocolNames } from "@/constants";
 import { SETTLE_API } from "@/api/settleTonApi";
-
 import { v4 as uuidv4 } from 'uuid';
 import { PoolsData } from "@/types/pools";
 import { calculatePoolSum } from "@/utils";
-import { Address } from "ton";
-import { STORM_API } from "@/api/stormApi";
-import { StormPoolCard } from "./components/StormTradeCard";
-import { StormVaultCard } from "./components/StormVaultCard";
 
-interface ProtocolsListProps {
-	friendWalletAdress?: string; //ref adress
-}
-
-
-export const ProtocolsList: FC<ProtocolsListProps> = ({
-	friendWalletAdress,
-}) => {
+export const ProtocolsList: FC = () => {
     const userFriendlyAddress = useTonAddress();
     const wallet =useTonWallet();
-
-	  const [rawAdress, setRawAdress] = useState("");
-
-	  const targetAddress = friendWalletAdress || userFriendlyAddress;
-
-	  useEffect(() => {
-		  if (targetAddress.length) {
-			  setRawAdress(Address.parse(targetAddress).hash.toString("hex"));
-		  }
-	  }, [targetAddress]);
-
   
     const { data: dedustData } = useQuery({
-        queryFn: () => API.getDedustInfo(targetAddress),
-        queryKey: ["dedust", targetAddress],
-        enabled: !!targetAddress,
+        queryFn: () => API.getDedustInfo(userFriendlyAddress),
+        queryKey: ["dedust", userFriendlyAddress],
+        enabled: !!userFriendlyAddress,
         ...CACHE_OPTIONS
     });
 
     const { data: stonFiData } = useQuery({
-        queryFn: () => API.getStonfiInfo(targetAddress),
-        queryKey: ["stonfi", targetAddress],
-        enabled: !!targetAddress,
+        queryFn: () => API.getStonfiInfo(userFriendlyAddress),
+        queryKey: ["stonfi", userFriendlyAddress],
+        enabled: !!userFriendlyAddress,
         ...CACHE_OPTIONS
     });
 
     const { data: settleTonData } = useQuery({
-        queryFn: () => SETTLE_API.getSettleTonJettons(targetAddress),
-        queryKey: ["settleTon",targetAddress],
-        enabled: !!targetAddress,
+        queryFn: () => SETTLE_API.getSettleTonJettons(wallet?.account.address),
+        queryKey: ["settleTon",wallet?.account.address],
+        enabled: !!wallet?.account.address,
         ...CACHE_OPTIONS
     });
-
-    const { data: stormPositionsData } = useQuery({
-		  queryFn: () => STORM_API.getStormPositions(`0:${rawAdress}`),
-		  queryKey: ["stormTonPositions", rawAdress],
-		  enabled: !!rawAdress,
-		  ...CACHE_OPTIONS,
-	  });
-  
-    const { data: stormVautsData } = useQuery({
-		   queryFn: () => STORM_API.getStormVaults(`0:${rawAdress}`),
-		   queryKey: ["stormTonVaults", rawAdress],
-		   enabled: !!rawAdress,
-		   ...CACHE_OPTIONS,
-	  });
     
 
     const poolsData: PoolsData = useMemo(() => {
@@ -136,20 +98,6 @@ export const ProtocolsList: FC<ProtocolsListProps> = ({
                         <li key={id} className={hasMargin ? "mt-10" : ""}><LiquidityPoolCard poolName={poolName} icon={icon} poolData={poolData ?? []} /></li>
                     )
                 })}
-              <li className="mt-10">
-					      <StormPoolCard
-						      poolName={ProtocolNames.StormTrade}
-						      icon={stormTradeLogo}
-						      poolData={stormPositionsData?.data ?? []}
-					      />
-				      </li>
-              <li className="mt-10">
-					    <StormVaultCard
-						      poolName={ProtocolNames.StormTrade}
-						      icon={stormTradeLogo}
-						      poolData={stormVautsData?.data ?? []}
-					    />
-				</li>
             </ul>
         </div>
     )

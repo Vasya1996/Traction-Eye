@@ -71,19 +71,12 @@ userServiceClient.interceptors.request.use(
     return Promise.reject(error);
   }
 );
+
 export const settleTonClient = axios.create({
   baseURL: 'https://tractioneye.ru/settleton_api/',
   headers: {
     'Content-Type': 'application/json',
   },
 });
-
-export const stormTonClient = axios.create({
-  baseURL: 'https://tractioneye.ru/stormtrade_api/',
-  headers: {
-    'Content-Type': 'application/json',
-  },
-});
-
 
 export default apiClient;

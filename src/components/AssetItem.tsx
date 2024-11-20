@@ -10,7 +10,6 @@ export interface AssetItemProps {
     name: string;
     amount: number;
     price: number;
-    friendWalletAddress?: string;
 }
 
 const AssetItem: FC<AssetItemProps> = ({
@@ -19,7 +18,6 @@ const AssetItem: FC<AssetItemProps> = ({
     name,
     amount,
     price,
-    friendWalletAddress
 }) => {
     const usdValue = amount * price;
 
@@ -33,7 +31,7 @@ const AssetItem: FC<AssetItemProps> = ({
             <td className="py-4 pr-2 flex items-center text-xs">
                 <Link
                     to={`/asset/${address}`}
-                    state={{ name, icon, amount, price, friendWalletAddress }}
+                    state={{ name, icon, amount, price }}
                     className="flex items-center"
                     onClick={handleAssetClick}
                 >
@@ -45,12 +43,12 @@ const AssetItem: FC<AssetItemProps> = ({
                 </Link>
             </td>
             <td className="py-2 px-3 text-xs">
-                <Link to={`/asset/${address}`} onClick={handleAssetClick} state={{ name, icon, amount, price, friendWalletAddress }}>
+                <Link to={`/asset/${address}`} onClick={handleAssetClick} state={{ name, icon, amount, price }}>
                     {formatNumber(price)}$
                 </Link>
             </td>
             <td className="py-2 px-3 text-end text-xs">
-                <Link to={`/asset/${address}`} onClick={handleAssetClick} state={{ name, icon, amount, price, friendWalletAddress }}>
+                <Link to={`/asset/${address}`} onClick={handleAssetClick} state={{ name, icon, amount, price }}>
                     {formatNumber(usdValue, false)}$
                 </Link>
             </td>
