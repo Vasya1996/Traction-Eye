@@ -61,21 +61,23 @@ export const StormPoolCard: FC<LiquidityPoolCardProps> = ({
 								</div>
 								<div className="flex w-full justify-between text-sm">
 									<div className="flex flex-col">
-										<p className="py-2 px-1 text-sm font-medium text-gray-400 uppercase tracking-wider whitespace-nowrap">
+										<p className="py-2 text-xs font-medium text-gray-400 uppercase tracking-wider whitespace-nowrap">
 											Asset/Amount
 										</p>
-										<div className="flex justify-center">
-											<div className="w-6 h-6 rounded-full bg-black"></div>
-											<div className="flex flex-col">
-												<p className="py-2 px-1 text-sm font-medium text-black uppercase tracking-wider whitespace-nowrap">
+										<div className="flex items-center">
+											<div className="flex-shrink-0">
+												<img src={pool.icon[0]} className="w-6 h-6" alt="" />
+											</div>
+											<div className="flex flex-col justify-center ml-2">
+												<p className="text-xs font-medium text-black uppercase tracking-wider whitespace-nowrap">
 													{formatNumber(pool.total_balance_token, true)}
 												</p>
-												<p>{pool.name.split("/")[0] || pool.name}</p>
+												<p className="text-xs font-medium text-black/50 uppercase tracking-wider whitespace-nowrap">{pool.name.split("/")[0] || pool.name}</p>
 											</div>
 										</div>
 									</div>
 									<div className="flex flex-col">
-										<p className="py-2 px-1 text-sm font-medium text-gray-400 uppercase tracking-wider whitespace-nowrap">
+										<p className="py-2 text-xs font-medium text-gray-400 uppercase tracking-wider whitespace-nowrap">
 											Entry Price
 										</p>
 										<p className="py-2 px-1 text-xs text-right text-black font-medium uppercase tracking-wider whitespace-nowrap">
@@ -83,11 +85,11 @@ export const StormPoolCard: FC<LiquidityPoolCardProps> = ({
 										</p>
 									</div>
 									<div className="flex flex-col">
-										<p className="py-2 px-1 text-sm font-medium uppercase text-gray-400 tracking-wider text-right whitespace-nowrap">
-											PNL
+										<p className="py-2 text-xs font-medium uppercase text-gray-400 tracking-wider text-right whitespace-nowrap">
+											Est.Liq.Price
 										</p>
 										<p className="py-2 px-1 text-right text-xs font-medium text-black uppercase tracking-wider whitespace-nowrap">
-											{formatNumber(pool.pnl)}
+											{formatNumber(pool.elp)}
 										</p>
 									</div>
 								</div>
