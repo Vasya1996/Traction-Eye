@@ -5,16 +5,15 @@ import NFTList from "./NFTList";
 import { ProtocolsList } from "./ProtocolList";
 import { ChartHome } from "./ChartHome";
 import { TimelineToolbar } from "./TImelineToolbar";
-import { Colors, TimelineKeys, TIMELINES_INTERVALS_SECONDS } from "@/constants";
-import { Link } from "react-router-dom";
-import { Logo, MdOutlineKeyboardArrowRight } from "./icons";
+import { TimelineKeys, TIMELINES_INTERVALS_SECONDS } from "@/constants";
+import { Logo } from "./icons";
 import { shortenWallet } from "@/pages/IndexPage/IndexPage";
 
 const FriendPage = () => {
 	const { initData } = retrieveLaunchParams();
 	const [friendWalletAdress, setFriendWalletAdress] = useState("");
 
-  console.log(initData?.startParam, "friend")
+	console.log(initData?.startParam, "friend", );
 
 	useEffect(() => {
 		const friendWalletAdress = initData?.startParam?.split("__wallet=")[1];
@@ -37,20 +36,14 @@ const FriendPage = () => {
 		<div className="bg-gray-800 min-h-screen select-none overflow-hidden">
 			<div className="hero flex flex-col">
 				<div className="userdata px-4 flex justify-between items-center mt-1">
-					<Link to={"/profiles"}>
-						<div className="flex items-center">
-							<Logo className="h-11 w-11 py-3 px-2 bg-black rounded-full mr-3" />
-							<div className="items-center">
-								<p className="text-gray-400 font-light">
-									{shortenWallet(friendWalletAdress)}
-								</p>
-							</div>
-							<MdOutlineKeyboardArrowRight
-								color={Colors.zincLight}
-								className="my-auto text-2xl"
-							/>
+					<div className="flex items-center">
+						<Logo className="h-11 w-11 py-3 px-2 bg-black rounded-full mr-3" />
+						<div className="items-center">
+							<p className="text-gray-400 font-light">
+								{shortenWallet(friendWalletAdress)}
+							</p>
 						</div>
-					</Link>
+					</div>
 				</div>
 			</div>
 

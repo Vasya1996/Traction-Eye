@@ -40,11 +40,11 @@ export const StormPoolCard: FC<LiquidityPoolCardProps> = ({
 					<div className="p-4 bg-white rounded-2xl shadow-md">
 						<div className="mb-2">
 							<div className="flex justify-between items-center">
-								<p className="text-blue-500 bg-blue-100 rounded-full px-2 py-1 h-8 flex items-center gap-x-2">
+								<p className="text-blue-500 bg-blue-100 rounded-full px-3 py-1 h-8 flex items-center gap-x-2">
 									{pool.direction === "LONG" ? (
-										<MoveUpRight className="text-green-400 h-5 w-5" />
+										<MoveUpRight className="text-green-400 h-5 w-5" strokeWidth={4} />
 									) : (
-										<MoveDownRight className="text-red-400 h-5 w-5" />
+										<MoveDownRight className="text-red-400 h-5 w-5" strokeWidth={4} />
 									)}
 									<span>{pool.direction} </span>
 								</p>

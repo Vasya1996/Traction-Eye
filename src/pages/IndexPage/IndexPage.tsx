@@ -24,12 +24,16 @@ export const IndexPage: FC = () => {
     const navigate = useNavigate();
     const walletAddress = useTonAddress();
     const { initDataRaw, initData } = retrieveLaunchParams();
-    
-    console.log(initData?.startParam, "index")
 
-    if (initData?.startParam && initData?.startParam?.split("__wallet=").length > 1) {
-      navigate("/friend");
-    }
+    useEffect(() => {
+      if (initData?.startParam && initData?.startParam?.split("__wallet=").length > 1) {
+        navigate("/friend");
+      }
+        if (walletAddress) return;
+        setTimeout(() => {
+            navigate("/connect");
+        }, 300);
+    }, [walletAddress]);
 
     const { data } = useQuery({
         queryKey: ["login"],
@@ -50,13 +54,6 @@ export const IndexPage: FC = () => {
     //         impact_style: "medium",
     //     });
     // };
-
-    useEffect(() => {
-        if (walletAddress) return;
-        setTimeout(() => {
-            navigate("/connect");
-        }, 300);
-    }, [walletAddress]);
 
     // State for selected timeline
     const [selectedTimeline, setSelectedTimeline] = useState<keyof typeof TIMELINES_INTERVALS_SECONDS>(TimelineKeys.Month);
@@ -97,7 +94,7 @@ export const IndexPage: FC = () => {
             <div style={{minHeight: "60vh", height: "100%"}} className="p-5 rounded-t-3xl bg-gray-50 pb-32">
                 <AssetList />
                 <NFTList />
-                {/* <ProtocolsList /> */}
+                <ProtocolsList />
             </div>
         </div>
     );
