@@ -5,9 +5,10 @@ import { TimelineKeys, TIMELINES, TIMELINES_INTERVALS_SECONDS } from "@/constant
 
 interface TimelineToolbarProps {
     onTimelineSelect: (timeline: keyof typeof TIMELINES_INTERVALS_SECONDS) => void;
+    friendWalletAdress?: string;
 }
 
-export const TimelineToolbar = ({onTimelineSelect}: TimelineToolbarProps) => {
+export const TimelineToolbar = ({onTimelineSelect, friendWalletAdress}: TimelineToolbarProps) => {
     const walletAddress = useTonAddress();
     // State for selected timeline
     const [selectedTimeline, setSelectedTimeline] = useState<keyof typeof TIMELINES_INTERVALS_SECONDS>(TimelineKeys.Month);
@@ -20,7 +21,7 @@ export const TimelineToolbar = ({onTimelineSelect}: TimelineToolbarProps) => {
 
     };
 
-    if(!walletAddress) {
+    if(!walletAddress || !friendWalletAdress) {
         return null;
     }
 

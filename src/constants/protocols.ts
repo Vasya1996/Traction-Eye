@@ -10,5 +10,6 @@ export enum ProtocolTypes {
   export enum ProtocolNames {
     DeDust = "DeDust",
     StonFi = "STON.fi",
-    SettleTON = "SettleTON"
+    SettleTON = "SettleTON",
+    StormTrade = "StormTrade"
   }

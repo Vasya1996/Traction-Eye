@@ -10,17 +10,16 @@ import {
 	useViewport,
 } from "@telegram-apps/sdk-react";
 import React, { type FC, useEffect, useMemo, useState } from "react";
-import { Navigate, Route, Router, Routes } from "react-router-dom";
+import { Link, Navigate, Route, Router, Routes } from "react-router-dom";
 import { postEvent } from "@telegram-apps/sdk";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { TonConnectUIProvider } from '@tonconnect/ui-react';
-import { Toaster } from 'react-hot-toast';
+import { TonConnectUIProvider } from "@tonconnect/ui-react";
+import { Toaster } from "react-hot-toast";
 import { routes } from "@/navigation/routes.tsx";
-import { SocialCap, AssetsOff } from "./icons";
+import { SocialCap, AssetsOff, IoMdWallet } from "./icons";
 import { useLocalStorageSubscription } from "@/hooks";
 import { LocalStorageKeys } from "@/constants/localStorage";
 const queryClient = new QueryClient();
-
 
 export const App: FC = () => {
 	const miniApp = useMiniApp();
@@ -38,54 +37,53 @@ export const App: FC = () => {
 		return bindThemeParamsCSSVars(themeParams);
 	}, [themeParams]);
 
-  useEffect(() => {
+	useEffect(() => {
 		return viewport && bindViewportCSSVars(viewport);
 	}, [viewport]);
-  
-    postEvent('web_app_expand');
-    postEvent('web_app_setup_swipe_behavior', {allow_vertical_swipe: false});
- 
-  // Create a new application navigator and attach it to the browser history, so it could modify
-  // it and listen to its changes.
-  const navigator = useMemo(() => initNavigator('app-navigation-state'), []);
-  const [location, reactNavigator] = useIntegration(navigator);
-  
-  useEffect(() => {
-    switch (true) {
-        case location.pathname === '/connect':
-			postEvent('web_app_setup_back_button', { is_visible: false });
-            miniApp.setHeaderColor('#000000');
-            miniApp.setBgColor('#000000');
-            break;
-        case location.pathname === '/':
-			postEvent('web_app_setup_back_button', { is_visible: false });
-            miniApp.setHeaderColor('#1F2937');
-            miniApp.setBgColor('#f9fafb');
-            break;
-        case location.pathname === '/profiles':
-			postEvent('web_app_setup_back_button', { is_visible: true });
-            miniApp.setHeaderColor('#f9fafb');
-            miniApp.setBgColor('#f9fafb');
-            break;
-        case location.pathname === '/nfts':
-        case location.pathname.startsWith('/nft'):
-			postEvent('web_app_setup_back_button', { is_visible: true });
-            miniApp.setHeaderColor('#f9fafb');
-            miniApp.setBgColor('#f9fafb');
-            break;
-		case location.pathname.startsWith('/asset'):
-			postEvent('web_app_setup_back_button', { is_visible: true });
-			miniApp.setHeaderColor('#1F2937');
-			miniApp.setBgColor('#f9fafb');
-			break;
-		case location.pathname === '/premium':
-			postEvent('web_app_setup_back_button', { is_visible: true });
-			miniApp.setHeaderColor('#000000');
-			miniApp.setBgColor('#000000');
-			break;
-    }
-}, [location, miniApp]);
 
+	postEvent("web_app_expand");
+	postEvent("web_app_setup_swipe_behavior", { allow_vertical_swipe: false });
+
+	// Create a new application navigator and attach it to the browser history, so it could modify
+	// it and listen to its changes.
+	const navigator = useMemo(() => initNavigator("app-navigation-state"), []);
+	const [location, reactNavigator] = useIntegration(navigator);
+
+	useEffect(() => {
+		switch (true) {
+			case location.pathname === "/connect":
+				postEvent("web_app_setup_back_button", { is_visible: false });
+				miniApp.setHeaderColor("#000000");
+				miniApp.setBgColor("#000000");
+				break;
+			case location.pathname === "/":
+				postEvent("web_app_setup_back_button", { is_visible: false });
+				miniApp.setHeaderColor("#1F2937");
+				miniApp.setBgColor("#f9fafb");
+				break;
+			case location.pathname === "/profiles":
+				postEvent("web_app_setup_back_button", { is_visible: true });
+				miniApp.setHeaderColor("#f9fafb");
+				miniApp.setBgColor("#f9fafb");
+				break;
+			case location.pathname === "/nfts":
+			case location.pathname.startsWith("/nft"):
+				postEvent("web_app_setup_back_button", { is_visible: true });
+				miniApp.setHeaderColor("#f9fafb");
+				miniApp.setBgColor("#f9fafb");
+				break;
+			case location.pathname.startsWith("/asset"):
+				postEvent("web_app_setup_back_button", { is_visible: true });
+				miniApp.setHeaderColor("#1F2937");
+				miniApp.setBgColor("#f9fafb");
+				break;
+			case location.pathname === "/premium":
+				postEvent("web_app_setup_back_button", { is_visible: true });
+				miniApp.setHeaderColor("#000000");
+				miniApp.setBgColor("#000000");
+				break;
+		}
+	}, [location, miniApp]);
 
 	// Don't forget to attach the navigator to allow it to control the BackButton state as well
 	// as browser history.
@@ -96,7 +94,10 @@ export const App: FC = () => {
 
 	const [value, setValue] = useState(0);
 	// Bottom Navigation Handlers
-	const handleNavigationChange = (event: React.ChangeEvent<unknown>, newValue: number) => {
+	const handleNavigationChange = (
+		event: React.ChangeEvent<unknown>,
+		newValue: number
+	) => {
 		event.preventDefault();
 		setValue(newValue);
 		if (newValue === 0) {
@@ -107,12 +108,20 @@ export const App: FC = () => {
 	};
 
 	useEffect(() => {
-		if(location?.pathname === "/referral") {
+		if (location?.pathname === "/referral") {
 			setValue(1);
 		} else {
 			setValue(0);
 		}
-	},[location?.pathname])
+	}, [location?.pathname]);
+
+	const [showConnectBtn, setShowConnectBtn] = useState(false);
+
+	useEffect(() => {
+		if (!localStorage.getItem(LocalStorageKeys.firstLogin)) {
+			setShowConnectBtn(false);
+		}
+	}, []);
 
 	return (
 		<div className="max-h-screen" style={{ overflow: isScrollBlocked ? "hidden" : "auto"}}>
@@ -132,12 +141,36 @@ export const App: FC = () => {
 								onChange={handleNavigationChange}
 								showLabels
 								className="fixed bottom-0 w-full z-50 pb-safe"
-								style={{ height: 90}}
+								style={{
+									height:
+										location?.pathname === "/friend" || !showConnectBtn
+											? 0
+											: 90,
+								}}
 							>
-								<BottomNavigationAction icon={<AssetsOff isActive={value === 0}/>} />
-								<BottomNavigationAction icon={<SocialCap isActive={value === 1}/>} />
-							</BottomNavigation>	
+								<BottomNavigationAction
+									icon={<AssetsOff isActive={value === 0} />}
+								/>
+								<BottomNavigationAction
+									icon={<SocialCap isActive={value === 1} />}
+								/>
+							</BottomNavigation>
 						)}
+						{(!showConnectBtn && location?.pathname !== "/connect") ? (
+							<Link to="/connect?from=link">
+								<div className="absolute bottom-10 left-0 flex justify-center w-full">
+									<a
+										href={"/connect"}
+										className={`py-3 bg-yellow-500 rounded-2xl w-3/4 sm:w-3/4 md:w-1/2 lg:w-1/3 flex justify-center items-center text-base sm:text-lg`}
+									>
+										<span className="flex items-center">
+											Connect Wallet
+											<IoMdWallet size={18} className="text-lg ml-2" />
+										</span>
+									</a>
+								</div>
+							</Link>
+						) : null}
 					</Router>
 				</QueryClientProvider>
 			</TonConnectUIProvider>

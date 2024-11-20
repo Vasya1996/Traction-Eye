@@ -16,6 +16,7 @@
   "dependencies": {
     "@emotion/react": "^11.13.3",
     "@emotion/styled": "^11.13.0",
+    "@esbuild-plugins/node-globals-polyfill": "^0.2.3",
     "@mui/material": "^6.1.4",
     "@radix-ui/react-dialog": "^1.1.1",
     "@radix-ui/react-radio-group": "^1.2.0",
@@ -46,6 +47,7 @@
     "recharts": "^2.12.7",
     "tailwind-merge": "^2.4.0",
     "tailwindcss-animate": "^1.0.7",
+    "ton": "^13.9.0",
     "tonweb": "^0.0.66",
     "underscore": "^1.13.7",
     "uuid": "^10.0.0",

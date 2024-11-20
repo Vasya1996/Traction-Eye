@@ -5,19 +5,24 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { TbCircleDotted, IoIosArrowDown } from "@/components/icons";
 import { useTonAddress } from "@tonconnect/ui-react";
 import { useStore } from "@/store/store";
-import { useEffect, useState } from "react";
+import { FC, useEffect, useState } from "react";
 import { postEvent } from '@telegram-apps/sdk';
 import { CACHE_OPTIONS_FAST } from "@/constants";
 
-const AssetList = () => {
+interface AssetListProps {
+  friendWalletAddress?: string;
+}
+
+const AssetList: FC<AssetListProps>  = ({ friendWalletAddress }) => {
 	const userFriendlyAddress = useTonAddress();
 	const { incrementNetWorth, hasFetchedAssets, setHasFetchedAssets } = useStore();
 	const [showAllAssets, setShowAllAssets] = useState(false);
 
+  const targetAddress = friendWalletAddress || userFriendlyAddress;
 
 	const { data, isFetching } = useQuery({
-		queryKey: ["assets", userFriendlyAddress],
-		queryFn: () => API.getAssetsByWallet(userFriendlyAddress),
+		queryKey: ["assets", targetAddress],
+		queryFn: () => API.getAssetsByWallet(targetAddress),
 		...CACHE_OPTIONS_FAST
 	});
 
@@ -109,6 +114,7 @@ const AssetList = () => {
 								name={asset?.symbol}
 								amount={asset?.name === "Tether USD" ? asset?.amount / Math.pow(10, asset.decimals) : asset?.amount / Math.pow(10, asset.decimals)}
 								price={asset?.price_usd}
+                friendWalletAddress={friendWalletAddress}
 							/>
 						))}
 					</tbody>
