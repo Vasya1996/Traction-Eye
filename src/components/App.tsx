@@ -119,6 +119,7 @@ export const App: FC = () => {
 			setShowConnectBtn(false);
 		}
 	}, []);
+  //fix
 
 	return (
 		<div className="max-h-screen overflow-scroll">
