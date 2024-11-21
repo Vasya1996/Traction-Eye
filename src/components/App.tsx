@@ -13,7 +13,7 @@ import React, { type FC, useEffect, useMemo, useState } from "react";
 import { Link, Navigate, Route, Router, Routes } from "react-router-dom";
 import { postEvent } from "@telegram-apps/sdk";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { TonConnectUIProvider } from "@tonconnect/ui-react";
+import { TonConnectUIProvider, useTonAddress } from "@tonconnect/ui-react";
 import { Toaster } from "react-hot-toast";
 import { routes } from "@/navigation/routes.tsx";
 import { SocialCap, AssetsOff, IoMdWallet } from "./icons";
@@ -24,6 +24,7 @@ export const App: FC = () => {
 	const miniApp = useMiniApp();
 	const themeParams = useThemeParams();
 	const viewport = useViewport();
+	const userFriendlyAddress = useTonAddress();
 
 	useEffect(() => {
 		return bindMiniAppCSSVars(miniApp, themeParams);
@@ -114,7 +115,7 @@ export const App: FC = () => {
 	const [showConnectBtn, setShowConnectBtn] = useState(false);
 
 	useEffect(() => {
-		if (!localStorage.getItem(LocalStorageKeys.firstLogin)) {
+		if (!localStorage.getItem(LocalStorageKeys.firstLogin) || !userFriendlyAddress.length) {
 			setShowConnectBtn(false);
 		}
 	}, []);
