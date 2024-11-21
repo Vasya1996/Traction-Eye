@@ -8,6 +8,7 @@ import { TimelineToolbar } from "./TImelineToolbar";
 import { TimelineKeys, TIMELINES_INTERVALS_SECONDS } from "@/constants";
 import { Logo } from "./icons";
 import { shortenWallet } from "@/pages/IndexPage/IndexPage";
+//check
 
 const FriendPage = () => {
 	const { initData } = retrieveLaunchParams();
