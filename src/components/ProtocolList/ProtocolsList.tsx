@@ -53,8 +53,8 @@ export const ProtocolsList: FC<ProtocolsListProps> = ({
 	});
 
 	const { data: settleTonData } = useQuery({
-		queryFn: () => SETTLE_API.getSettleTonJettons(targetAddress),
-		queryKey: ["settleTon", targetAddress],
+		queryFn: () => SETTLE_API.getSettleTonJettons(`0:${rawAdress}`),
+		queryKey: ["settleTon", rawAdress],
 		enabled: !!targetAddress,
 		...CACHE_OPTIONS,
 	});

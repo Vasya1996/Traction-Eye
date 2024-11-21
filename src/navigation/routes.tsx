@@ -22,6 +22,7 @@ export const routes: Route[] = [
 	{ path: "/", Component: IndexPage },
   { path: "/referral", Component: SocialScorePage },
   { path: "/connect", Component: ConnectPage },
+  // { path: "/connect", Component: IndexPage },
 	{ path: "/swap", Component: SwapPage },
 	{ path: "/profiles", Component: ProfilesListPage },
 	{ path: "/friend", Component: FriendPage },

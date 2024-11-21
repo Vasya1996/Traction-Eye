@@ -10,13 +10,12 @@ interface TimelineToolbarProps {
 
 export const TimelineToolbar = ({onTimelineSelect, friendWalletAdress}: TimelineToolbarProps) => {
     const walletAddress = useTonAddress();
-    // State for selected timeline
+
     const [selectedTimeline, setSelectedTimeline] = useState<keyof typeof TIMELINES_INTERVALS_SECONDS>(TimelineKeys.Month);
 
     const handleTimelineSelect = (timeline: keyof typeof TIMELINES_INTERVALS_SECONDS) => {
         setSelectedTimeline(timeline);
         onTimelineSelect(timeline);
-        // Call postEvent to setup swipe behavior
         postEvent('web_app_trigger_haptic_feedback', { type: 'impact', impact_style: 'rigid' });
 
     };
