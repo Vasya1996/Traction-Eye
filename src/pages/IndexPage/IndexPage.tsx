@@ -75,14 +75,12 @@ export const IndexPage: FC = () => {
                             <MdOutlineKeyboardArrowRight color={Colors.zincLight} className="my-auto text-2xl" />
                         </div>
                     </Link>
-
-                    {/* <Link
-                        onClick={handlePremiumClick}
+{/* 
+                    <Link
                         className="flex text-sm items-center text-yellow-300 shadow-md shadow-yellow-500/40 mr-1 px-3 bg-black border rounded-xl h-9"
-                        to={"/premium"}
+                        to={"/friend"}
                     >
-                        <IoDiamondOutline size={14} className="mr-2" />
-                        Get Premium
+                        Friend
                     </Link> */}
                 </div>
                 <div style={{ touchAction: "none" }} className="mt-auto">

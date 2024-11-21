@@ -114,9 +114,13 @@ export const App: FC = () => {
 
 	const [showConnectBtn, setShowConnectBtn] = useState(false);
 
+  console.log(!userFriendlyAddress.length)
+
 	useEffect(() => {
+    console.log("first", location?.pathname === "/friend" && !showConnectBtn)
 		if (!localStorage.getItem(LocalStorageKeys.firstLogin) || !userFriendlyAddress.length) {
-			setShowConnectBtn(false);
+      console.log("here",localStorage.getItem(LocalStorageKeys.firstLogin), userFriendlyAddress.length, !localStorage.getItem(LocalStorageKeys.firstLogin) || !userFriendlyAddress.length)
+			setShowConnectBtn(true);
 		}
 	}, []);
   //fix
@@ -141,7 +145,7 @@ export const App: FC = () => {
 								className="fixed bottom-0 w-full z-50 pb-safe"
 								style={{
 									height:
-										location?.pathname === "/friend" || !showConnectBtn
+										(location?.pathname === "/friend" && !showConnectBtn)
 											? 0
 											: 90,
 								}}
