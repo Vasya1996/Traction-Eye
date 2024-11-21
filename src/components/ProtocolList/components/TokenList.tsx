@@ -7,12 +7,8 @@ interface TokenListProps {
 }
 
 export const TokenList: FC<TokenListProps> = ({ title, tokens }) => {
-  if (!tokens?.length) {
-    return null;
-  }
-
-  const filteredToken = useMemo(() => tokens.filter(token => parseFloat(token.usd_value) > 0), [tokens])
-
+  const filteredToken = useMemo(() => (tokens ?? []).filter(token => parseFloat(token.usd_value) > 0), [tokens])
+  
   if(filteredToken.length === 0) {
     return null;
   }

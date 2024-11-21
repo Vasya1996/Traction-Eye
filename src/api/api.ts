@@ -154,9 +154,9 @@ export const API = {
     wallet_address: string,
   ) => {
 		try {
-      const payload = {
+			const payload = {
 				telegram_id,
-        wallet_address
+				wallet_address
 			};
 			const response = await apiClient.post(
 				endpoints.addWallet,

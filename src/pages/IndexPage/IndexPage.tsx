@@ -13,27 +13,10 @@ import { ChartHome } from "@/components/ChartHome";
 import { TimelineToolbar } from "@/components/TImelineToolbar";
 import { Colors, TimelineKeys, TIMELINES_INTERVALS_SECONDS } from "@/constants";
 
-export const shortenWallet = (wallet: string, startLength: number = 4, endLength: number = 4): string => {
-  const start = wallet.substring(0, startLength);
-  const end = wallet.substring(wallet.length - endLength);
-  return `${start}...${end}`;
-};
-
-
 export const IndexPage: FC = () => {
     const navigate = useNavigate();
     const walletAddress = useTonAddress();
-    const { initDataRaw, initData } = retrieveLaunchParams();
-
-    useEffect(() => {
-      if (initData?.startParam && initData?.startParam?.split("__wallet=").length > 1) {
-        navigate("/friend");
-      }
-        if (walletAddress) return;
-        setTimeout(() => {
-            navigate("/connect");
-        }, 300);
-    }, [walletAddress]);
+    const { initDataRaw } = retrieveLaunchParams();
 
     const { data } = useQuery({
         queryKey: ["login"],
@@ -54,6 +37,19 @@ export const IndexPage: FC = () => {
     //         impact_style: "medium",
     //     });
     // };
+
+    useEffect(() => {
+        if (walletAddress) return;
+        setTimeout(() => {
+            navigate("/connect");
+        }, 300);
+    }, [walletAddress]);
+
+    const shortenWallet = (wallet: string, startLength: number = 4, endLength: number = 4): string => {
+        const start = wallet.substring(0, startLength);
+        const end = wallet.substring(wallet.length - endLength);
+        return `${start}...${end}`;
+    };
 
     // State for selected timeline
     const [selectedTimeline, setSelectedTimeline] = useState<keyof typeof TIMELINES_INTERVALS_SECONDS>(TimelineKeys.Month);
@@ -85,13 +81,13 @@ export const IndexPage: FC = () => {
                         Get Premium
                     </Link> */}
                 </div>
-                <div className="mt-auto mb-4">
+                <div style={{ touchAction: "none" }} className="mt-auto">
                     <ChartHome timeline={selectedTimeline}/>
                     <TimelineToolbar onTimelineSelect={handleTimelineSelect}/>
                 </div>
             </div>
 
-            <div style={{minHeight: "60vh", height: "100%"}} className="p-5 rounded-t-3xl bg-gray-50 pb-32">
+            <div style={{ minHeight: "60vh", height: "100%" }} className="p-5 rounded-t-3xl bg-gray-50 pb-32">
                 <AssetList />
                 <NFTList />
                 <ProtocolsList />

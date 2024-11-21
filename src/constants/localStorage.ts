@@ -4,4 +4,5 @@ export enum LocalStorageKeys {
     ref = "ref",
     scroll = "scroll",
     firstLogin = "firstLogin",
+    quoteId = "quoteId",
 }
