@@ -26,6 +26,7 @@ import { TON_CENTER_API } from "@/api/tonCenter";
 // import { API } from "@/api/api";
 
 // const TEST_WALLETS = ["UQAINHiKgQMi0BQ-Y4C5AMFiZm_2dgvf-KPxdWJImKWArNwM", "UQBghyYO1PSqiHO70FNCE5NpU94rTE3pfxjGpzB2aD6fWVCO", "UQAiuSciIC6VfkKODF9xsrogE44Okn13XGvdzXq1uCoOH40Z"];
+// 
 
 const AssetItemPage: FC = () => {
 	const [tooltip, setTooltip] = useState<null | string>(null);
