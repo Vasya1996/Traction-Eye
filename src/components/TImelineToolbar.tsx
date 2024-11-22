@@ -10,7 +10,7 @@ interface TimelineToolbarProps {
 
 export const TimelineToolbar = ({onTimelineSelect, friendWalletAddress}: TimelineToolbarProps) => {
     const walletAddress = useTonAddress();
-    console.log(walletAddress, friendWalletAdress)
+    console.log(walletAddress, friendWalletAddress)
 
     const [selectedTimeline, setSelectedTimeline] = useState<keyof typeof TIMELINES_INTERVALS_SECONDS>(TimelineKeys.Month);
 
@@ -21,7 +21,7 @@ export const TimelineToolbar = ({onTimelineSelect, friendWalletAddress}: Timelin
 
     };
 
-    if(!walletAddress || !friendWalletAdress) {
+    if(!walletAddress || !friendWalletAddress) {
          return null;
     }
 

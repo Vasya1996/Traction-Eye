@@ -127,7 +127,7 @@ export const IndexPage: FC = () => {
 				<div style={{ touchAction: "none" }} className="mt-auto">
 					<ChartHome timeline={selectedTimeline} />
 					<TimelineToolbar
-						friendWalletAdress={walletAddress}
+						friendWalletAddress={walletAddress}
 						onTimelineSelect={handleTimelineSelect}
 					/>
 				</div>
