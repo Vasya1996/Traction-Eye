@@ -61,7 +61,7 @@ const ProfilesListPage: FC = () => {
             postEvent('web_app_trigger_haptic_feedback', { type: 'notification', notification_type: 'success' });
             alert('Successfuly removed!');
             await tonConnectUI.disconnect();
-            navigate('/connect');  // Ensure the path is correct
+            navigate('/connect');
           } catch (error) {
             console.error('Failed to disconnect:', error);
           }

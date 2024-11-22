@@ -3,7 +3,7 @@ enum DECIMALS {
     usd = 2,
 }
 
-export const formatNumber = (value?: number, isTokenNumber = true) => {
+export const formatNumber = (value?: number, isTokenNumber = true, numberOfDecimals?: number) => {
     if(value === undefined) {
         return "0.00"
     }
@@ -14,7 +14,9 @@ export const formatNumber = (value?: number, isTokenNumber = true) => {
         return "0.00";
     }
 
-    const decimals = isTokenNumber ? DECIMALS.token : DECIMALS.usd;
+    let decimals = isTokenNumber ? DECIMALS.token : DECIMALS.usd;
+
+    if (numberOfDecimals) decimals = numberOfDecimals;
 
     // Форматируем число с нужным количеством десятичных знаков
     const [integerPart, decimalPart] = Number(value).toFixed(decimals).split(".");
