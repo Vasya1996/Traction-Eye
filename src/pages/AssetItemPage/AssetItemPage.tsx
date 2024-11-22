@@ -135,7 +135,7 @@ const AssetItemPage: FC = () => {
 		: {
 				pnl_percentage: lastChartData?.pnl_percentage,
 				pnl_usd: lastChartData?.pnl_usd,
-		  };
+		};
 	const currentTimestamp = selectedPoint
 		? selectedPoint.timestamp
 		: lastChartData?.timestamp;

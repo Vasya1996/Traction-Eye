@@ -3,7 +3,7 @@ import { useTonAddress } from "@tonconnect/ui-react";
 import Logo from "../IndexPage/TELogo.svg";
 import { useTonConnectUI } from "@tonconnect/ui-react";
 import { postEvent, retrieveLaunchParams } from "@telegram-apps/sdk";
-import { Link, useLocation, useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { useMutation } from "@tanstack/react-query";
 import { API } from "@/api/api";
 import { UserServiceApi } from "@/api/userServiceApi";
