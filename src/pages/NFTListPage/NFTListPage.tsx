@@ -5,9 +5,10 @@ import { NFT } from "@/types/index";
 import { API } from "@/api/api";
 import { CACHE_OPTIONS_FAST } from "@/constants";
 import { NFTImage } from "@/components/NFTImage";
+import { useTonAddress } from "@tonconnect/ui-react";
 
 const NFTListPage: FC = () => {
-	const userFriendlyAddress = "UQAINHiKgQMi0BQ-Y4C5AMFiZm_2dgvf-KPxdWJImKWArNwM"; //useTonAddress();
+	const userFriendlyAddress = useTonAddress();
 
 	const { data } = useQuery({
 		queryKey: ["nfts", userFriendlyAddress],

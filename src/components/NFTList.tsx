@@ -4,7 +4,7 @@ import NFTCard from "@/components/NFTCard";
 import { PiImages, FaArrowRight } from "@/components/icons";
 import { NFT } from "@/types/index";
 import { useQuery } from "@tanstack/react-query";
-// import { useTonAddress } from "@tonconnect/ui-react";
+import { useTonAddress } from "@tonconnect/ui-react";
 import NFTSkeletons from "./skeletons/NFTSkeletons";
 import { API } from "@/api/api";
 import { CACHE_OPTIONS_FAST } from "@/constants";
@@ -14,7 +14,7 @@ interface NFTListProps {
 }
 
 const NFTList: FC<NFTListProps> = ({ friendWalletAddress }) => {
-	const userFriendlyAddress = "UQAINHiKgQMi0BQ-Y4C5AMFiZm_2dgvf-KPxdWJImKWArNwM"; //useTonAddress();
+	const userFriendlyAddress = useTonAddress();
 
   const targetAddress = friendWalletAddress || userFriendlyAddress;
 
