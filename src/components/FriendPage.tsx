@@ -13,8 +13,6 @@ const FriendPage = () => {
 	const { initData } = retrieveLaunchParams();
 	const [friendWalletAdress, setFriendWalletAdress] = useState("");
 
-	console.log(initData?.startParam, "friend", );
-
 	useEffect(() => {
 		const friendWalletAdress = initData?.startParam?.split("__wallet=")[1];
 		if (friendWalletAdress) {
