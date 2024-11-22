@@ -14,6 +14,7 @@ import { IoMdWallet } from "@/components/icons";
 import "./ConnectPage.css"; // Импортируйте CSS файл
 import { Spinner } from "@/components/ui/spinner";
 import { LocalStorageKeys } from "@/constants/localStorage";
+//fuck shit
 
 export const ConnectPage = () => {
 	const [currentSlide, setCurrentSlide] = useState(0);
