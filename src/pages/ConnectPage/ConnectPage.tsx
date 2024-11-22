@@ -58,6 +58,7 @@ export const ConnectPage = () => {
 		mutationKey: ["add-wallet"],
 	});
 
+
 	const userServiceAddWalletMutation = useMutation({
 		mutationFn: ({
 			walletAddress,
