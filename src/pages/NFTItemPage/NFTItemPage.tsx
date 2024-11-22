@@ -17,8 +17,9 @@ const NFTItemPage: FC = () => {
 		enabled: !!id,
 	});
 
-	const nfts = useStore((state) => state.nfts);
 
+	const nfts = useStore((state) => state.nfts);
+	
 	const nft_fromlist = nfts.filter((nft) => nft.nft_address === id)[0];
 
 	const shortenAddress = (
@@ -46,7 +47,7 @@ const NFTItemPage: FC = () => {
 			<img
 				className="rounded-3xl shadow-lg w-full"
 				src={nft_fromlist?.image_url}
-				alt={nft_fromlist.name}
+				alt={nft_fromlist?.name}
 			/>
 			<h1 className="text-3xl flex py-5 text-start font-bold">{nft?.name}</h1>
 			<span className="w-full border-b"></span>

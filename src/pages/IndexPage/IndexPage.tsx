@@ -1,10 +1,9 @@
 import { FC, useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import AssetList from "@/components/AssetList";
-import { Logo, MdOutlineKeyboardArrowRight } from "@/components/icons";
+import { Logo, MdOutlineKeyboardArrowRight, ShareIcon } from "@/components/icons";
 import NFTList from "@/components/NFTList";
 import { ProtocolsList } from "@/components/ProtocolList";
-// import { postEvent } from "@telegram-apps/sdk";
 import { useTonAddress } from "@tonconnect/ui-react";
 import { retrieveLaunchParams } from "@telegram-apps/sdk-react";
 import { API } from "@/api/api";
@@ -12,6 +11,10 @@ import { useQuery } from "@tanstack/react-query";
 import { ChartHome } from "@/components/ChartHome";
 import { TimelineToolbar } from "@/components/TImelineToolbar";
 import { Colors, TimelineKeys, TIMELINES_INTERVALS_SECONDS } from "@/constants";
+import { Button } from "@mui/material";
+import { UserResponse } from "@/types";
+import { UserServiceApi } from "@/api/userServiceApi";
+import { useTelegramShare } from "@/hooks";
 
 export const shortenWallet = (
 	wallet: string,
@@ -27,6 +30,7 @@ export const IndexPage: FC = () => {
 	const navigate = useNavigate();
 	const walletAddress = useTonAddress();
 	const { initDataRaw, initData } = retrieveLaunchParams();
+  const { shareContent } = useTelegramShare();
 
 	useEffect(() => {
 		if (
@@ -42,6 +46,16 @@ export const IndexPage: FC = () => {
 		}, 300);
 	}, [walletAddress]);
 
+  const { data: userData } = useQuery<UserResponse>({
+    queryKey: ["userData", walletAddress],
+    queryFn: () => UserServiceApi.getUser(walletAddress),
+    retry: 2,
+    refetchOnWindowFocus: false,
+    staleTime: Infinity,
+    enabled: !!walletAddress,
+  })
+    
+
 	const { data } = useQuery({
 		queryKey: ["login"],
 		queryFn: () => API.login(initDataRaw!),
@@ -54,13 +68,6 @@ export const IndexPage: FC = () => {
 			localStorage.setItem("token", data?.token);
 		}
 	}, [data]);
-
-	// const handlePremiumClick = () => {
-	//     postEvent("web_app_trigger_haptic_feedback", {
-	//         type: "impact",
-	//         impact_style: "medium",
-	//     });
-	// };
 
 	// State for selected timeline
 	const [selectedTimeline, setSelectedTimeline] = useState<
@@ -92,23 +99,35 @@ export const IndexPage: FC = () => {
 						</div>
 					</Link>
 					
-                    {/* <Link
-                        className="flex text-sm items-center text-yellow-300 shadow-md shadow-yellow-500/40 mr-1 px-3 bg-black border rounded-xl h-9"
-                        to={"/friend"}
-                    >
-                        Friend PAGE
-                    </Link>
-                    <Link
-                        className="flex text-sm items-center text-yellow-300 shadow-md shadow-yellow-500/40 mr-1 px-3 bg-black border rounded-xl h-9"
-                        to={"/"}
-                    >
-                        INDEX
-                    </Link> */}
+          {(userData?.referral_link && walletAddress) && (
+              <Button
+                  variant="outlined"
+                  sx={{
+                      color: 'white', // Text color
+                      borderColor: 'rgba(255, 255, 255, 0.3)', // Border color
+                      borderRadius: '8px', // Rounded corners
+                      textTransform: 'none', // Disable uppercase text
+                      fontSize: '0.75rem', // Font size
+                      padding: '8px 12px', // Padding for button
+                      transition: 'all 0.3s ease',
+                      height: "26px",
+                      '&:hover': {
+                          borderColor: 'rgba(255, 255, 255, 0.5)', // Hover border color
+                          backgroundColor: 'rgba(255, 255, 255, 0.1)', // Hover background
+                      },
+                  }}
+                  onClick={() => {
+                      shareContent(`https://t.me/TractionEyebot/app?startapp=${userData?.referral_link}__wallet=${walletAddress}`, "Check out my investment profile and join my network of contacts. Find out your social score 🏆");
+                  }}
+              >
+                  <ShareIcon size={12} className="mr-1" />Share portfolio
+              </Button>
+            )}
 				</div>
 				<div style={{ touchAction: "none" }} className="mt-auto">
 					<ChartHome timeline={selectedTimeline} />
 					<TimelineToolbar
-						friendWalletAdress={walletAddress}
+						friendWalletAddress={walletAddress}
 						onTimelineSelect={handleTimelineSelect}
 					/>
 				</div>

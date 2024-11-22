@@ -27,20 +27,20 @@ interface ChartHomeProps {
 	timeline: keyof typeof TIMELINES_INTERVALS_SECONDS;
 	onMouseDown?: () => void;
 	onMouseUp?: () => void;
-	friendWalletAdress?: string;
+	friendWalletAddress?: string;
 }
 
 export function ChartHome({
 	timeline,
 	onMouseDown,
 	onMouseUp,
-	friendWalletAdress,
+	friendWalletAddress,
 }: ChartHomeProps) {
 	const walletAddress = useTonAddress();
 	const { fontSizeCounter, element1Ref, element2Ref, checkIntersection } =
 		useElementIntersection();
 
-  const targetAddress = friendWalletAdress || walletAddress;
+  const targetAddress = friendWalletAddress || walletAddress;
 	const { data: userWalletCreationDate } = useQuery({
 		queryKey: ["userWalletCreationDate", targetAddress],
 		queryFn: () => TON_CENTER_API.getUserWalletCreationDate(targetAddress!),

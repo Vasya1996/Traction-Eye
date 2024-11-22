@@ -15,8 +15,6 @@ export const StormVaultCard: FC<LiquidityPoolCardProps> = ({ poolData }) => {
 		return null;
 	}
 
-	console.log("pool data", poolData);
-
 	return (
 		<>
 			{poolData?.map((pool, index) => (
