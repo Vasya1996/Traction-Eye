@@ -1,11 +1,22 @@
 import { FC, useEffect } from "react";
-import { Link } from "react-router-dom";
+import { useQuery } from "@tanstack/react-query";
 import TONLogo from "./ton_symbol.svg";
 import { NFT } from "@/types/index";
-import { useStore } from "@/store/store";
+import { API } from "@/api/api";
+import { CACHE_OPTIONS_FAST } from "@/constants";
+import { NFTImage } from "@/components/NFTImage";
 
 const NFTListPage: FC = () => {
-	const nfts = useStore((state) => state.nfts);
+	const userFriendlyAddress = "UQAINHiKgQMi0BQ-Y4C5AMFiZm_2dgvf-KPxdWJImKWArNwM"; //useTonAddress();
+
+	const { data } = useQuery({
+		queryKey: ["nfts", userFriendlyAddress],
+		queryFn: () => API.getNftsByWallet(userFriendlyAddress),
+		enabled: !!userFriendlyAddress,
+		...CACHE_OPTIONS_FAST
+	});
+
+	const nfts = data?.nfts ?? [];
 
 	useEffect(() => {
 		const scrollContainer = document.querySelector('.max-h-screen');
@@ -35,14 +46,8 @@ const NFTListPage: FC = () => {
 			</div>
 			<ul className="grid grid-cols-2 flex-col gap-5 mx-auto">
 				{nfts.map((nft: NFT) => (
-					<li className="w-33 h-33 bg-gray-300 shadow-lg rounded-xl" key={nft.nft_address}>
-						<Link to={`/nft/${nft.nft_address}`}>
-							<img
-								className=" rounded-xl"
-								src={nft.image_url}
-								alt={nft.name}
-							/>
-						</Link>
+					<li className="w-33 h-33 min-h-[181px] rounded-xl my-auto" key={nft.nft_address}>
+						<NFTImage withName nft={nft} linkClassName="w-full" imgClassName="w-full object-cover rounded-xl" noImgClassName="w-full min-h-[181px] flex items-center justify-center bg-gray-300 rounded-xl"/>
 					</li>
 				))}
 			</ul>

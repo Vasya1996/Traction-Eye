@@ -20,21 +20,21 @@ import { StormPoolCard } from "./components/StormTradeCard";
 import { StormVaultCard } from "./components/StormVaultCard";
 
 interface ProtocolsListProps {
-	friendWalletAdress?: string; //ref adress
+	friendWalletAddress?: string; //ref address
 }
 
 export const ProtocolsList: FC<ProtocolsListProps> = ({
-	friendWalletAdress,
+	friendWalletAddress,
 }) => {
 	const userFriendlyAddress = useTonAddress();
 
-	const [rawAdress, setRawAdress] = useState("");
+	const [rawAddress, setRawAddress] = useState("");
 
-	const targetAddress = friendWalletAdress || userFriendlyAddress;
+	const targetAddress = friendWalletAddress || userFriendlyAddress;
 
 	useEffect(() => {
 		if (targetAddress.length) {
-			setRawAdress(Address.parse(targetAddress).hash.toString("hex"));
+			setRawAddress(Address.parse(targetAddress).hash.toString("hex"));
 		}
 	}, [targetAddress]);
 
@@ -42,6 +42,7 @@ export const ProtocolsList: FC<ProtocolsListProps> = ({
 		queryFn: () => API.getDedustInfo(targetAddress),
 		queryKey: ["dedust", targetAddress],
 		enabled: !!targetAddress,
+		retry: 2,
 		...CACHE_OPTIONS,
 	});
 
@@ -49,6 +50,7 @@ export const ProtocolsList: FC<ProtocolsListProps> = ({
 		queryFn: () => API.getStonfiInfo(targetAddress),
 		queryKey: ["stonfi", targetAddress],
 		enabled: !!targetAddress,
+		retry: 2,
 		...CACHE_OPTIONS,
 	});
 
@@ -56,20 +58,23 @@ export const ProtocolsList: FC<ProtocolsListProps> = ({
 		queryFn: () => SETTLE_API.getSettleTonJettons(targetAddress),
 		queryKey: ["settleTon", targetAddress],
 		enabled: !!targetAddress,
+		retry: 2,
 		...CACHE_OPTIONS,
 	});
 
 	const { data: stormPositionsData } = useQuery({
-		queryFn: () => STORM_API.getStormPositions(`0:${rawAdress}`),
-		queryKey: ["stormTonPositions", rawAdress],
-		enabled: !!rawAdress,
+		queryFn: () => STORM_API.getStormPositions(`0:${rawAddress}`),
+		queryKey: ["stormTonPositions", rawAddress],
+		enabled: !!rawAddress,
+		retry: 2,
 		...CACHE_OPTIONS,
 	});
 
 	const { data: stormVautsData } = useQuery({
-		queryFn: () => STORM_API.getStormVaults(`0:${rawAdress}`),
-		queryKey: ["stormTonVaults", rawAdress],
-		enabled: !!rawAdress,
+		queryFn: () => STORM_API.getStormVaults(`0:${rawAddress}`),
+		queryKey: ["stormTonVaults", rawAddress],
+		enabled: !!rawAddress,
+		retry: 2,
 		...CACHE_OPTIONS,
 	});
 

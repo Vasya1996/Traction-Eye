@@ -1,8 +1,6 @@
 import { useState, useEffect } from "react";
 import { LineChart, Line, ResponsiveContainer, Tooltip, ReferenceLine, XAxis, YAxis} from "recharts";
 import { ChartData } from "@/types";
-import { setLocalStorageWithEvent } from "@/hooks";
-import { LocalStorageKeys } from "@/constants/localStorage";
 
 interface ChartMouseEvent {
     activeTooltipIndex?: number;

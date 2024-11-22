@@ -17,6 +17,7 @@ import { TonConnectUIProvider } from "@tonconnect/ui-react";
 import { Toaster } from "react-hot-toast";
 import { routes } from "@/navigation/routes.tsx";
 import { SocialCap, AssetsOff, IoMdWallet } from "./icons";
+import { LocalStorageKeys } from "@/constants/localStorage";
 const queryClient = new QueryClient();
 
 export const App: FC = () => {

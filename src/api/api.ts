@@ -1,4 +1,4 @@
-import { Asset, ChartResponse, JettonInfo, LPPairInfo, LPResponse } from "@/types";
+import { Asset, ChartResponse, JettonInfo, LPPairInfo, LPResponse, NFT } from "@/types";
 import apiClient from "./apiClient";
 import endpoints from "./endpoints";
 import { ProtocolTypes } from "@/constants";
@@ -18,7 +18,7 @@ export const API = {
 		}
 	},
 
-	getNftsByWallet: async (wallet: string) => {
+	getNftsByWallet: async (wallet: string): Promise<{ nfts: NFT[] } | undefined> => {
 		try {
 			const payload = { wallet_address: wallet };
 			const response = await apiClient.post(
