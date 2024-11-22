@@ -13,7 +13,7 @@ import React, { type FC, useEffect, useMemo, useState } from "react";
 import { Link, Navigate, Route, Router, Routes } from "react-router-dom";
 import { postEvent } from "@telegram-apps/sdk";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { TonConnectUIProvider, useTonAddress } from "@tonconnect/ui-react";
+import { TonConnectUIProvider, useTonAddress, useTonConnectUI } from "@tonconnect/ui-react";
 import { Toaster } from "react-hot-toast";
 import { routes } from "@/navigation/routes.tsx";
 import { SocialCap, AssetsOff, IoMdWallet } from "./icons";
@@ -25,6 +25,7 @@ export const App: FC = () => {
 	const themeParams = useThemeParams();
 	const viewport = useViewport();
 	const userFriendlyAddress = useTonAddress();
+  const [tonConnectUI] = useTonConnectUI();
 
 	useEffect(() => {
 		return bindMiniAppCSSVars(miniApp, themeParams);
@@ -133,7 +134,8 @@ export const App: FC = () => {
 			(location?.pathname !== "/connect" && location?.pathname === "/friend") ||
 				showConnectBtn
 		);
-		if (!userFriendlyAddress.length) {
+    
+		if (!userFriendlyAddress.length && !tonConnectUI?.wallet) {
 			setShowConnectBtn(true);
 			return;
 		}
