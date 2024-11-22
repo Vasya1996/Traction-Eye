@@ -69,7 +69,7 @@ export const ConnectPage = () => {
 		}) => UserServiceApi.addWallet(walletAddress, referrer_link),
 		mutationKey: ["user-service-add-wallet"],
 	});
-//
+
 	const [tonConnectUI] = useTonConnectUI();
 	const [isDisconnected, setIsDisconnected] = useState(false);
 
