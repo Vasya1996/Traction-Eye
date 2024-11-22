@@ -196,6 +196,30 @@ export const SwapPage = () => {
 
   const canDoSwap = useMemo(() => Number(sendToken?.amount) >= Number(sendTokenAmount), [sendToken?.amount, sendTokenAmount]);
 
+  const [showConnectBtn, setShowConnectBtn] = useState(false);
+
+	useEffect(() => {
+		console.log("showConnectBtn", showConnectBtn);
+		console.log(
+			"LocalStorageKeys.firstLogin",
+			localStorage.getItem(LocalStorageKeys.firstLogin),
+			!localStorage.getItem(LocalStorageKeys.firstLogin)
+		);
+		console.log("userFriendlyAddress.length", userFriendlyAddress.length);
+		console.log("location?.pathname", location.pathname);
+		console.log(
+			"show on index",
+			(location?.pathname !== "/connect" && location?.pathname === "/friend") ||
+				showConnectBtn
+		);
+		if (!userFriendlyAddress.length) {
+			setShowConnectBtn(true);
+			return;
+		}
+		setShowConnectBtn(false);
+	}, [location?.pathname]);
+
+
   return (
       <Box className="flex flex-col items-center bg-gray-100 h-screen w-full">
         {/* Header */}
@@ -319,7 +343,7 @@ export const SwapPage = () => {
           </Box>
 
           {/* Swap Button */}
-          <Box className="flex items-end mx-4 mb-30">
+          {!showConnectBtn ? <Box className="flex items-end mx-4 mb-30">
             <Button
               disabled={!sendTokenAmount || !quote || !userFriendlyAddress || !canDoSwap}
               variant="contained"
@@ -331,7 +355,7 @@ export const SwapPage = () => {
             >
               {isLoadingTransaction ? <Spinner/> : (canDoSwap && sendTokenAmount ? "Swap token" : !sendTokenAmount ? "Enter an amount" :`Insufficient ${sendToken?.symbol ?? ""} balance`)}
             </Button>
-          </Box>
+          </Box> : null}
         </Box>
       <SelectTokenDrawer assets={swapData} open={drawerOpen} onClose={handleDrawerClose} filteredTokenAddress={isSendTokenMode ? receiveToken?.address : sendToken?.address} onSelect={isSendTokenMode ? onSelectSendToken : onSelectReceiveToken} />
       <SlippageSettingsDrawer open={slippageDrawerOpen} onClose={handleSlippageDrawerClose} onSave={handleSlippage} />

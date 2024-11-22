@@ -3,7 +3,7 @@ import { useTonAddress } from "@tonconnect/ui-react";
 import Logo from "../IndexPage/TELogo.svg";
 import { useTonConnectUI } from "@tonconnect/ui-react";
 import { postEvent, retrieveLaunchParams } from "@telegram-apps/sdk";
-import { useLocation, useNavigate } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useMutation } from "@tanstack/react-query";
 import { API } from "@/api/api";
 import { UserServiceApi } from "@/api/userServiceApi";
@@ -178,7 +178,7 @@ export const ConnectPage = () => {
 			{...handlers}
 			className="connect-page h-screen flex flex-col p-4 pt-2 select-none overflow-hidden"
 		>
-			{/* <Link
+			<Link
 				className="flex text-sm items-center text-yellow-300 shadow-md shadow-yellow-500/40 mr-1 px-3 bg-black border rounded-xl h-9"
 				to={"/friend"}
 			>
@@ -189,7 +189,7 @@ export const ConnectPage = () => {
 				to={{pathname: "/", search: '', hash: ''}}
 			>
 				INDEX
-			</Link> */}
+			</Link>
 			<div className="flex-grow flex flex-col justify-center items-center max-w-md w-full mx-auto">
 				<div className="text-center rounded-xl z-1 p-4 py-0 text-gray-300 flex flex-col items-center">
 					{currentSlide === 0 ? (

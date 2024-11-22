@@ -92,7 +92,7 @@ export const IndexPage: FC = () => {
 						</div>
 					</Link>
 					
-                    <Link
+                    {/* <Link
                         className="flex text-sm items-center text-yellow-300 shadow-md shadow-yellow-500/40 mr-1 px-3 bg-black border rounded-xl h-9"
                         to={"/friend"}
                     >
@@ -103,7 +103,7 @@ export const IndexPage: FC = () => {
                         to={"/"}
                     >
                         INDEX
-                    </Link>
+                    </Link> */}
 				</div>
 				<div style={{ touchAction: "none" }} className="mt-auto">
 					<ChartHome timeline={selectedTimeline} />
