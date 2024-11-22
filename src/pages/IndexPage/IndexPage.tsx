@@ -15,134 +15,112 @@ import { Button } from "@mui/material";
 import { UserResponse } from "@/types";
 import { UserServiceApi } from "@/api/userServiceApi";
 import { useTelegramShare } from "@/hooks";
+import { shareButtonStyles } from "./styles/styles";
 
-export const shortenWallet = (
-	wallet: string,
-	startLength: number = 4,
-	endLength: number = 4
-): string => {
-	const start = wallet.substring(0, startLength);
-	const end = wallet.substring(wallet.length - endLength);
-	return `${start}...${end}`;
+export const shortenWallet = (wallet: string, startLength: number = 4, endLength: number = 4): string => {
+    const start = wallet.substring(0, startLength);
+    const end = wallet.substring(wallet.length - endLength);
+    return `${start}...${end}`;
 };
 
 export const IndexPage: FC = () => {
-	const navigate = useNavigate();
-	const walletAddress = useTonAddress();
-	const { initDataRaw, initData } = retrieveLaunchParams();
-  const { shareContent } = useTelegramShare();
+    const navigate = useNavigate();
+    const walletAddress = useTonAddress();
+    const { initDataRaw, initData } = retrieveLaunchParams();
+    const { shareContent } = useTelegramShare();
 
-	useEffect(() => {
-		if (
-			initData?.startParam &&
-			initData?.startParam?.split("__wallet=").length > 1
-		) {
-      navigate("/friend");
-		}
-		if (walletAddress) return;
-		setTimeout(() => {
-      console.log("nav connect")
-			navigate("/connect");
-		}, 300);
-	}, [walletAddress]);
+    useEffect(() => {
+        const scrollContainer = document.querySelector(".max-h-screen");
+        if (scrollContainer) {
+            scrollContainer.scrollTo(0, 0);
+        }
+    }, []);
 
-  const { data: userData } = useQuery<UserResponse>({
-    queryKey: ["userData", walletAddress],
-    queryFn: () => UserServiceApi.getUser(walletAddress),
-    retry: 2,
-    refetchOnWindowFocus: false,
-    staleTime: Infinity,
-    enabled: !!walletAddress,
-  })
-    
+    useEffect(() => {
+        if (initData?.startParam && initData?.startParam?.split("__wallet=").length > 1) {
+            navigate("/friend");
+        }
+        if (walletAddress) return;
+        setTimeout(() => {
+            console.log("nav connect");
+            navigate("/connect");
+        }, 300);
+    }, [walletAddress]);
 
-	const { data } = useQuery({
-		queryKey: ["login"],
-		queryFn: () => API.login(initDataRaw!),
-		enabled: !!initDataRaw,
-		retry: false,
-	});
+    const { data: userData } = useQuery<UserResponse>({
+        queryKey: ["userData", walletAddress],
+        queryFn: () => UserServiceApi.getUser(walletAddress),
+        retry: 2,
+        refetchOnWindowFocus: false,
+        staleTime: Infinity,
+        enabled: !!walletAddress,
+    });
 
-	useEffect(() => {
-		if (data?.token) {
-			localStorage.setItem("token", data?.token);
-		}
-	}, [data]);
+    const { data } = useQuery({
+        queryKey: ["login"],
+        queryFn: () => API.login(initDataRaw!),
+        enabled: !!initDataRaw,
+        retry: false,
+    });
 
-	// State for selected timeline
-	const [selectedTimeline, setSelectedTimeline] = useState<
-		keyof typeof TIMELINES_INTERVALS_SECONDS
-	>(TimelineKeys.Month);
+    useEffect(() => {
+        if (data?.token) {
+            localStorage.setItem("token", data?.token);
+        }
+    }, [data]);
 
-	const handleTimelineSelect = (
-		timeline: keyof typeof TIMELINES_INTERVALS_SECONDS
-	) => {
-		setSelectedTimeline(timeline);
-	};
+    // State for selected timeline
+    const [selectedTimeline, setSelectedTimeline] = useState<keyof typeof TIMELINES_INTERVALS_SECONDS>(
+        TimelineKeys.Month,
+    );
 
-	return (
-		<div className="bg-gray-800 min-h-screen select-none overflow-hidden">
-			<div className="hero h-72 flex flex-col">
-				<div className="userdata px-4 flex justify-between items-center mt-1">
-					<Link to={"/profiles"}>
-						<div className="flex items-center">
-							<Logo className="h-11 w-11 py-3 px-2 bg-black rounded-full mr-3" />
-							<div className="items-center">
-								<p className="text-gray-400 font-light">
-									{shortenWallet(walletAddress)}
-								</p>
-							</div>
-							<MdOutlineKeyboardArrowRight
-								color={Colors.zincLight}
-								className="my-auto text-2xl"
-							/>
-						</div>
-					</Link>
-					
-          {(userData?.referral_link && walletAddress) && (
-              <Button
-                  variant="outlined"
-                  sx={{
-                      color: 'white', // Text color
-                      borderColor: 'rgba(255, 255, 255, 0.3)', // Border color
-                      borderRadius: '8px', // Rounded corners
-                      textTransform: 'none', // Disable uppercase text
-                      fontSize: '0.75rem', // Font size
-                      padding: '8px 12px', // Padding for button
-                      transition: 'all 0.3s ease',
-                      height: "26px",
-                      '&:hover': {
-                          borderColor: 'rgba(255, 255, 255, 0.5)', // Hover border color
-                          backgroundColor: 'rgba(255, 255, 255, 0.1)', // Hover background
-                      },
-                  }}
-                  onClick={() => {
-                      shareContent(`https://t.me/TractionEyebot/app?startapp=${userData?.referral_link}__wallet=${walletAddress}`, "Check out my investment profile and join my network of contacts. Find out your social score 🏆");
-                  }}
-              >
-                  <ShareIcon size={12} className="mr-1" />Share portfolio
-              </Button>
-            )}
-				</div>
-				<div style={{ touchAction: "none" }} className="mt-auto">
-					<ChartHome timeline={selectedTimeline} />
-					<TimelineToolbar
-						friendWalletAddress={walletAddress}
-						onTimelineSelect={handleTimelineSelect}
-					/>
-				</div>
-			</div>
+    const handleTimelineSelect = (timeline: keyof typeof TIMELINES_INTERVALS_SECONDS) => {
+        setSelectedTimeline(timeline);
+    };
 
-			<div
-				style={{ minHeight: "60vh", height: "100%" }}
-				className="p-5 rounded-t-3xl bg-gray-50 pb-32"
-			>
-				<AssetList />
-				<NFTList />
-				<ProtocolsList />
-			</div>
-		</div>
-	);
+    return (
+        <div className="bg-gray-800 min-h-screen select-none overflow-hidden">
+            <div className="hero h-72 flex flex-col">
+                <div className="userdata px-4 flex justify-between items-center mt-1">
+                    <Link to={"/profiles"}>
+                        <div className="flex items-center">
+                            <Logo className="h-11 w-11 py-3 px-2 bg-black rounded-full mr-3" />
+                            <div className="items-center">
+                                <p className="text-gray-400 font-light">{shortenWallet(walletAddress)}</p>
+                            </div>
+                            <MdOutlineKeyboardArrowRight color={Colors.zincLight} className="my-auto text-2xl" />
+                        </div>
+                    </Link>
+
+                    {userData?.referral_link && walletAddress && (
+                        <Button
+                            variant="outlined"
+                            sx={shareButtonStyles}
+                            onClick={() => {
+                                shareContent(
+                                    `https://t.me/TractionEyebot/app?startapp=${userData?.referral_link}__wallet=${walletAddress}`,
+                                    "Check out my investment profile and join my network of contacts. Find out your social score 🏆",
+                                );
+                            }}
+                        >
+                            <ShareIcon size={12} className="mr-1" />
+                            Share portfolio
+                        </Button>
+                    )}
+                </div>
+                <div style={{ touchAction: "none" }} className="mt-auto">
+                    <ChartHome timeline={selectedTimeline} />
+                    <TimelineToolbar friendWalletAddress={walletAddress} onTimelineSelect={handleTimelineSelect} />
+                </div>
+            </div>
+
+            <div style={{ minHeight: "60vh", height: "100%" }} className="p-5 rounded-t-3xl bg-gray-50 pb-32">
+                <AssetList />
+                <NFTList />
+                <ProtocolsList />
+            </div>
+        </div>
+    );
 };
 
 export default IndexPage;

@@ -48,6 +48,14 @@ const AssetItemPage: FC = () => {
 		setSelectedTimeline(timeline);
 	};
 
+
+	useEffect(() => {
+        const scrollContainer = document.querySelector('.max-h-screen');
+        if (scrollContainer) {
+            scrollContainer.scrollTo(0, 0);
+        }
+    }, []);
+
 	const targetAddress = state.friendWalletAddress || walletAddress;
 
 	const { data: userWalletCreationDate } = useQuery({
