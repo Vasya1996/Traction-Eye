@@ -13,7 +13,7 @@ import React, { type FC, useEffect, useMemo, useState } from "react";
 import { Link, Navigate, Route, Router, Routes } from "react-router-dom";
 import { postEvent } from "@telegram-apps/sdk";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { TonConnectUIProvider } from "@tonconnect/ui-react";
+import { TonConnectUIProvider, useTonAddress, useTonConnectUI } from "@tonconnect/ui-react";
 import { Toaster } from "react-hot-toast";
 import { routes } from "@/navigation/routes.tsx";
 import { SocialCap, AssetsOff, IoMdWallet } from "./icons";
@@ -24,6 +24,8 @@ export const App: FC = () => {
 	const miniApp = useMiniApp();
 	const themeParams = useThemeParams();
 	const viewport = useViewport();
+	const userFriendlyAddress = useTonAddress();
+  const [tonConnectUI] = useTonConnectUI();
 
 	useEffect(() => {
 		return bindMiniAppCSSVars(miniApp, themeParams);
@@ -57,6 +59,11 @@ export const App: FC = () => {
 				miniApp.setHeaderColor("#1F2937");
 				miniApp.setBgColor("#f9fafb");
 				break;
+      case location.pathname === "/friend":
+        postEvent("web_app_setup_back_button", { is_visible: true });
+        miniApp.setHeaderColor("#1F2937");
+        miniApp.setBgColor("#f9fafb");
+        break;
 			case location.pathname === "/profiles":
 				postEvent("web_app_setup_back_button", { is_visible: true });
 				miniApp.setHeaderColor("#f9fafb");
@@ -114,10 +121,26 @@ export const App: FC = () => {
 	const [showConnectBtn, setShowConnectBtn] = useState(false);
 
 	useEffect(() => {
-		if (!localStorage.getItem(LocalStorageKeys.firstLogin)) {
-			setShowConnectBtn(false);
+		console.log("showConnectBtn", showConnectBtn);
+		console.log(
+			"LocalStorageKeys.firstLogin",
+			localStorage.getItem(LocalStorageKeys.firstLogin),
+			!localStorage.getItem(LocalStorageKeys.firstLogin)
+		);
+		console.log("userFriendlyAddress.length", userFriendlyAddress.length);
+		console.log("location?.pathname", location.pathname);
+		console.log(
+			"show on index",
+			(location?.pathname !== "/connect" && location?.pathname === "/friend") ||
+				showConnectBtn
+		);
+    
+		if (!userFriendlyAddress.length && !tonConnectUI?.wallet) {
+			setShowConnectBtn(true);
+			return;
 		}
-	}, []);
+		setShowConnectBtn(false);
+	}, [location?.pathname]);
 
 	return (
 		<div className="max-h-screen overflow-scroll">
@@ -139,9 +162,7 @@ export const App: FC = () => {
 								className="fixed bottom-0 w-full z-50 pb-safe"
 								style={{
 									height:
-										location?.pathname === "/friend" || !showConnectBtn
-											? 0
-											: 90,
+										location?.pathname === "/friend" || showConnectBtn ? 0 : 90,
 								}}
 							>
 								<BottomNavigationAction
@@ -152,16 +173,16 @@ export const App: FC = () => {
 								/>
 							</BottomNavigation>
 						)}
-						{(!showConnectBtn && location?.pathname !== "/connect") ? (
+						{showConnectBtn && location?.pathname !== "/connect" ? (
 							<Link to="/connect?from=link">
 								<div className="absolute bottom-10 left-0 flex justify-center w-full">
 									<a
 										href={"/connect"}
-										className={`py-3 bg-yellow-500 rounded-2xl w-3/4 sm:w-3/4 md:w-1/2 lg:w-1/3 flex justify-center items-center text-base sm:text-lg`}
+										className={`py-3 bg-yellow-400 rounded-2xl w-[82%] sm:w-3/4 md:w-1/2 lg:w-1/3 flex justify-center items-center text-base sm:text-lg mr-3`}
 									>
 										<span className="flex items-center">
-											Connect Wallet
-											<IoMdWallet size={18} className="text-lg ml-2" />
+											<IoMdWallet size={24} className="text-lg mr-1" />
+											<span>Connect Wallet</span>
 										</span>
 									</a>
 								</div>

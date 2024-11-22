@@ -5,7 +5,7 @@ import { NodeGlobalsPolyfillPlugin } from "@esbuild-plugins/node-globals-polyfil
 import path from "path";
 
 export default defineConfig({
-	base: "",
+	base: '',
 	plugins: [
 		// Allows using React dev server along with building a React application with Vite.
 		// https://npmjs.com/package/@vitejs/plugin-react-swc
@@ -17,7 +17,6 @@ export default defineConfig({
 		// https://www.npmjs.com/package/@vitejs/plugin-basic-ssl
 		// basicSsl()
 	],
-	publicDir: "./public",
 	resolve: {
 		alias: {
 			"@": path.resolve(__dirname, "./src"),
@@ -38,6 +37,12 @@ export default defineConfig({
 					buffer: true,
 				}),
 			],
+		},
+	},
+  build: {
+		outDir: "dist",
+		rollupOptions: {
+			input: path.resolve(__dirname, "index.html"),
 		},
 	},
 });

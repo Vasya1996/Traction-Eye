@@ -58,9 +58,9 @@ const ProfilesListPage: FC = () => {
         if (tonConnectUI) {
           try {
             localStorage.removeItem(LocalStorageKeys.user_service_wallet_address);
+            await tonConnectUI.disconnect();
             postEvent('web_app_trigger_haptic_feedback', { type: 'notification', notification_type: 'success' });
             alert('Successfuly removed!');
-            await tonConnectUI.disconnect();
             navigate('/connect');
           } catch (error) {
             console.error('Failed to disconnect:', error);

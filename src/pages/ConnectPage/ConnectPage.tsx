@@ -3,7 +3,7 @@ import { useTonAddress } from "@tonconnect/ui-react";
 import Logo from "../IndexPage/TELogo.svg";
 import { useTonConnectUI } from "@tonconnect/ui-react";
 import { postEvent, retrieveLaunchParams } from "@telegram-apps/sdk";
-import { useLocation, useNavigate } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useMutation } from "@tanstack/react-query";
 import { API } from "@/api/api";
 import { UserServiceApi } from "@/api/userServiceApi";
@@ -14,6 +14,7 @@ import { IoMdWallet } from "@/components/icons";
 import "./ConnectPage.css"; // Импортируйте CSS файл
 import { Spinner } from "@/components/ui/spinner";
 import { LocalStorageKeys } from "@/constants/localStorage";
+//fuck shit
 
 export const ConnectPage = () => {
 	const [currentSlide, setCurrentSlide] = useState(0);
@@ -43,6 +44,10 @@ export const ConnectPage = () => {
 		}
 	}, [location.search]);
 
+	// useEffect(() => {
+	//   navigate('/');
+	// }, [])
+
 	const loginMutation = useMutation({
 		mutationKey: ["login"],
 		mutationFn: (initData: string) => UserServiceApi.login(initData),
@@ -53,6 +58,7 @@ export const ConnectPage = () => {
 			API.addWallet(params.telegram_id, params.wallet_address),
 		mutationKey: ["add-wallet"],
 	});
+
 
 	const userServiceAddWalletMutation = useMutation({
 		mutationFn: ({
@@ -72,6 +78,7 @@ export const ConnectPage = () => {
 		const walletAddress = localStorage.getItem(
 			LocalStorageKeys.user_service_wallet_address
 		);
+    console.log("TON UI STATE", isDisconnected)
 		if (!walletAddress && !isDisconnected && !isFirstLogin) {
 			tonConnectUI?.disconnect();
 			setIsDisconnected(true);
@@ -115,7 +122,8 @@ export const ConnectPage = () => {
 					userFriendlyAddress
 				);
 				localStorage.setItem(LocalStorageKeys.firstLogin, "true");
-				navigate("/");
+
+				navigate({ pathname: "/", search: "", hash: '' });
 			} catch (err) {
 				console.log("--err", err);
 			}
@@ -173,6 +181,18 @@ export const ConnectPage = () => {
 			{...handlers}
 			className="connect-page h-screen flex flex-col p-4 pt-2 select-none overflow-hidden"
 		>
+			<Link
+				className="flex text-sm items-center text-yellow-300 shadow-md shadow-yellow-500/40 mr-1 px-3 bg-black border rounded-xl h-9"
+				to={"/friend"}
+			>
+				Friend PAGE
+			</Link>
+			<Link
+				className="flex text-sm items-center text-yellow-300 shadow-md shadow-yellow-500/40 mr-1 px-3 bg-black border rounded-xl h-9"
+				to={{pathname: "/", search: '', hash: ''}}
+			>
+				INDEX
+			</Link>
 			<div className="flex-grow flex flex-col justify-center items-center max-w-md w-full mx-auto">
 				<div className="text-center rounded-xl z-1 p-4 py-0 text-gray-300 flex flex-col items-center">
 					{currentSlide === 0 ? (
