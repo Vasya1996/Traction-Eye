@@ -11,10 +11,11 @@ interface NFTImageProps {
     noImgClassName?: string;
     noImgIconClassName?: string;
     withName?: boolean;
+    skeletonHeight?: number;
 }
 
 
-export const NFTImage: React.FC<NFTImageProps> = ({ nft, linkClassName, imgClassName, noImgClassName, noImgIconClassName, withName = false }) => {
+export const NFTImage: React.FC<NFTImageProps> = ({ nft, linkClassName, imgClassName, noImgClassName, noImgIconClassName, withName = false, skeletonHeight = 181 }) => {
     const [isImageError, setIsImageError] = useState(false);
     const [isLoading, setIsLoading] = useState(true);
 
@@ -25,7 +26,7 @@ export const NFTImage: React.FC<NFTImageProps> = ({ nft, linkClassName, imgClass
                     variant="rectangular"
                     className={imgClassName ?? 'h-full w-full object-cover rounded-xl'}
                     animation="wave"
-                    height={181}
+                    height={skeletonHeight}
                 />
             )}
     
