@@ -190,7 +190,6 @@ export const ConnectPage = () => {
 			>
 				INDEX
 			</Link> */}
-      {/* ыв */}
 			<div className="flex-grow flex flex-col justify-center items-center max-w-md w-full mx-auto">
 				<div className="text-center rounded-xl z-1 p-4 py-0 text-gray-300 flex flex-col items-center">
 					{currentSlide === 0 ? (
