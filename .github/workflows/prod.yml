@@ -12,7 +12,7 @@ jobs:
       - name: SSH and deploy to production server
         uses: appleboy/ssh-action@master
         with:
-          host: ${{ secrets.DEPLOY_HOST_TEST }}
+          host: ${{ secrets.DEPLOY_HOST_PROD }}
           username: default_user
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           script: |
