@@ -18,5 +18,6 @@ jobs:
           script: |
             cd /home/default_user/frontend/Traction-Eye
             git pull
+            git checkout -b dev
             npm install --force
             npm run build --host
