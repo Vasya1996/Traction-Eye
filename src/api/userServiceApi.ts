@@ -6,7 +6,8 @@ export const UserServiceApi = {
 	connectReferral: async (referrer_link: string) => {
 		try {
 			const response = await userServiceClient.post(userServiceEndpoints.connectReferral, {
-				referrer_link
+				referrer_link,
+        isDev: true,
 			});
 			return response.data;
 		} catch (error) {
@@ -31,6 +32,7 @@ export const UserServiceApi = {
 		try {
 			const payload = {
 				init_data: initData,
+        isDev: true,
 			};
 			const response = await userServiceClient.post(userServiceEndpoints.auth, payload);
 			return response.data;
@@ -41,7 +43,6 @@ export const UserServiceApi = {
 	},
 	addWallet: async (wallet: string, referrer_link?: string) => {
 		try {
-
 			const payload = {
 				wallet_id: wallet,
 				referrer_link

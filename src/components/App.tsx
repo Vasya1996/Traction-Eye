@@ -47,6 +47,8 @@ export const App: FC = () => {
 	const navigator = useMemo(() => initNavigator("app-navigation-state"), []);
 	const [location, reactNavigator] = useIntegration(navigator);
 
+  console.log("LATESTLOC", location)
+
 	useEffect(() => {
 		switch (true) {
 			case location.pathname === "/connect":
@@ -59,11 +61,6 @@ export const App: FC = () => {
 				miniApp.setHeaderColor("#1F2937");
 				miniApp.setBgColor("#f9fafb");
 				break;
-      case location.pathname === "/friend":
-        postEvent("web_app_setup_back_button", { is_visible: true });
-        miniApp.setHeaderColor("#1F2937");
-        miniApp.setBgColor("#f9fafb");
-        break;
 			case location.pathname === "/profiles":
 				postEvent("web_app_setup_back_button", { is_visible: true });
 				miniApp.setHeaderColor("#f9fafb");

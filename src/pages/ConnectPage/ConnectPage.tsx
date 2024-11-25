@@ -181,18 +181,6 @@ export const ConnectPage = () => {
 			{...handlers}
 			className="connect-page h-screen flex flex-col p-4 pt-2 select-none overflow-hidden"
 		>
-			<Link
-				className="flex text-sm items-center text-yellow-300 shadow-md shadow-yellow-500/40 mr-1 px-3 bg-black border rounded-xl h-9"
-				to={"/friend"}
-			>
-				Friend PAGE
-			</Link>
-			<Link
-				className="flex text-sm items-center text-yellow-300 shadow-md shadow-yellow-500/40 mr-1 px-3 bg-black border rounded-xl h-9"
-				to={{pathname: "/", search: '', hash: ''}}
-			>
-				INDEX
-			</Link>
 			<div className="flex-grow flex flex-col justify-center items-center max-w-md w-full mx-auto">
 				<div className="text-center rounded-xl z-1 p-4 py-0 text-gray-300 flex flex-col items-center">
 					{currentSlide === 0 ? (
