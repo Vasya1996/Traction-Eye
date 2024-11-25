@@ -30,5 +30,7 @@ export * from "./FilterIcon";
 export * from "./WalletIcon";
 export * from "./ThinArrowIcon";
 export * from "./SearchIcon";
+export * from "./NoImageIcon";
+export * from "./ShareIcon";
 // export * from "./SocialAvatar";
 // export * from "./InviteBonus";

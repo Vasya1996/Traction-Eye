@@ -64,11 +64,11 @@ type PoolVaultResponse = {
 };
 
 export const STORM_API = {
-	getStormPositions: async (rawAdress?: string): Promise<ResponseData> => {
+	getStormPositions: async (rawAddress?: string): Promise<ResponseData> => {
 		try {
 			const response = await stormTonClient.post(
 				`${stormTonEndpoints.positions}`,
-				{ wallet: rawAdress }
+				{ wallet: rawAddress }
 			);
 			return response.data;
 		} catch (error) {
@@ -76,11 +76,11 @@ export const STORM_API = {
 			throw error;
 		}
 	},
-	getStormVaults: async (rawAdress?: string): Promise<PoolVaultResponse> => {
+	getStormVaults: async (rawAddress?: string): Promise<PoolVaultResponse> => {
 		try {
 			const response = await stormTonClient.post(
 				`${stormTonEndpoints.vaults}`,
-				{ wallet: rawAdress }
+				{ wallet: rawAddress }
 			);
 			return response.data;
 		} catch (error) {

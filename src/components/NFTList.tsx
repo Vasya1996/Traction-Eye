@@ -1,4 +1,4 @@
-import { FC, useEffect } from "react";
+import { FC } from "react";
 import { Link } from "react-router-dom";
 import NFTCard from "@/components/NFTCard";
 import { PiImages, FaArrowRight } from "@/components/icons";
@@ -7,17 +7,14 @@ import { useQuery } from "@tanstack/react-query";
 import { useTonAddress } from "@tonconnect/ui-react";
 import NFTSkeletons from "./skeletons/NFTSkeletons";
 import { API } from "@/api/api";
-import { useStore } from "@/store/store";
 import { CACHE_OPTIONS_FAST } from "@/constants";
 
 interface NFTListProps {
-  friendWalletAddress?: string;
+	friendWalletAddress?: string;
 }
 
-const NFTList: FC<NFTListProps>  = ({ friendWalletAddress }) => {
+const NFTList: FC<NFTListProps> = ({ friendWalletAddress }) => {
 	const userFriendlyAddress = useTonAddress();
-
-  const setNfts = useStore((state) => state.setNfts);
 
   const targetAddress = friendWalletAddress || userFriendlyAddress;
 
@@ -28,14 +25,7 @@ const NFTList: FC<NFTListProps>  = ({ friendWalletAddress }) => {
 		...CACHE_OPTIONS_FAST
 	});
 
-	useEffect(() => {
-		if (data?.nfts) {
-			setNfts(data.nfts);
-		}
-	}, [data, setNfts]);
-
-	const nfts = useStore((state) => state.nfts);
-
+	const nfts = data?.nfts ?? [];
 
 	if (isFetching) {
 		return <NFTSkeletons />;
@@ -56,7 +46,7 @@ const NFTList: FC<NFTListProps>  = ({ friendWalletAddress }) => {
 				<div className="nft-preview py-5">
 					<div className="flex justify-center items-center gap-3">
 						{nfts.slice(0, 3).map((nft: NFT) => (
-							<NFTCard key={nft.name} nft={nft} />
+							<NFTCard key={nft.nft_address} nft={nft} />
 						))}
 
 

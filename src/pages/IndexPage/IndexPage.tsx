@@ -1,10 +1,9 @@
 import { FC, useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import AssetList from "@/components/AssetList";
-import { Logo, MdOutlineKeyboardArrowRight } from "@/components/icons";
+import { Logo, MdOutlineKeyboardArrowRight, ShareIcon } from "@/components/icons";
 import NFTList from "@/components/NFTList";
 import { ProtocolsList } from "@/components/ProtocolList";
-// import { postEvent } from "@telegram-apps/sdk";
 import { useTonAddress } from "@tonconnect/ui-react";
 import { retrieveLaunchParams } from "@telegram-apps/sdk-react";
 import { API } from "@/api/api";
@@ -12,118 +11,116 @@ import { useQuery } from "@tanstack/react-query";
 import { ChartHome } from "@/components/ChartHome";
 import { TimelineToolbar } from "@/components/TImelineToolbar";
 import { Colors, TimelineKeys, TIMELINES_INTERVALS_SECONDS } from "@/constants";
+import { Button } from "@mui/material";
+import { UserResponse } from "@/types";
+import { UserServiceApi } from "@/api/userServiceApi";
+import { useTelegramShare } from "@/hooks";
+import { shareButtonStyles } from "./styles/styles";
 
-export const shortenWallet = (
-	wallet: string,
-	startLength: number = 4,
-	endLength: number = 4
-): string => {
-	const start = wallet.substring(0, startLength);
-	const end = wallet.substring(wallet.length - endLength);
-	return `${start}...${end}`;
+export const shortenWallet = (wallet: string, startLength: number = 4, endLength: number = 4): string => {
+    const start = wallet.substring(0, startLength);
+    const end = wallet.substring(wallet.length - endLength);
+    return `${start}...${end}`;
 };
 
 export const IndexPage: FC = () => {
-	const navigate = useNavigate();
-	const walletAddress = useTonAddress();
-	const { initDataRaw, initData } = retrieveLaunchParams();
+    const navigate = useNavigate();
+    const walletAddress = useTonAddress();
+    const { initDataRaw, initData } = retrieveLaunchParams();
+    const { shareContent } = useTelegramShare();
 
-	useEffect(() => {
-		if (
-			initData?.startParam &&
-			initData?.startParam?.split("__wallet=").length > 1
-		) {
-      navigate("/friend");
-		}
-		if (walletAddress) return;
-		setTimeout(() => {
-      console.log("nav connect")
-			navigate("/connect");
-		}, 300);
-	}, [walletAddress]);
+    useEffect(() => {
+        const scrollContainer = document.querySelector(".max-h-screen");
+        if (scrollContainer) {
+            scrollContainer.scrollTo(0, 0);
+        }
+    }, []);
 
-	const { data } = useQuery({
-		queryKey: ["login"],
-		queryFn: () => API.login(initDataRaw!),
-		enabled: !!initDataRaw,
-		retry: false,
-	});
+    useEffect(() => {
+        if (initData?.startParam && initData?.startParam?.split("__wallet=").length > 1) {
+            navigate("/friend");
+        }
+        if (walletAddress) return;
+        setTimeout(() => {
+            console.log("nav connect");
+            navigate("/connect");
+        }, 300);
+    }, [walletAddress]);
 
-	useEffect(() => {
-		if (data?.token) {
-			localStorage.setItem("token", data?.token);
-		}
-	}, [data]);
+    const { data: userData } = useQuery<UserResponse>({
+        queryKey: ["userData", walletAddress],
+        queryFn: () => UserServiceApi.getUser(walletAddress),
+        retry: 2,
+        refetchOnWindowFocus: false,
+        staleTime: Infinity,
+        enabled: !!walletAddress,
+    });
 
-	// const handlePremiumClick = () => {
-	//     postEvent("web_app_trigger_haptic_feedback", {
-	//         type: "impact",
-	//         impact_style: "medium",
-	//     });
-	// };
+    const { data } = useQuery({
+        queryKey: ["login"],
+        queryFn: () => API.login(initDataRaw!),
+        enabled: !!initDataRaw,
+        retry: false,
+    });
 
-	// State for selected timeline
-	const [selectedTimeline, setSelectedTimeline] = useState<
-		keyof typeof TIMELINES_INTERVALS_SECONDS
-	>(TimelineKeys.Month);
+    useEffect(() => {
+        if (data?.token) {
+            localStorage.setItem("token", data?.token);
+        }
+    }, [data]);
 
-	const handleTimelineSelect = (
-		timeline: keyof typeof TIMELINES_INTERVALS_SECONDS
-	) => {
-		setSelectedTimeline(timeline);
-	};
+    // State for selected timeline
+    const [selectedTimeline, setSelectedTimeline] = useState<keyof typeof TIMELINES_INTERVALS_SECONDS>(
+        TimelineKeys.Month,
+    );
 
-	return (
-		<div className="bg-gray-800 min-h-screen select-none overflow-hidden">
-			<div className="hero h-72 flex flex-col">
-				<div className="userdata px-4 flex justify-between items-center mt-1">
-					<Link to={"/profiles"}>
-						<div className="flex items-center">
-							<Logo className="h-11 w-11 py-3 px-2 bg-black rounded-full mr-3" />
-							<div className="items-center">
-								<p className="text-gray-400 font-light">
-									{shortenWallet(walletAddress)}
-								</p>
-							</div>
-							<MdOutlineKeyboardArrowRight
-								color={Colors.zincLight}
-								className="my-auto text-2xl"
-							/>
-						</div>
-					</Link>
-					
-                    {/* <Link
-                        className="flex text-sm items-center text-yellow-300 shadow-md shadow-yellow-500/40 mr-1 px-3 bg-black border rounded-xl h-9"
-                        to={"/friend"}
-                    >
-                        Friend PAGE
+    const handleTimelineSelect = (timeline: keyof typeof TIMELINES_INTERVALS_SECONDS) => {
+        setSelectedTimeline(timeline);
+    };
+
+    return (
+        <div className="bg-gray-800 min-h-screen select-none overflow-hidden">
+            <div className="hero h-72 flex flex-col">
+                <div className="userdata px-4 flex justify-between items-center mt-1">
+                    <Link to={"/profiles"}>
+                        <div className="flex items-center">
+                            <Logo className="h-11 w-11 py-3 px-2 bg-black rounded-full mr-3" />
+                            <div className="items-center">
+                                <p className="text-gray-400 font-light">{shortenWallet(walletAddress)}</p>
+                            </div>
+                            <MdOutlineKeyboardArrowRight color={Colors.zincLight} className="my-auto text-2xl" />
+                        </div>
                     </Link>
-                    <Link
-                        className="flex text-sm items-center text-yellow-300 shadow-md shadow-yellow-500/40 mr-1 px-3 bg-black border rounded-xl h-9"
-                        to={"/"}
-                    >
-                        INDEX
-                    </Link> */}
-				</div>
-				<div style={{ touchAction: "none" }} className="mt-auto">
-					<ChartHome timeline={selectedTimeline} />
-					<TimelineToolbar
-						friendWalletAdress={walletAddress}
-						onTimelineSelect={handleTimelineSelect}
-					/>
-				</div>
-			</div>
 
-			<div
-				style={{ minHeight: "60vh", height: "100%" }}
-				className="p-5 rounded-t-3xl bg-gray-50 pb-32"
-			>
-				<AssetList />
-				<NFTList />
-				<ProtocolsList />
-			</div>
-		</div>
-	);
+                    {userData?.referral_link && walletAddress && (
+                        <Button
+                            variant="outlined"
+                            sx={shareButtonStyles}
+                            onClick={() => {
+                                shareContent(
+                                    `https://t.me/TractionEyebot/app?startapp=${userData?.referral_link}__wallet=${walletAddress}`,
+                                    "Check out my investment profile and join my network of contacts. Find out your social score 🏆",
+                                );
+                            }}
+                        >
+                            <ShareIcon size={12} className="mr-1" />
+                            Share portfolio
+                        </Button>
+                    )}
+                </div>
+                <div style={{ touchAction: "none" }} className="mt-auto">
+                    <ChartHome timeline={selectedTimeline} />
+                    <TimelineToolbar friendWalletAddress={walletAddress} onTimelineSelect={handleTimelineSelect} />
+                </div>
+            </div>
+
+            <div style={{ minHeight: "60vh", height: "100%" }} className="p-5 rounded-t-3xl bg-gray-50 pb-32">
+                <AssetList />
+                <NFTList />
+                <ProtocolsList />
+            </div>
+        </div>
+    );
 };
 
 export default IndexPage;

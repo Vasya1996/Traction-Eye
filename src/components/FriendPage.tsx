@@ -11,12 +11,12 @@ import { shortenWallet } from "@/pages/IndexPage/IndexPage";
 
 const FriendPage = () => {
 	const { initData } = retrieveLaunchParams();
-	const [friendWalletAdress, setFriendWalletAdress] = useState("");
+	const [friendWalletAddress, setFriendWalletAddress] = useState("");
 
 	useEffect(() => {
-		const friendWalletAdress = initData?.startParam?.split("__wallet=")[1];
-		if (friendWalletAdress) {
-			setFriendWalletAdress(friendWalletAdress);
+		const friendWalletAddress = initData?.startParam?.split("__wallet=")[1];
+		if (friendWalletAddress) {
+			setFriendWalletAddress(friendWalletAddress);
 		}
 	}, [initData]);
 
@@ -38,7 +38,7 @@ const FriendPage = () => {
 						<Logo className="h-11 w-11 py-3 px-2 bg-black rounded-full mr-3" />
 						<div className="items-center">
 							<p className="text-gray-400 font-light">
-								{shortenWallet(friendWalletAdress)}
+								{shortenWallet(friendWalletAddress)}
 							</p>
 						</div>
 					</div>
@@ -47,11 +47,11 @@ const FriendPage = () => {
 
 			<div className="mt-auto mb-4">
 				<ChartHome
-					friendWalletAdress={friendWalletAdress}
+					friendWalletAddress={friendWalletAddress}
 					timeline={selectedTimeline}
 				/>
 				<TimelineToolbar
-					friendWalletAdress={friendWalletAdress}
+					friendWalletAddress={friendWalletAddress}
 					onTimelineSelect={handleTimelineSelect}
 				/>
 			</div>
@@ -59,9 +59,9 @@ const FriendPage = () => {
 				style={{ minHeight: "60vh", height: "100%" }}
 				className="p-5 rounded-t-3xl bg-gray-50 pb-32"
 			>
-				<AssetList friendWalletAddress={friendWalletAdress} />
-				<NFTList friendWalletAddress={friendWalletAdress} />
-				<ProtocolsList friendWalletAdress={friendWalletAdress} />
+				<AssetList friendWalletAddress={friendWalletAddress} />
+				<NFTList friendWalletAddress={friendWalletAddress} />
+				<ProtocolsList friendWalletAddress={friendWalletAddress} />
 			</div>
 		</div>
 	);
