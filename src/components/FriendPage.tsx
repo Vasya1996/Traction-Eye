@@ -31,8 +31,8 @@ const FriendPage = () => {
 
 	useEffect(() => {
 		if (bb) {
-			bb.show();
 			if (isAuthenticated) {
+        bb.show();
 				bb.on("click", () => {
           if (!isFromRefLink) {
             setIsFromRefLink(true);

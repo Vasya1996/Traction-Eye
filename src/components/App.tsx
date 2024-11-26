@@ -47,7 +47,7 @@ export const App: FC = () => {
 	// it and listen to its changes.
 	const navigator = useMemo(() => initNavigator("app-navigation-state"), []);
 	const [location, reactNavigator] = useIntegration(navigator);
-  const { setIsAuthenticated } = useAuthStore();
+  const { setIsAuthenticated, isAuthenticated } = useAuthStore();
 
 
   useEffect(() => {
@@ -69,9 +69,9 @@ export const App: FC = () => {
 				miniApp.setBgColor("#f9fafb");
 				break;
       case location.pathname === "/friend":
-        // if (isAuthenticated) {
-        //   postEvent("web_app_setup_back_button", { is_visible: true })
-        // }
+        if (isAuthenticated) {
+          postEvent("web_app_setup_back_button", { is_visible: true })
+        }
         miniApp.setHeaderColor("#1F2937");
 				miniApp.setBgColor("#f9fafb");
 				break;
