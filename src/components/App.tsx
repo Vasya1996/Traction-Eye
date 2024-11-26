@@ -47,7 +47,7 @@ export const App: FC = () => {
 	// it and listen to its changes.
 	const navigator = useMemo(() => initNavigator("app-navigation-state"), []);
 	const [location, reactNavigator] = useIntegration(navigator);
-  const { isAuthenticated, setIsAuthenticated, isFromRefLink } = useAuthStore();
+  const { setIsAuthenticated } = useAuthStore();
 
 
   useEffect(() => {
