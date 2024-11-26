@@ -61,6 +61,11 @@ export const App: FC = () => {
 				miniApp.setHeaderColor("#1F2937");
 				miniApp.setBgColor("#f9fafb");
 				break;
+      case location.pathname === "/friend":
+				postEvent("web_app_setup_back_button", { is_visible: false });
+				miniApp.setHeaderColor("#1F2937");
+				miniApp.setBgColor("#f9fafb");
+				break;
 			case location.pathname === "/profiles":
 				postEvent("web_app_setup_back_button", { is_visible: true });
 				miniApp.setHeaderColor("#f9fafb");

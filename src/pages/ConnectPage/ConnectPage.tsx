@@ -105,7 +105,7 @@ export const ConnectPage = () => {
 					return;
 				}
 				localStorage.setItem(LocalStorageKeys.userServiceToken, token);
-				const refCode = initData?.startParam;
+				const refCode = initData?.startParam?.split("__wallet=")[0];
 				await Promise.all([
 					userServiceAddWalletMutation.mutateAsync({
 						walletAddress: userFriendlyAddress,

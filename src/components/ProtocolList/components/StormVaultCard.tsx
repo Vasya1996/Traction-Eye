@@ -31,7 +31,7 @@ export const StormVaultCard: FC<LiquidityPoolCardProps> = ({ poolData }) => {
 									Vault
 								</p>
 								<p className="text-xl font-bold mt-2">
-									${formatNumber(pool.lp_balance, false)}
+									${formatNumber(pool.total_usd, false)}
 								</p>
 							</div>
 							<div>
@@ -63,7 +63,7 @@ export const StormVaultCard: FC<LiquidityPoolCardProps> = ({ poolData }) => {
 												USD Value
 											</p>
 											<p className="py-2 px-1 text-right text-xs text-black uppercase tracking-wider whitespace-nowrap">
-												{formatNumber(pool.price, false)}
+												{formatNumber(pool.entry_usd, false)}
 											</p>
 										</div>
 									</div>

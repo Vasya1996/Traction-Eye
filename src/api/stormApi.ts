@@ -7,6 +7,7 @@ export type PositionData = {
 	elp: number;
 	entry_price: number;
 	fraction: string;
+  pnl_percentage: number;
 	idx: string;
 	leverage: number;
   icon: string[];
