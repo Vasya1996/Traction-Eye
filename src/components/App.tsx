@@ -159,7 +159,7 @@ export const App: FC = () => {
 				<QueryClientProvider client={queryClient}>
 					<Toaster position="top-right" reverseOrder={false} />
 					<Router location={location} navigator={reactNavigator}>
-            <div>{`isAuthenticated ${isAuthenticated}, isFromRefLink ${isFromRefLink}`}</div>
+            {/* <div>{`isAuthenticated ${isAuthenticated}, isFromRefLink ${isFromRefLink}`}</div> */}
 						<Routes>
 							{routes.map((route) => (
 								<Route key={route.path} {...route} />
