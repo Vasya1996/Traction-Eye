@@ -44,7 +44,7 @@ export const StormPoolCard: FC<LiquidityPoolCardProps> = ({
 									) : (
 										<MoveDownRight className="text-red-400 h-5 w-5" strokeWidth={4} />
 									)}
-									<span>{pool.direction} </span>
+									<span className="flex gap-x-2 items-center">{pool.direction} <span className="text-sm">x{pool.leverage.toFixed(2)}</span></span>
 								</p>
 								<p className="text-xl font-bold mt-2">
 									${formatNumber(pool.total_balance_usd, false)}
