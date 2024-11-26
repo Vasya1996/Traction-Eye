@@ -1,4 +1,4 @@
-import { retrieveLaunchParams } from "@telegram-apps/sdk-react";
+import { retrieveLaunchParams, useBackButton } from "@telegram-apps/sdk-react";
 import { useEffect, useState } from "react";
 import AssetList from "./AssetList";
 import NFTList from "./NFTList";
@@ -8,10 +8,15 @@ import { TimelineToolbar } from "./TImelineToolbar";
 import { TimelineKeys, TIMELINES_INTERVALS_SECONDS } from "@/constants";
 import { Logo } from "./icons";
 import { shortenWallet } from "@/pages/IndexPage/IndexPage";
+import { useAuthStore } from "@/store/store";
+import { useNavigate } from "react-router-dom";
 
 const FriendPage = () => {
 	const { initData } = retrieveLaunchParams();
 	const [friendWalletAddress, setFriendWalletAddress] = useState("");
+	const bb = useBackButton();
+	const navigate = useNavigate();
+	const { isAuthenticated, setIsFromRefLink, isFromRefLink } = useAuthStore();
 
 	useEffect(() => {
 		const friendWalletAddress = initData?.startParam?.split("__wallet=")[1];
@@ -23,6 +28,20 @@ const FriendPage = () => {
 	const [selectedTimeline, setSelectedTimeline] = useState<
 		keyof typeof TIMELINES_INTERVALS_SECONDS
 	>(TimelineKeys.Month);
+
+	useEffect(() => {
+		if (bb) {
+			bb.show();
+			if (isAuthenticated) {
+				bb.on("click", () => {
+          if (!isFromRefLink) {
+            setIsFromRefLink(true);
+          }      
+					navigate("/");
+				});
+			}
+		}
+	}, [bb]);
 
 	const handleTimelineSelect = (
 		timeline: keyof typeof TIMELINES_INTERVALS_SECONDS

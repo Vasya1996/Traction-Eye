@@ -15,6 +15,20 @@ interface MainStore {
 	setHasFetchedDedust: (value: boolean) => void;
 }
 
+interface AuthStore {
+	isAuthenticated: boolean;
+  isFromRefLink: boolean;
+	setIsAuthenticated: (value: boolean) => void;
+  setIsFromRefLink: (value: boolean) => void;
+}
+
+export const useAuthStore = create<AuthStore>((set) => ({
+	isAuthenticated: false,
+	isFromRefLink: false,
+	setIsAuthenticated: (value) => set(() => ({ isAuthenticated: value })),
+	setIsFromRefLink: (value) => set(() => ({ isFromRefLink: value })),
+}));
+
 //todo Установить флаги отдельно для всей группы ассетов и тд. Складывать все части и получать нетворс
 
 export const useStore = create<MainStore>((set) => ({
@@ -22,7 +36,8 @@ export const useStore = create<MainStore>((set) => ({
 	setNfts: (nfts) => set(() => ({ nfts })),
 	netWorth: 0,
 	setNetWorth: (value) => set(() => ({ netWorth: value })),
-	incrementNetWorth: (value) => set((state) => ({ netWorth: state.netWorth + value })),
+	incrementNetWorth: (value) =>
+		set((state) => ({ netWorth: state.netWorth + value })),
 	hasFetchedAssets: false,
 	setHasFetchedAssets: (value) => set(() => ({ hasFetchedAssets: value })),
 	hasFetchedDedust: false,

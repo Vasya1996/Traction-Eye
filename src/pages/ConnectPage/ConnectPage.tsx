@@ -14,6 +14,7 @@ import { IoMdWallet } from "@/components/icons";
 import "./ConnectPage.css"; // Импортируйте CSS файл
 import { Spinner } from "@/components/ui/spinner";
 import { LocalStorageKeys } from "@/constants/localStorage";
+import { useAuthStore } from "@/store/store";
 //fuck shit
 
 export const ConnectPage = () => {
@@ -44,9 +45,7 @@ export const ConnectPage = () => {
 		}
 	}, [location.search]);
 
-	// useEffect(() => {
-	//   navigate('/');
-	// }, [])
+  const { setIsAuthenticated } = useAuthStore();
 
 	const loginMutation = useMutation({
 		mutationKey: ["login"],
@@ -86,6 +85,7 @@ export const ConnectPage = () => {
 			setIsDisconnected(true);
 		}
 	}, [isDisconnected]);
+  
 
 	useEffect(() => {
 		if (!userFriendlyAddress || !initDataRaw || !isDisconnected) {
@@ -101,6 +101,7 @@ export const ConnectPage = () => {
 			try {
 				const { token } = await loginMutation.mutateAsync(initDataRaw);
 				if (token && userFriendlyAddress === walletAddress && isFirstLogin) {
+          setIsAuthenticated(true)
 					navigate("/");
 					return;
 				}
@@ -122,7 +123,7 @@ export const ConnectPage = () => {
 					userFriendlyAddress
 				);
 				localStorage.setItem(LocalStorageKeys.firstLogin, "true");
-
+        setIsAuthenticated(true);
 				navigate({ pathname: "/", search: "", hash: '' });
 			} catch (err) {
 				console.log("--err", err);

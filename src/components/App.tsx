@@ -18,6 +18,7 @@ import { Toaster } from "react-hot-toast";
 import { routes } from "@/navigation/routes.tsx";
 import { SocialCap, AssetsOff, IoMdWallet } from "./icons";
 import { LocalStorageKeys } from "@/constants/localStorage";
+import { useAuthStore } from "@/store/store";
 const queryClient = new QueryClient();
 
 export const App: FC = () => {
@@ -46,8 +47,14 @@ export const App: FC = () => {
 	// it and listen to its changes.
 	const navigator = useMemo(() => initNavigator("app-navigation-state"), []);
 	const [location, reactNavigator] = useIntegration(navigator);
+  const { isAuthenticated, setIsAuthenticated, isFromRefLink } = useAuthStore();
 
-  console.log("LATESTLOC", location)
+
+  useEffect(() => {
+    if (userFriendlyAddress) {
+      setIsAuthenticated(true)
+    }
+  }, [userFriendlyAddress])
 
 	useEffect(() => {
 		switch (true) {
@@ -62,8 +69,10 @@ export const App: FC = () => {
 				miniApp.setBgColor("#f9fafb");
 				break;
       case location.pathname === "/friend":
-				postEvent("web_app_setup_back_button", { is_visible: false });
-				miniApp.setHeaderColor("#1F2937");
+        // if (isAuthenticated) {
+        //   postEvent("web_app_setup_back_button", { is_visible: true })
+        // }
+        miniApp.setHeaderColor("#1F2937");
 				miniApp.setBgColor("#f9fafb");
 				break;
 			case location.pathname === "/profiles":
@@ -150,6 +159,7 @@ export const App: FC = () => {
 				<QueryClientProvider client={queryClient}>
 					<Toaster position="top-right" reverseOrder={false} />
 					<Router location={location} navigator={reactNavigator}>
+            <div>{`isAuthenticated ${isAuthenticated}, isFromRefLink ${isFromRefLink}`}</div>
 						<Routes>
 							{routes.map((route) => (
 								<Route key={route.path} {...route} />
