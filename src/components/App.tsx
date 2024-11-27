@@ -179,7 +179,7 @@ export const App: FC = () => {
 								/>
 							</BottomNavigation>
 						)}
-						{showConnectBtn && location?.pathname !== "/connect" ? (
+						{(showConnectBtn && !isAuthenticated) && location?.pathname !== "/connect" ? (
 							<Link to="/connect?from=link">
 								<div className="absolute bottom-10 left-0 flex justify-center w-full">
 									<a

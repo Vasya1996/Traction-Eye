@@ -154,17 +154,25 @@ const AssetItemPage: FC = () => {
 
 	const [showConnectBtn] = useState(false);
 
-	// useEffect(() => {
-	// 	if (!isAuthenticated) {
-	// 		setShowConnectBtn(true);
-	// 		return;
-	// 	}
-	// 	setShowConnectBtn(false);
-	// }, [location?.pathname]);
+	const isOnFriendPage = Boolean(state.friendWalletAddress?.length);
 
-  const isOnFriendPage = Boolean(state.friendWalletAddress?.length);
+	console.log(
+		"SHOW SWAP",
+		isAuthenticated,
+		showConnectBtn,
+		!showConnectBtn || isAuthenticated,
+		location
+	);
 
-  console.log("SHOW SWAP", isAuthenticated, showConnectBtn, (!showConnectBtn || isAuthenticated), location)
+	const [isReady, setIsReady] = useState(false);
+
+	useEffect(() => {
+		const timer = setTimeout(() => {
+			setIsReady(true);
+		}, 100);
+
+		return () => clearTimeout(timer);
+	}, [isAuthenticated]);
 
 	return (
 		<div className={`h-screen bg-gray-800`}>
@@ -188,7 +196,6 @@ const AssetItemPage: FC = () => {
 					<TimelineToolbar onTimelineSelect={handleTimelineSelect} />
 				</div>
 			</div>
-
 			<div className="h-full bg-gray-50 rounded-t-3xl relative">
 				<ul className="gap-3 p-7 text-base">
 					<li className="flex justify-between mb-5">
@@ -253,7 +260,7 @@ const AssetItemPage: FC = () => {
 						</div>
 						<div className="font-semibold text-gray-500">{"\u2014"} $</div>
 					</li>
-					{(!showConnectBtn && isAuthenticated && !isOnFriendPage) && (
+					{isReady && !showConnectBtn && isAuthenticated && !isOnFriendPage && (
 						<button
 							onClick={() => navigate("/swap")}
 							className="flex bg-yellow-400 p-2 h-[51px] items-center justify-center rounded-xl w-full"
