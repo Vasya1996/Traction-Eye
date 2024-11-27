@@ -23,10 +23,11 @@ import { TimelineToolbar } from "@/components/TImelineToolbar";
 import { PNL_API } from "@/api/pnl";
 import { ChartData } from "@/types";
 import { TON_CENTER_API } from "@/api/tonCenter";
+import { useAuthStore } from "@/store/store";
 // import { API } from "@/api/api";
 
 // const TEST_WALLETS = ["UQAINHiKgQMi0BQ-Y4C5AMFiZm_2dgvf-KPxdWJImKWArNwM", "UQBghyYO1PSqiHO70FNCE5NpU94rTE3pfxjGpzB2aD6fWVCO", "UQAiuSciIC6VfkKODF9xsrogE44Okn13XGvdzXq1uCoOH40Z"];
-// 
+//
 
 const AssetItemPage: FC = () => {
 	const [tooltip, setTooltip] = useState<null | string>(null);
@@ -48,12 +49,14 @@ const AssetItemPage: FC = () => {
 		setSelectedTimeline(timeline);
 	};
 
+	const { isAuthenticated } = useAuthStore();
+
 	useEffect(() => {
-        const scrollContainer = document.querySelector('.max-h-screen');
-        if (scrollContainer) {
-            scrollContainer.scrollTo(0, 0);
-        }
-    }, []);
+		const scrollContainer = document.querySelector(".max-h-screen");
+		if (scrollContainer) {
+			scrollContainer.scrollTo(0, 0);
+		}
+	}, []);
 
 	const targetAddress = state.friendWalletAddress || walletAddress;
 
@@ -143,7 +146,7 @@ const AssetItemPage: FC = () => {
 		: {
 				pnl_percentage: lastChartData?.pnl_percentage,
 				pnl_usd: lastChartData?.pnl_usd,
-		};
+		  };
 	const currentTimestamp = selectedPoint
 		? selectedPoint.timestamp
 		: lastChartData?.timestamp;
@@ -151,20 +154,17 @@ const AssetItemPage: FC = () => {
 	const [showConnectBtn, setShowConnectBtn] = useState(false);
 	const userFriendlyAddress = useTonAddress();
 
-	useEffect(() => {
-		console.log("showConnectBtn", showConnectBtn);
-		console.log("location?.pathname", location.pathname);
-		console.log(
-			"show on index",
-			(location?.pathname !== "/connect" && location?.pathname === "/friend") ||
-				showConnectBtn
-		);
-		if (!userFriendlyAddress.length) {
-			setShowConnectBtn(true);
-			return;
-		}
-		setShowConnectBtn(false);
-	}, [location?.pathname]);
+	// useEffect(() => {
+	// 	if (!isAuthenticated) {
+	// 		setShowConnectBtn(true);
+	// 		return;
+	// 	}
+	// 	setShowConnectBtn(false);
+	// }, [location?.pathname]);
+
+  const isOnFriendPage = Boolean(state.friendWalletAddress?.length);
+
+  console.log("SHOW SWAP", isAuthenticated, showConnectBtn, (!showConnectBtn || isAuthenticated), location)
 
 	return (
 		<div className={`h-screen bg-gray-800`}>
@@ -253,7 +253,7 @@ const AssetItemPage: FC = () => {
 						</div>
 						<div className="font-semibold text-gray-500">{"\u2014"} $</div>
 					</li>
-					{!showConnectBtn && (
+					{(!showConnectBtn && isAuthenticated && !isOnFriendPage) && (
 						<button
 							onClick={() => navigate("/swap")}
 							className="flex bg-yellow-400 p-2 h-[51px] items-center justify-center rounded-xl w-full"

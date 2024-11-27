@@ -131,13 +131,22 @@ export const App: FC = () => {
 
 	const [showConnectBtn, setShowConnectBtn] = useState(false);
 
-	useEffect(() => {
-		if (!userFriendlyAddress.length && !tonConnectUI?.wallet) {
-			setShowConnectBtn(true);
+	// useEffect(() => {
+	// 	if (!userFriendlyAddress.length && !tonConnectUI?.wallet) {
+	// 		setShowConnectBtn(true);
+	// 		return;
+	// 	}
+	// 	setShowConnectBtn(false);
+	// }, [location?.pathname]);
+
+  useEffect(() => {
+		if (isAuthenticated) {
+			setShowConnectBtn(false);
 			return;
 		}
-		setShowConnectBtn(false);
-	}, [location?.pathname]);
+		setShowConnectBtn(true);
+	}, [isAuthenticated]);
+
 
 	return (
 		<div className="max-h-screen overflow-scroll">
