@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import { FC, useState, useEffect, useMemo } from "react";
 import { useLocation, useParams, useNavigate } from "react-router-dom";
 import Chart, { SelectedPoint } from "@/components/Chart";
@@ -152,7 +153,6 @@ const AssetItemPage: FC = () => {
 		: lastChartData?.timestamp;
 
 	const [showConnectBtn, setShowConnectBtn] = useState(false);
-	const userFriendlyAddress = useTonAddress();
 
 	// useEffect(() => {
 	// 	if (!isAuthenticated) {
