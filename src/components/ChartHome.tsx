@@ -40,7 +40,14 @@ export function ChartHome({
 	const { fontSizeCounter, element1Ref, element2Ref, checkIntersection } =
 		useElementIntersection();
 
-  const targetAddress = friendWalletAddress || walletAddress;
+	const [targetAddress, setTargetAddress] = useState(
+		friendWalletAddress || walletAddress
+	);
+
+	useEffect(() => {
+		setTargetAddress(friendWalletAddress || walletAddress);
+	}, [friendWalletAddress, walletAddress]);
+
 	const { data: userWalletCreationDate } = useQuery({
 		queryKey: ["userWalletCreationDate", targetAddress],
 		queryFn: () => TON_CENTER_API.getUserWalletCreationDate(targetAddress!),
@@ -63,7 +70,12 @@ export function ChartHome({
 		isLoading: isLoadingMainChartData,
 		refetch: refetchMainChartData,
 	} = useQuery<ChartData[]>({
-		queryKey: ["mainChartData", timelineData?.period, timelineData?.interval],
+		queryKey: [
+			"mainChartData",
+			timelineData?.period,
+			timelineData?.interval,
+			targetAddress,
+		],
 		queryFn: () =>
 			PNL_API.getPnlByAddress({
 				wallet_address: targetAddress,
@@ -104,7 +116,7 @@ export function ChartHome({
 		: {
 				pnl_percentage: lastChartData?.pnl_percentage,
 				pnl_usd: lastChartData?.pnl_usd,
-	};
+		  };
 	const currentTimestamp = selectedPoint
 		? selectedPoint.timestamp
 		: lastChartData?.timestamp;

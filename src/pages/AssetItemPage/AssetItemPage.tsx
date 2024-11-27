@@ -48,7 +48,6 @@ const AssetItemPage: FC = () => {
 		setSelectedTimeline(timeline);
 	};
 
-
 	useEffect(() => {
         const scrollContainer = document.querySelector('.max-h-screen');
         if (scrollContainer) {

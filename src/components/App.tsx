@@ -17,7 +17,6 @@ import { TonConnectUIProvider, useTonAddress, useTonConnectUI } from "@tonconnec
 import { Toaster } from "react-hot-toast";
 import { routes } from "@/navigation/routes.tsx";
 import { SocialCap, AssetsOff, IoMdWallet } from "./icons";
-import { LocalStorageKeys } from "@/constants/localStorage";
 import { useAuthStore } from "@/store/store";
 const queryClient = new QueryClient();
 
@@ -122,6 +121,7 @@ export const App: FC = () => {
 	};
 
 	useEffect(() => {
+    console.log("curlock", location)
 		if (location?.pathname === "/referral") {
 			setValue(1);
 		} else {
@@ -132,20 +132,6 @@ export const App: FC = () => {
 	const [showConnectBtn, setShowConnectBtn] = useState(false);
 
 	useEffect(() => {
-		console.log("showConnectBtn", showConnectBtn);
-		console.log(
-			"LocalStorageKeys.firstLogin",
-			localStorage.getItem(LocalStorageKeys.firstLogin),
-			!localStorage.getItem(LocalStorageKeys.firstLogin)
-		);
-		console.log("userFriendlyAddress.length", userFriendlyAddress.length);
-		console.log("location?.pathname", location.pathname);
-		console.log(
-			"show on index",
-			(location?.pathname !== "/connect" && location?.pathname === "/friend") ||
-				showConnectBtn
-		);
-    
 		if (!userFriendlyAddress.length && !tonConnectUI?.wallet) {
 			setShowConnectBtn(true);
 			return;

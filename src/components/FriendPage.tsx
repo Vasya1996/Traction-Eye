@@ -9,7 +9,7 @@ import { TimelineKeys, TIMELINES_INTERVALS_SECONDS } from "@/constants";
 import { Logo } from "./icons";
 import { shortenWallet } from "@/pages/IndexPage/IndexPage";
 import { useAuthStore } from "@/store/store";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 
 const FriendPage = () => {
 	const { initData } = retrieveLaunchParams();
@@ -17,6 +17,7 @@ const FriendPage = () => {
 	const bb = useBackButton();
 	const navigate = useNavigate();
 	const { isAuthenticated, setIsFromRefLink, isFromRefLink } = useAuthStore();
+  const location = useLocation();
 
 	useEffect(() => {
 		const friendWalletAddress = initData?.startParam?.split("__wallet=")[1];
@@ -30,17 +31,23 @@ const FriendPage = () => {
 	>(TimelineKeys.Month);
 
 	useEffect(() => {
+    const handleBackClick = () => {
+      if (!isFromRefLink) {
+        setIsFromRefLink(true);
+      }
+      if (location.pathname === "/friend") {
+        navigate("/");
+      }
+    }
 		if (bb) {
 			if (isAuthenticated) {
         bb.show();
-				bb.on("click", () => {
-          if (!isFromRefLink) {
-            setIsFromRefLink(true);
-          }      
-					navigate("/");
-				});
+        bb.on("click", handleBackClick);
 			}
 		}
+    return () => {
+      bb.off("click", handleBackClick);
+    }; 
 	}, [bb]);
 
 	const handleTimelineSelect = (

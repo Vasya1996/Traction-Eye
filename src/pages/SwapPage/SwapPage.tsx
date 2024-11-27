@@ -11,6 +11,7 @@ import { formatNumber } from "@/utils";
 import { Spinner } from "@/components/ui/spinner";
 import toast from "react-hot-toast";
 import { LocalStorageKeys } from "@/constants/localStorage";
+import { useAuthStore } from "@/store/store";
 
 const INIT_SWAP = {
   settlementMethods: [SettlementMethod.SETTLEMENT_METHOD_SWAP],
@@ -197,6 +198,8 @@ export const SwapPage = () => {
   const canDoSwap = useMemo(() => Number(sendToken?.amount) >= Number(sendTokenAmount), [sendToken?.amount, sendTokenAmount]);
 
   const [showConnectBtn, setShowConnectBtn] = useState(false);
+  const { isAuthenticated } = useAuthStore();
+
 
 	useEffect(() => {
 		console.log("showConnectBtn", showConnectBtn);
@@ -343,7 +346,7 @@ export const SwapPage = () => {
           </Box>
 
           {/* Swap Button */}
-          {!showConnectBtn ? <Box className="flex items-end mx-4 mb-30">
+          {isAuthenticated ? <Box className="flex items-end mx-4 mb-30">
             <Button
               disabled={!sendTokenAmount || !quote || !userFriendlyAddress || !canDoSwap}
               variant="contained"

@@ -77,7 +77,7 @@ export const ConnectPage = () => {
 		const walletAddress = localStorage.getItem(
 			LocalStorageKeys.user_service_wallet_address
 		);
-    console.log("TON UI STATE", isDisconnected)
+    console.log("TON UI STATE", isDisconnected, tonConnectUI.wallet)
 		if (!walletAddress && !isDisconnected && !isFirstLogin) {
 			tonConnectUI?.disconnect();
 			setIsDisconnected(true);
