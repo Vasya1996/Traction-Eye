@@ -152,7 +152,7 @@ const AssetItemPage: FC = () => {
 		? selectedPoint.timestamp
 		: lastChartData?.timestamp;
 
-	const [showConnectBtn, setShowConnectBtn] = useState(false);
+	const [showConnectBtn] = useState(false);
 
 	// useEffect(() => {
 	// 	if (!isAuthenticated) {
