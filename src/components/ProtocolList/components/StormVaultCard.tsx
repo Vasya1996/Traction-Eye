@@ -2,6 +2,7 @@ import { formatNumber } from "@/utils";
 import { ProtocolNames } from "@/constants";
 import { FC, ReactElement } from "react";
 import { VaultData } from "@/api/stormApi";
+import { PoolHeader } from "./PoolHeader";
 
 interface LiquidityPoolCardProps {
 	poolName: ProtocolNames;
@@ -10,7 +11,7 @@ interface LiquidityPoolCardProps {
 	hasIcon?: boolean;
 }
 
-export const StormVaultCard: FC<LiquidityPoolCardProps> = ({ poolData }) => {
+export const StormVaultCard: FC<LiquidityPoolCardProps> = ({ poolData, hasIcon, icon, poolName }) => {
 	if (!poolData?.length) {
 		return null;
 	}
@@ -20,9 +21,21 @@ export const StormVaultCard: FC<LiquidityPoolCardProps> = ({ poolData }) => {
 			{poolData?.map((pool, index) => (
 				<>
 					{pool.APR && (
-						<p className="text-gray-400 font-medium text-lg text-right">
-							APR: {pool.APR.toFixed(2)}%
-						</p>
+						<div key={index}>
+							<div className="flex justify-between items-center my-2">
+								<div className="flex w-full items-center justify-between">
+									<div className="flex items-center min-h-8">
+										{index === 0 && hasIcon && (
+											<PoolHeader icon={icon} poolName={poolName} />
+										)}
+									</div>
+									<p className="text-gray-400 font-medium text-lg text-right">
+										APR: {pool.APR.toFixed(2)}%
+									</p>
+
+								</div>
+							</div>
+						</div>
 					)}
 					<div className="p-4 bg-white rounded-2xl shadow-md" key={index}>
 						<div className="mb-2">

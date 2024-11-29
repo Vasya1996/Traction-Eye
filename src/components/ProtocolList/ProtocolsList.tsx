@@ -181,6 +181,7 @@ export const ProtocolsList: FC<ProtocolsListProps> = ({
 					<StormVaultCard
 						poolName={ProtocolNames.StormTrade}
 						icon={stormTradeLogo}
+						hasIcon={(stormPositionsData?.data?.length ?? 0) === 0}
 						poolData={stormVautsData?.data ?? []}
 					/>
 				</li>
