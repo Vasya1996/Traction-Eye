@@ -1,3 +1,5 @@
+import axios from "axios";
+import toast from "react-hot-toast";
 import { LocalStorageKeys } from "@/constants/localStorage";
 import { userServiceClient } from "./apiClient";
 import { userServiceEndpoints } from "./endpoints";
@@ -32,7 +34,7 @@ export const UserServiceApi = {
 		try {
 			const payload = {
 				init_data: initData,
-        isDev: true,
+				isDev: true,
 			};
 			const response = await userServiceClient.post(userServiceEndpoints.auth, payload);
 			return response.data;
@@ -50,8 +52,18 @@ export const UserServiceApi = {
 			const response = await userServiceClient.post(userServiceEndpoints.addWallet, payload);
 			localStorage.setItem(LocalStorageKeys.firstLogin, "true")
 			return response.data;
-		} catch (error) {
+		} catch (error: unknown) {
 			console.error("Error logging", error);
+			if (axios.isAxiosError(error)) {
+				console.error("Axios error:", error);
+		
+			// Safely access error.response.data.detail
+				toast.error(error.response?.data?.detail ?? "Wallet connection error");
+			} else {
+			// Handle unexpected errors
+				console.error("Unexpected error:", error);
+				toast.error("An unexpected error occurred");
+			}
 			throw error;
 		}
 	},

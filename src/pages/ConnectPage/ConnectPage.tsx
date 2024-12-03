@@ -101,7 +101,7 @@ export const ConnectPage = () => {
 			try {
 				const { token } = await loginMutation.mutateAsync(initDataRaw);
 				if (token && userFriendlyAddress === walletAddress && isFirstLogin) {
-          setIsAuthenticated(true)
+					setIsAuthenticated(true)
 					navigate("/");
 					return;
 				}
