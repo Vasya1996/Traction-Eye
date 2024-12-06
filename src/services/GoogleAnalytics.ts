@@ -109,7 +109,15 @@ class GoogleAnalytics {
 		});
     }
 
-    chartUsage() {
+    chartUsage(time: number) {
+        ReactGA.event({
+            category: CATEGORY,
+            action: "Chart usage time",
+            label: LABEL,
+            value: time, // Add the elapsed time in milliseconds
+            nonInteraction: false, // Ensure it is counted as an interaction event
+        });
+
         ReactGA.event({
 			category: CATEGORY,
 			action: "Chart usage",
