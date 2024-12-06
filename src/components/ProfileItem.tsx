@@ -9,6 +9,7 @@ import { MdDeleteOutline } from "@/components/icons";
 // interfaces
 import { ProfileItemProps } from '../types/types';
 import { LocalStorageKeys } from '@/constants/localStorage';
+import { GoogleAnalytics } from '@/services';
 
 // Function to shorten wallet addresses
 const shortenWallet = (wallet: string, startLength: number = 6, endLength: number = 4): string => {
@@ -31,6 +32,7 @@ export const ProfileItem: FC<ProfileItemProps> = ({ wallet, managed, balance }) 
     if (isConfirmed) {
       localStorage.removeItem(LocalStorageKeys.user_service_wallet_address);
       tonConnectUI.disconnect();
+      GoogleAnalytics.disconnectWallet();
       postEvent('web_app_trigger_haptic_feedback', { type: 'notification', notification_type: 'success' });
       alert('Profile removed successfully!');
     }

@@ -3,6 +3,7 @@ import { Box, Drawer, Typography, Button, IconButton, Tooltip } from "@mui/mater
 import { CloseIcon, InfoIcon, NetWorthBonus, BlockIcon } from "@/components/icons";
 import { useTelegramShare } from "@/hooks";
 import InviteBonus from "./InviteBonus.svg";
+import { GoogleAnalytics } from "@/services";
 
 interface SocialScoreDrawerProps {
     open: boolean;
@@ -170,6 +171,7 @@ export const SocialScoreDrawer: React.FC<SocialScoreDrawerProps> = ({ open, onCl
                     color="warning"
                     disabled={!referral_link}
                     onClick={() => {
+                        GoogleAnalytics.inviteFriend();
                         shareContent(
                             `https://t.me/TractionEyebot/app?startapp=${referral_link}`,
                             "Check out my investment profile and join my network of contacts. Find out your social score 🏆",
