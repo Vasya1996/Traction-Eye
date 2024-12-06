@@ -131,6 +131,7 @@ export const ConnectPage = () => {
 					userFriendlyAddress
 				);
 				localStorage.setItem(LocalStorageKeys.firstLogin, "true");
+				setIsAuthenticated(true);
 
 				navigate({ pathname: "/", search: "", hash: '' });
 			} catch (err) {
