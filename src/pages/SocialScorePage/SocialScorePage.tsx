@@ -9,6 +9,7 @@ import { UserServiceApi } from "@/api/userServiceApi";
 import { UserResponse } from "@/types";
 import { useTelegramShare } from "@/hooks";
 import { useTonAddress } from "@tonconnect/ui-react";
+import { GoogleAnalytics } from "@/services";
 
 export const SocialScorePage: React.FC = () => {
     const { shareContent } = useTelegramShare();
@@ -91,6 +92,7 @@ export const SocialScorePage: React.FC = () => {
                 fullWidth
                 disabled={!userData?.referral_link}
                 onClick={() => {
+                    GoogleAnalytics.inviteFriend();
                     shareContent(
                         `https://t.me/TractionEyebot/app?startapp=${userData?.referral_link}__wallet=${userFriendlyAddress}`,
                         "Check out my investment profile and join my network of contacts. Find out your social score 🏆",

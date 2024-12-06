@@ -114,7 +114,7 @@ const AssetList: FC<AssetListProps>  = ({ friendWalletAddress }) => {
 								name={asset?.symbol}
 								amount={asset?.name === "Tether USD" ? asset?.amount / Math.pow(10, asset.decimals) : asset?.amount / Math.pow(10, asset.decimals)}
 								price={asset?.price_usd}
-                friendWalletAddress={friendWalletAddress}
+								friendWalletAddress={friendWalletAddress}
 							/>
 						))}
 					</tbody>

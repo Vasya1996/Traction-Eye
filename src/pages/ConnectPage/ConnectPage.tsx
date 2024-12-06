@@ -15,7 +15,7 @@ import "./ConnectPage.css"; // Импортируйте CSS файл
 import { Spinner } from "@/components/ui/spinner";
 import { LocalStorageKeys } from "@/constants/localStorage";
 import { useAuthStore } from "@/store/store";
-//fuck shit
+import { GoogleAnalytics } from "@/services";
 
 export const ConnectPage = () => {
 	const [currentSlide, setCurrentSlide] = useState(0);
@@ -30,6 +30,7 @@ export const ConnectPage = () => {
 	);
 
 	const { initDataRaw } = retrieveLaunchParams();
+	const userId = initData?.user?.id;
 	const location = useLocation();
 
 	useEffect(() => {
@@ -45,7 +46,13 @@ export const ConnectPage = () => {
 		}
 	}, [location.search]);
 
-  const { setIsAuthenticated } = useAuthStore();
+	useEffect(() => {
+		const refCode = initData?.startParam?.split("__wallet=")[0];
+		if(userId && refCode && refCode?.includes("ref_")) {
+			localStorage.setItem(`${LocalStorageKeys.referral_user_Id}${userId}`, refCode);
+		}
+
+	}, [userId, initData?.startParam])
 
 	const loginMutation = useMutation({
 		mutationKey: ["login"],
@@ -72,6 +79,7 @@ export const ConnectPage = () => {
 
 	const [tonConnectUI] = useTonConnectUI();
 	const [isDisconnected, setIsDisconnected] = useState(false);
+	const { setIsAuthenticated } = useAuthStore();
 
 	useEffect(() => {
 		const walletAddress = localStorage.getItem(
@@ -106,7 +114,7 @@ export const ConnectPage = () => {
 					return;
 				}
 				localStorage.setItem(LocalStorageKeys.userServiceToken, token);
-				const refCode = initData?.startParam?.split("__wallet=")[0];
+				const refCode = localStorage.getItem(`${LocalStorageKeys.referral_user_Id}${userId}`) ||initData?.startParam?.split("__wallet=")[0];
 				await Promise.all([
 					userServiceAddWalletMutation.mutateAsync({
 						walletAddress: userFriendlyAddress,
@@ -123,7 +131,7 @@ export const ConnectPage = () => {
 					userFriendlyAddress
 				);
 				localStorage.setItem(LocalStorageKeys.firstLogin, "true");
-        setIsAuthenticated(true);
+
 				navigate({ pathname: "/", search: "", hash: '' });
 			} catch (err) {
 				console.log("--err", err);
@@ -137,6 +145,7 @@ export const ConnectPage = () => {
 		isDisconnected,
 		initData,
 		isFirstLogin,
+		userId,
 	]);
 
 	const connectHandleClick = () => {
@@ -144,6 +153,7 @@ export const ConnectPage = () => {
 			type: "notification",
 			notification_type: "warning",
 		});
+		GoogleAnalytics.openConnectWallet();
 		tonConnectUI.openModal();
 	};
 
@@ -155,6 +165,7 @@ export const ConnectPage = () => {
 
 		if (currentSlide < 1) {
 			setCurrentSlide(currentSlide + 1);
+			GoogleAnalytics.swipeOrContinueButton();
 		} else {
 			connectHandleClick();
 		}

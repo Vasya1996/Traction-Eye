@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { LineChart, Line, ResponsiveContainer, Tooltip, ReferenceLine, XAxis, YAxis} from "recharts";
 import { ChartData } from "@/types";
+import { GoogleAnalytics } from "@/services";
 
 interface ChartMouseEvent {
     activeTooltipIndex?: number;
@@ -96,6 +97,7 @@ export default function Chart({ worth_chart, onMouseMove, onMouseDown, onMouseUp
     const handleMouseUp = () => {
         setIsMouseDown(false);
         onMouseUp && onMouseUp();
+        GoogleAnalytics.chartUsage();
     };
 
     return (

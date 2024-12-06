@@ -5,6 +5,7 @@ import {
 	bindThemeParamsCSSVars,
 	bindViewportCSSVars,
 	initNavigator,
+	useInitData,
 	useMiniApp,
 	useThemeParams,
 	useViewport,
@@ -18,6 +19,7 @@ import { Toaster } from "react-hot-toast";
 import { routes } from "@/navigation/routes.tsx";
 import { SocialCap, AssetsOff, IoMdWallet } from "./icons";
 import { useAuthStore } from "@/store/store";
+import { GoogleAnalytics } from "@/services";
 const queryClient = new QueryClient();
 
 export const App: FC = () => {
@@ -25,6 +27,21 @@ export const App: FC = () => {
 	const themeParams = useThemeParams();
 	const viewport = useViewport();
 	const userFriendlyAddress = useTonAddress();
+	const initData = useInitData();
+
+	const userId = initData?.user?.id;
+	const username = initData?.user?.username;
+
+	useEffect(() => {
+		if(userId && username) {
+			GoogleAnalytics.init({ 
+				user_id: userId, 
+				username,
+			})
+			GoogleAnalytics.openMiniApp();
+		}
+
+	}, [userId, username]);
 
 	useEffect(() => {
 		return bindMiniAppCSSVars(miniApp, themeParams);
@@ -115,6 +132,7 @@ export const App: FC = () => {
 		if (newValue === 0) {
 			navigator.push("/");
 		} else if (newValue === 1) {
+			GoogleAnalytics.socialCapClick();
 			navigator.push("/referral");
 		}
 	};
@@ -160,7 +178,7 @@ export const App: FC = () => {
 							))}
 							<Route path="*" element={<Navigate to="/" />} />
 						</Routes>
-						{location?.pathname !== "/connect" && (
+						{/* {location?.pathname !== "/connect" && ( */}
 							<BottomNavigation
 								value={value}
 								onChange={handleNavigationChange}
@@ -178,8 +196,7 @@ export const App: FC = () => {
 									icon={<SocialCap isActive={value === 1} />}
 								/>
 							</BottomNavigation>
-						)}
-						{(showConnectBtn && !isAuthenticated) && location?.pathname !== "/connect" ? (
+							{(showConnectBtn && !isAuthenticated) && location?.pathname !== "/connect" ? (
 							<Link to="/connect?from=link">
 								<div className="absolute bottom-10 left-0 flex justify-center w-full">
 									<a

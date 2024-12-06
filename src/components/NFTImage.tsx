@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import { NFT } from "@/types/index";
 import { NoImageIcon } from "./icons";
 import { Skeleton } from "@mui/material";
+import { GoogleAnalytics } from "@/services";
 
 interface NFTImageProps {
     nft: NFT;
@@ -26,8 +27,12 @@ export const NFTImage: React.FC<NFTImageProps> = ({
     const [isImageError, setIsImageError] = useState(false);
     const [isLoading, setIsLoading] = useState(true);
 
+    const handleClickNFTLink = () => {
+        GoogleAnalytics.openNFTPage();
+    }
+
     return (
-        <Link to={`/nft/${nft.nft_address}`} className={linkClassName}>
+        <Link to={`/nft/${nft.nft_address}`} className={linkClassName} onClick={handleClickNFTLink}>
             {isLoading && !isImageError && (
                 <Skeleton
                     variant="rectangular"
