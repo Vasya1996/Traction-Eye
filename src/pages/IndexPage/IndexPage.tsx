@@ -21,6 +21,7 @@ import { UserServiceApi } from "@/api/userServiceApi";
 import { useTelegramShare } from "@/hooks";
 import { shareButtonStyles } from "./styles/styles";
 import { useAuthStore } from "@/store/store";
+import { GoogleAnalytics } from "@/services";
 
 export const shortenWallet = (
 	wallet: string,
@@ -94,50 +95,46 @@ export const IndexPage: FC = () => {
 		setSelectedTimeline(timeline);
 	};
 
-	return (
-		<div className="bg-gray-800 min-h-screen select-none overflow-hidden">
-			<div className="hero h-72 flex flex-col">
-				<div className="userdata px-4 flex justify-between items-center mt-1">
-					<Link to={"/profiles"}>
-						<div className="flex items-center">
-							<Logo className="h-11 w-11 py-3 px-2 bg-black rounded-full mr-3" />
-							<div className="items-center">
-								<p className="text-gray-400 font-light">
-									{shortenWallet(walletAddress)}
-								</p>
-							</div>
-							<MdOutlineKeyboardArrowRight
-								color={Colors.zincLight}
-								className="my-auto text-2xl"
-							/>
-						</div>
-					</Link>
+    const handleOpenProfile = () => {
+        GoogleAnalytics.openProfile();
+    }
 
-					{userData?.referral_link && walletAddress && (
-						<Button
-							variant="outlined"
-							sx={shareButtonStyles}
-							onClick={() => {
-								shareContent(
-									`https://t.me/TractionEyebot/app?startapp=${userData?.referral_link}__wallet=${walletAddress}`,
-									"Check out my investment profile and join my network of contacts. Find out your social score 🏆"
-								);
-							}}
-						>
-							<ShareIcon size={12} className="mr-1" />
-							Share portfolio
-						</Button>
-					)}
-				</div>
-				<div style={{ touchAction: "none" }} className="mt-auto">
-					<ChartHome timeline={selectedTimeline} />
-					<TimelineToolbar
-						friendWalletAddress={walletAddress}
-						onTimelineSelect={handleTimelineSelect}
-					/>
-				</div>
-			</div>
+    return (
+        <div className="bg-gray-800 min-h-screen select-none overflow-hidden">
+            <div className="hero h-72 flex flex-col">
+                <div className="userdata px-4 flex justify-between items-center mt-1">
+                    <Link to={"/profiles"} onClick={handleOpenProfile}>
+                        <div className="flex items-center">
+                            <Logo className="h-11 w-11 py-3 px-2 bg-black rounded-full mr-3" />
+                            <div className="items-center">
+                                <p className="text-gray-400 font-light">{shortenWallet(walletAddress)}</p>
+                            </div>
+                            <MdOutlineKeyboardArrowRight color={Colors.zincLight} className="my-auto text-2xl" />
+                        </div>
+                    </Link>
 
+                    {userData?.referral_link && walletAddress && (
+                        <Button
+                            variant="outlined"
+                            sx={shareButtonStyles}
+                            onClick={() => {
+                                GoogleAnalytics.sharePortfolio();
+                                shareContent(
+                                    `https://t.me/TractionEyebot/app?startapp=${userData?.referral_link}__wallet=${walletAddress}`,
+                                    "Check out my investment profile and join my network of contacts. Find out your social score 🏆",
+                                );
+                            }}
+                        >
+                            <ShareIcon size={12} className="mr-1" />
+                            Share portfolio
+                        </Button>
+                    )}
+                </div>
+                <div style={{ touchAction: "none" }} className="mt-auto">
+                    <ChartHome timeline={selectedTimeline} />
+                    <TimelineToolbar friendWalletAddress={walletAddress} onTimelineSelect={handleTimelineSelect} />
+                </div>
+            </div>
 			<div
 				style={{ minHeight: "60vh", height: "100%" }}
 				className="p-5 rounded-t-3xl bg-gray-50 pb-32"

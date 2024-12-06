@@ -2,6 +2,7 @@ import { FC } from "react";
 import { Link } from "react-router-dom";
 import { postEvent } from '@telegram-apps/sdk';
 import { formatNumber } from "@/utils";
+import { GoogleAnalytics } from "@/services";
 
 export interface AssetItemProps {
     id: number;
@@ -24,6 +25,7 @@ const AssetItem: FC<AssetItemProps> = ({
     const usdValue = amount * price;
 
     const handleAssetClick = () => {
+        GoogleAnalytics.openAssetPage();
         window.scrollTo({ top: 0, behavior: 'smooth' });
         postEvent('web_app_trigger_haptic_feedback', { type: 'impact', impact_style: 'light' });
     };
