@@ -49,6 +49,10 @@ export const ConnectPage = () => {
 	useEffect(() => {
 		const refCode = initData?.startParam?.split("__wallet=")[0];
 		if(userId && refCode && refCode?.includes("ref_")) {
+			const refCodeFromStorage = localStorage.getItem(`${LocalStorageKeys.referral_user_Id}${userId}`);
+			if(!refCodeFromStorage) {
+				GoogleAnalytics.openedMiniAppWithRefCode();
+			}
 			localStorage.setItem(`${LocalStorageKeys.referral_user_Id}${userId}`, refCode);
 		}
 
@@ -114,7 +118,7 @@ export const ConnectPage = () => {
 					return;
 				}
 				localStorage.setItem(LocalStorageKeys.userServiceToken, token);
-				const refCode = localStorage.getItem(`${LocalStorageKeys.referral_user_Id}${userId}`) ||initData?.startParam?.split("__wallet=")[0];
+				const refCode = localStorage.getItem(`${LocalStorageKeys.referral_user_Id}${userId}`) || initData?.startParam?.split("__wallet=")[0];
 				await Promise.all([
 					userServiceAddWalletMutation.mutateAsync({
 						walletAddress: userFriendlyAddress,
